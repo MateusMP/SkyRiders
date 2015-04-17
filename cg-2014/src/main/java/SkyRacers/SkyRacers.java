@@ -57,7 +57,7 @@ public class SkyRacers extends KeyAdapter implements GLEventListener, KeyEventDi
         projectionMatrix = new Matrix4();
         viewMatrix = new Matrix4();
 
-        JWavefrontObject planeModel = new JWavefrontObject(new File("./data/graphics/island.obj"));
+        JWavefrontObject planeModel = new JWavefrontObject(new File("./data/graphics/coqueiro.obj"));
 
         plane = new GameObject(planeModel);
 
