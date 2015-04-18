@@ -10,11 +10,11 @@ public class GameObject {
     private Vector3 position;
     
     
-    public GameObject(JWavefrontObject model3D)
+    public GameObject(Vector3 pos, JWavefrontObject model3D)
     {
         model = model3D;
         rotation = new Vector3(0, 0, 0);
-        position = new Vector3(0, 0, 0);
+        position = pos;
     }
     
     public void update()
@@ -26,9 +26,9 @@ public class GameObject {
     {
         modelMatrix.loadIdentity();
         modelMatrix.translate(position.x(), position.y(), position.z());
-        modelMatrix.rotate(rotation.z(), 0, 0, 1.0f);
-        modelMatrix.rotate(rotation.y(), 0, 1.0f, 0);
         modelMatrix.rotate(rotation.x(), 1.0f, 0, 0);
+        modelMatrix.rotate(rotation.y(), 0, 1.0f, 0);
+        modelMatrix.rotate(rotation.z(), 0, 0, 1.0f);
         // modelMatrix.scale(5, 5, 5);
         modelMatrix.bind();
         

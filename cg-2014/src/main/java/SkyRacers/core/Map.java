@@ -1,5 +1,6 @@
 package SkyRacers.core;
 
+import SkyRacers.Airplane;
 import java.util.ArrayList;
 
 public class Map {
@@ -30,6 +31,12 @@ public class Map {
         for (GameObject go : objects){
             go.draw();
         }
+    }
+    
+    public void dispose()
+    {
+        objects.clear();
+        checkpoints.clear();
     }
     
 }
