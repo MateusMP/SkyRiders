@@ -1,13 +1,15 @@
 package SkyRacers.core;
 
+import MathClasses.Vector3;
 import static SkyRacers.SkyRacers.modelMatrix;
 import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
 
 public class GameObject {
     
-    private JWavefrontObject model;
-    private Vector3 rotation;
-    private Vector3 position;
+    protected JWavefrontObject model;
+    protected Vector3 rotation;
+    protected Vector3 position;
+    protected Vector3 scale;
     
     
     public GameObject(Vector3 pos, JWavefrontObject model3D)
@@ -15,6 +17,15 @@ public class GameObject {
         model = model3D;
         rotation = new Vector3(0, 0, 0);
         position = pos;
+        scale = new Vector3(1,1,1);
+    }
+    
+    public GameObject(Vector3 pos, Vector3 scale, JWavefrontObject model3D)
+    {
+        model = model3D;
+        rotation = new Vector3(0, 0, 0);
+        position = pos;
+        this.scale = scale;
     }
     
     public void update()
@@ -29,7 +40,7 @@ public class GameObject {
         modelMatrix.rotate(rotation.x(), 1.0f, 0, 0);
         modelMatrix.rotate(rotation.y(), 0, 1.0f, 0);
         modelMatrix.rotate(rotation.z(), 0, 0, 1.0f);
-        // modelMatrix.scale(5, 5, 5);
+        modelMatrix.scale(scale.x, scale.y, scale.z);
         modelMatrix.bind();
         
         model.draw();
@@ -44,13 +55,19 @@ public class GameObject {
     }
     
     public void setRotationX(float rotation) {
-        this.rotation.xyz[0] = rotation;
+        this.rotation.x = rotation;
     }
     public void setRotationY(float rotation) {
-        this.rotation.xyz[1] = rotation;
+        this.rotation.y = rotation;
     }
     public void setRotationZ(float rotation) {
-        this.rotation.xyz[2] = rotation;
+        this.rotation.z = rotation;
+    }
+    
+    public void setScale(float x, float y, float z){
+        scale.x = x;
+        scale.y = y;
+        scale.z = z;
     }
 
     public Vector3 getPosition() {

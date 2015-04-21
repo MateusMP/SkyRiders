@@ -7,7 +7,9 @@ import SkyRacers.SkyRacers;
 import SkyRacers.core.GameObject;
 import SkyRacers.core.Map;
 import SkyRacers.core.MeshHandler;
-import SkyRacers.core.Vector3;
+import MathClasses.Vector3;
+import SkyRacers.AirplaneCamera;
+import SkyRacers.core.Camera;
 import br.usp.icmc.vicg.gl.core.Light;
 import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
 import br.usp.icmc.vicg.gl.util.Shader;
@@ -16,8 +18,8 @@ import javax.media.opengl.GL3;
 
 public class Island extends Map{
     
-    private GL3 gl;
-    private Shader shader;
+    private final GL3 gl;
+    private final Shader shader;
     
     // Meshes
     JWavefrontObject meshPalmTree1;
@@ -36,22 +38,21 @@ public class Island extends Map{
         LoadMeshes();
         InitLights();
         
-        for (int j = 0; j < 10; ++j){
-            for (int i = 0; i < 10; ++i){
-                addObject( new GameObject(new Vector3(i*-1.5f, 0, j*-2), meshPalmTree1) );
+        for (int j = 0; j < 25; ++j){
+            for (int i = 0; i < 25; ++i){
+                addObject( new GameObject(new Vector3(i*-6, 0, j*-6), meshPalmTree1) );
             }
         }
         
+        // Create player airplane and define a controller for it
         Airplane plane = new Airplane(MeshHandler.hdl().LoadMesh("./data/graphics/cartoonAriplane.obj"));
         controller = new AirplaneController(plane);
         SkyRacers.inputHandler.AddHandler(controller);
         addObject(plane);
         
-        /*
-        plane.setRotationX(alpha);
-        plane.setRotationY(beta);
-        plane.draw();
-        */
+        // Set camera fo the player airplane
+        Camera cam = new AirplaneCamera(plane);
+        SkyRacers.hdl().setCurrentCamera(cam);
         
     }
     

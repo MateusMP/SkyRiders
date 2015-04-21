@@ -33,6 +33,12 @@ public class AirplaneController extends KeyAdapter {
             case KeyEvent.VK_RIGHT://gira sobre o eixo-y
                 myplane.CommandRIGHT(true);
                 break;
+            case KeyEvent.VK_A://gira sobre o eixo-y
+                myplane.CommandAccel(true);
+                break;
+            case KeyEvent.VK_Z://gira sobre o eixo-y
+                myplane.CommandBrake(true);
+                break;
         }
     }
 
@@ -52,6 +58,12 @@ public class AirplaneController extends KeyAdapter {
                 break;
             case KeyEvent.VK_RIGHT://gira sobre o eixo-y
                 myplane.CommandRIGHT(false);
+                break;
+            case KeyEvent.VK_A://gira sobre o eixo-y
+                myplane.CommandAccel(false);
+                break;
+            case KeyEvent.VK_Z://gira sobre o eixo-y
+                myplane.CommandBrake(false);
                 break;
         }
         

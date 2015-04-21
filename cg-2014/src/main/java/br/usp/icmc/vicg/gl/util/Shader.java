@@ -72,7 +72,7 @@ public class Shader {
       System.err.println(varName + " uniform not found.");
       return -1;
     } else {
-      System.out.println(varName + " uniform found.");
+//      System.out.println(varName + " uniform found.");
       return location;
     }
   }
@@ -83,7 +83,7 @@ public class Shader {
       System.err.println(varName + " attribute not found");
       return -1;
     } else {
-      System.out.println(varName + " attribute found");
+//      System.out.println(varName + " attribute found");
       return location;
     }
   }

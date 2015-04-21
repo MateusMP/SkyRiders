@@ -1,13 +1,10 @@
 package SkyRacers;
 
 import SkyRacers.Circuits.Island;
-import SkyRacers.core.GameObject;
+import SkyRacers.core.Camera;
 import SkyRacers.core.InputHandler;
 import SkyRacers.core.Map;
 import SkyRacers.core.MeshHandler;
-import SkyRacers.core.Vector3;
-import br.usp.icmc.vicg.gl.core.Light;
-import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
@@ -27,19 +24,20 @@ import br.usp.icmc.vicg.gl.util.ShaderFactory.ShaderType;
 
 import com.jogamp.opengl.util.AnimatorBase;
 import com.jogamp.opengl.util.FPSAnimator;
-import java.awt.KeyEventDispatcher;
 import java.awt.KeyboardFocusManager;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class SkyRacers implements GLEventListener {
+    
+    private static SkyRacers skyracers;
 
-    private final Shader shader; // Gerenciador dos shaders
+    public GL3 gl;
+    public final Shader shader; // Gerenciador dos shaders
 
     private Map gameMap;
-
+    private Camera currentCamera;
+    
     public static Matrix4 modelMatrix = new Matrix4();
     private final Matrix4 projectionMatrix;
     private final Matrix4 viewMatrix;
@@ -50,6 +48,9 @@ public class SkyRacers implements GLEventListener {
     public static InputHandler inputHandler;
 
     public SkyRacers() {
+        
+        skyracers = this;
+        
         // Carrega os shaders
         shader = ShaderFactory.getInstance(ShaderType.COMPLETE_SHADER);
         // modelMatrix = new Matrix4();
@@ -57,12 +58,17 @@ public class SkyRacers implements GLEventListener {
         viewMatrix = new Matrix4();
 
     }
+    
+    public static SkyRacers hdl()
+    {
+        return skyracers;
+    }
 
     @Override
     public void init(GLAutoDrawable drawable)
     {
         // Get pipeline
-        GL3 gl = drawable.getGL().getGL3();
+        gl = drawable.getGL().getGL3();
 
         // Print OpenGL version
         System.out.println("OpenGL Version: " + gl.glGetString(GL.GL_VERSION) + "\n");
@@ -94,6 +100,11 @@ public class SkyRacers implements GLEventListener {
         
         gameMap = new Island(gl, shader);
     }
+    
+    public void setCurrentCamera(Camera cam)
+    {
+        currentCamera = cam;
+    }
 
     @Override
     public void display(GLAutoDrawable drawable) {
@@ -113,17 +124,13 @@ public class SkyRacers implements GLEventListener {
 
         // Limpa o frame buffer com a cor definida
         gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
+        gl.glClearColor(0.9f, 0.9f, 1, 1);
 
         projectionMatrix.loadIdentity();
         projectionMatrix.perspective(60, aspect, 0.1f, 100);
         projectionMatrix.bind();
-
-        viewMatrix.loadIdentity();
-        viewMatrix.lookAt(
-                0, 4, 10,
-                -5, 0, -5,
-                0, 1, 0);
-        viewMatrix.bind();
+        
+        currentCamera.DefineViewMatrix(viewMatrix);
 
         gameMap.draw();
 
@@ -165,7 +172,7 @@ public class SkyRacers implements GLEventListener {
         frame.add(glCanvas);
         frame.addKeyListener(inputHandler);
         frame.setFocusable(true);
-        //KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(inputHandler);
+        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(inputHandler);
         final AnimatorBase animator = new FPSAnimator(glCanvas, 60);
 
         frame.addWindowListener(new WindowAdapter() {
@@ -182,5 +189,6 @@ public class SkyRacers implements GLEventListener {
         });
         frame.setVisible(true);
         animator.start();
+        
     }
 }
