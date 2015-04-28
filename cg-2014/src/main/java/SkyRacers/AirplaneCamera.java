@@ -25,7 +25,7 @@ public class AirplaneCamera implements Camera {
     @Override
     public void DefineViewMatrix(Matrix4 viewMatrix)
     {
-        Vector3 direction = following.direction.mul(-3.0f);
+        Vector3 direction = following.direction.mul(-2.0f);
         Vector3 from = following.getPosition().add( direction ).add( following.top.mul(-(float)following.UDrotationCurrent/30.0f) );
         from = from.add( following.top.mul(1.07f) );
         

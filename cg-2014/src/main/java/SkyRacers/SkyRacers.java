@@ -127,7 +127,7 @@ public class SkyRacers implements GLEventListener {
         gl.glClearColor(0.9f, 0.9f, 1, 1);
 
         projectionMatrix.loadIdentity();
-        projectionMatrix.perspective(60, aspect, 0.1f, 100);
+        projectionMatrix.perspective(60, aspect, 0.1f, 1000);
         projectionMatrix.bind();
         
         currentCamera.DefineViewMatrix(viewMatrix);
