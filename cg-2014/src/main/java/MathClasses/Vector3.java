@@ -34,6 +34,12 @@ public class Vector3
     {
         return new Vector3(x, y, z);
     }
+    
+    public void set(float x, float y, float z){
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
 
     public Vector3 add(Vector3 rhs)
     {
@@ -106,21 +112,6 @@ public class Vector3
     public Vector3 normalize()
     {
         return this.div(norm());
-    }
-
-    public float x()
-    {
-        return this.x;
-    }
-
-    public float y()
-    {
-        return this.y;
-    }
-
-    public float z()
-    {
-        return this.z;
     }
 
     public String toString()

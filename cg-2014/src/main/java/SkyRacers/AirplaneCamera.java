@@ -15,6 +15,8 @@ import br.usp.icmc.vicg.gl.matrix.Matrix4;
  */
 public class AirplaneCamera implements Camera {
     
+    Vector3 position;
+    Vector3 lookat;
     Airplane following;
     
     public AirplaneCamera(Airplane plane)
@@ -26,17 +28,21 @@ public class AirplaneCamera implements Camera {
     public void DefineViewMatrix(Matrix4 viewMatrix)
     {
         Vector3 direction = following.direction.mul(-2.0f);
-        Vector3 from = following.getPosition().add( direction ).add( following.top.mul(-(float)following.UDrotationCurrent/30.0f) );
-        from = from.add( following.top.mul(1.07f) );
         
-        Vector3 lookAt = following.getPosition().add( following.direction.mul(2) );
+        position = following.getTransform().position.add( direction ).add( following.top.mul(-(float)following.UDrotationCurrent/30.0f) ).add( following.top.mul(1.07f) );
+        lookat = following.getTransform().position.add( following.direction.mul(2) );
         
         viewMatrix.loadIdentity();
-        viewMatrix.lookAt(from.x, from.y, from.z,
-                        lookAt.x, lookAt.y, lookAt.z,
+        viewMatrix.lookAt(position.x, position.y, position.z,
+                        lookat.x, lookat.y, lookat.z,
                         0,1,0);
                        //following.top.x/1.2f, following.top.y*1.6f, following.top.z/1.2f); 
         viewMatrix.bind();
+    }
+
+    @Override
+    public Vector3 GetPosition() {
+        return position;
     }
 }
 

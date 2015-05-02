@@ -268,9 +268,9 @@ public class Matrix4 {
         float a20 = this.matrix[ 8], a21 = this.matrix[ 9], a22 = this.matrix[10], a23 = this.matrix[11];
         // float a30 = this.matrix[12], a31 = this.matrix[13], a32 = this.matrix[14], a33 = this.matrix[15];
 
-        float X = a00 * v.x() + a01 * v.y() + a02 * v.z() + a03 * 1;
-        float Y = a10 * v.x() + a11 * v.y() + a12 * v.z() + a13 * 1;
-        float Z = a20 * v.x() + a21 * v.y() + a22 * v.z() + a23 * 1;
+        float X = a00 * v.x + a01 * v.y + a02 * v.z + a03 * 1;
+        float Y = a10 * v.x + a11 * v.y + a12 * v.z + a13 * 1;
+        float Z = a20 * v.x + a21 * v.y + a22 * v.z + a23 * 1;
         // float W = a30 * v.x() + a31 * v.y() + a32 * v.z() + a33 * 1;
         
         // System.out.println("["+X + ", " + Y+ ", "+", "+Z+", "+W+"]");

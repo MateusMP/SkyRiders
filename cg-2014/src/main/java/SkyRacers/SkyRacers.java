@@ -5,6 +5,7 @@ import SkyRacers.core.Camera;
 import SkyRacers.core.InputHandler;
 import SkyRacers.core.Map;
 import SkyRacers.core.MeshHandler;
+import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
@@ -34,7 +35,7 @@ public class SkyRacers implements GLEventListener {
 
     public GL3 gl;
     public final Shader shader; // Gerenciador dos shaders
-
+    
     private Map gameMap;
     private Camera currentCamera;
     
@@ -43,9 +44,26 @@ public class SkyRacers implements GLEventListener {
     private final Matrix4 viewMatrix;
     private float aspect;
 
+    private static AnimatorBase animator;
+    private static Frame frame;
     private static GLCanvas glCanvas;
-    
     public static InputHandler inputHandler;
+    
+    // ---- PERFORMANCE STATISTICS ----
+    private static int renderingObjects;
+    private static int renderingVertex;
+    public static void AddRenderingObject(JWavefrontObject mesh)
+    {
+        renderingObjects++;
+        renderingVertex += mesh.getVertices().size();
+    }
+    private static void ResetVertexCount()
+    {
+        renderingObjects = 0;
+        renderingVertex = 0;
+    }
+    // ---------------------------------
+    
 
     public SkyRacers() {
         
@@ -105,11 +123,21 @@ public class SkyRacers implements GLEventListener {
     {
         currentCamera = cam;
     }
+    
+    public Camera getCurrentCamera()
+    {
+        return currentCamera;
+    }
 
     @Override
     public void display(GLAutoDrawable drawable) {
+        
+        ResetVertexCount();
+        
         update();
         render(drawable);
+        
+        frame.setTitle("Sky Racers "+animator.getLastFPS()+" - OBJS: "+renderingObjects+" - Vertices: "+renderingVertex);
     }
     
     private void update()
@@ -167,13 +195,14 @@ public class SkyRacers implements GLEventListener {
         
         inputHandler = new InputHandler();
 
-        Frame frame = new Frame("Sky Racers");
+        frame = new Frame("Sky Racers");
         frame.setSize(800, 600);
         frame.add(glCanvas);
         frame.addKeyListener(inputHandler);
         frame.setFocusable(true);
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(inputHandler);
-        final AnimatorBase animator = new FPSAnimator(glCanvas, 60);
+        animator = new FPSAnimator(glCanvas, 60);
+        
 
         frame.addWindowListener(new WindowAdapter() {
             @Override

@@ -66,7 +66,7 @@ public class Airplane extends GameObject {
         direction = FORWARD;
         roationXZ = 0;
         
-        scale.x = scale.y = scale.z = 0.5f;
+        transform.scale.x = transform.scale.y = transform.scale.z = 0.5f;
     }
     
     public void CommandUP(boolean pressed){
@@ -174,13 +174,14 @@ public class Airplane extends GameObject {
         mx.loadIdentity();
         
         // Visual
-        setRotationX( (float)UDrotationCurrent ); // pitch
-        setRotationY( (float)roationXZ ); // yaw
-        setRotationZ( (float)LRrotationCurrent*1.2f ); // roll
+        transform.rotation.x =(float)UDrotationCurrent; // pitch
+        transform.rotation.y = (float)roationXZ; // yaw
+        transform.rotation.z = (float)LRrotationCurrent*1.2f; // roll
         
+        // Calcular rotacao para movimento
         mx.rotate(-LRrotationCurrent, 0, 0, 1.0f);
-        mx.rotate(-rotation.x(), 1.0f, 0, 0);
-        mx.rotate(-rotation.y(), 0, 1.0f, 0);
+        mx.rotate(-transform.rotation.x, 1.0f, 0, 0);
+        mx.rotate(-transform.rotation.y, 0, 1.0f, 0);
         direction = mx.Mult( FORWARD );
         top = mx.Mult( UP );
         
@@ -192,7 +193,9 @@ public class Airplane extends GameObject {
         
 //        System.out.println(speed + " - " + velocity);
         
-        setPosition(position.add(velocity));
+        // Move
+        transform.position = transform.position.add(velocity);
+                
     }
     
     @Override
@@ -200,8 +203,8 @@ public class Airplane extends GameObject {
     {
         modelMatrix.loadIdentity();
         modelMatrix.bind();
-        Vector3 b = getPosition().clone();
-        Vector3 e = getPosition().add( direction.normalize().mul(15.0f) );
+        Vector3 b = transform.position;
+        Vector3 e = transform.position.add( direction.normalize().mul(15.0f) );
         Line l = new Line( b, e);
         l.init(SkyRacers.hdl().gl, SkyRacers.hdl().shader);
         l.bind();
@@ -217,15 +220,13 @@ public class Airplane extends GameObject {
 //        l.draw();
         
         modelMatrix.loadIdentity();
-        modelMatrix.translate(position.x(), position.y(), position.z());
-        modelMatrix.rotate(rotation.y(), 0, 1.0f, 0);
-        modelMatrix.rotate(rotation.x(), 1.0f, 0, 0);
-        modelMatrix.rotate(rotation.z(), 0, 0, 1.0f);
-        modelMatrix.scale(scale.x, scale.y, scale.z);
+        modelMatrix.translate(transform.position.x, transform.position.y, transform.position.z);
+        modelMatrix.rotate(transform.rotation.y, 0, 1.0f, 0);
+        modelMatrix.rotate(transform.rotation.x, 1.0f, 0, 0);
+        modelMatrix.rotate(transform.rotation.z, 0, 0, 1.0f);
+        modelMatrix.scale(transform.scale.x, transform.scale.y, transform.scale.z);
         modelMatrix.bind();
         
-        model.draw();
+        mesh.ActiveMeshDraw();
     }
-    
-    
 }

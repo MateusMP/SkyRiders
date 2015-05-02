@@ -45,6 +45,10 @@ public class JWavefrontObject {
   private ArrayList<TextureCoord> textures_coord;
   private File pathname;
   private Group current_group;
+  
+  public ArrayList<Vertex> getVertices(){
+      return vertices;
+  }
 
   /**
    * Construct a JWavefrontObject object.

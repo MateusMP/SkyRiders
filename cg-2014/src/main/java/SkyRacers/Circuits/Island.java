@@ -46,14 +46,13 @@ public class Island extends Map{
         }
         
         meshIsland = MeshHandler.hdl().LoadMesh("./data/graphics/island.obj");
-        addObject(new GameObject(new Vector3(), new Vector3(200,200,200), meshIsland));
+        addObject(new GameObject(new Vector3(), new Vector3(150,150,150), meshIsland));
         
         // Create player airplane and define a controller for it
         Airplane plane = new Airplane(MeshHandler.hdl().LoadMesh("./data/graphics/cartoonAriplane.obj"));
         controller = new AirplaneController(plane);
         SkyRacers.inputHandler.AddHandler(controller);
         addObject(plane);
-        
         
         
         // Set camera fo the player airplane
