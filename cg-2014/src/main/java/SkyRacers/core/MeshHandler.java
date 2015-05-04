@@ -62,7 +62,7 @@ public class MeshHandler {
         try {
             //init the model
             mesh.init(gl, shader);
-            mesh.unitize();
+            // mesh.unitize();
             mesh.dump();
         } catch (IOException ex) {
             Logger.getLogger(SkyRacers.class.getName()).log(Level.SEVERE, null, ex);

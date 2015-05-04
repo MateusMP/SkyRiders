@@ -40,10 +40,11 @@ public class Airplane extends GameObject {
     
     final float MAX_UD = 70; // Direcao vertical
     final float MAX_LR = 70; // Direcao horizontal
+    final float MAX_SPEED = 6;
     
     public Airplane(JWavefrontObject mesh)
     {
-        super(new Vector3(-5,3,-5), mesh);
+        super(new Vector3(0,50,0), mesh);
         
         cmd_up = false;
         cmd_down = false;
@@ -144,8 +145,8 @@ public class Airplane extends GameObject {
             speed -= brakespeed/2;
         }
         
-        if (speed > 2)
-            speed = 2;
+        if (speed > MAX_SPEED)
+            speed = MAX_SPEED;
         else if (speed < 0)
             speed = 0;
         

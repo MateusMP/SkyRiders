@@ -6,6 +6,7 @@ import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 
@@ -43,6 +44,7 @@ public class MapLoader
     public static Map LoadMap(String name) throws FileNotFoundException, Exception
     {
         Scanner s = new Scanner(new File(name));
+        s.useLocale(Locale.US);
         
         ArrayList<VirtualObject> objects = new ArrayList<VirtualObject>();
         
@@ -99,7 +101,7 @@ public class MapLoader
         if (mesh_id != -1 && transform_id != -1)
         {
             Transform transform = (Transform) obj.vdata.get(transform_id).data;
-            JWavefrontObject mesh = MeshHandler.hdl().LoadMesh("data/graphics/"+obj.vdata.get(mesh_id).data+".obj");
+            JWavefrontObject mesh = MeshHandler.hdl().LoadMesh((String) obj.vdata.get(mesh_id).data);
             
             m.addObject( new GameObject(transform, mesh));
         }
@@ -179,9 +181,9 @@ public class MapLoader
         t.rotation.z = s.nextFloat();
         
         // Escalar
-        t.scale.x = s.nextFloat()*120;
-        t.scale.y = s.nextFloat()*120;
-        t.scale.z = s.nextFloat()*120;
+        t.scale.x = s.nextFloat();
+        t.scale.y = s.nextFloat();
+        t.scale.z = s.nextFloat();
         
         vd.type = VirtualData.DATA_TYPE.TRANSFORM;
         vd.data = t;
@@ -192,7 +194,8 @@ public class MapLoader
     
     public static void main(String args[]){
         
-        Scanner s = new Scanner("1,0050 1");
+        Scanner s = new Scanner("1.0050 1");
+        s.useLocale(Locale.US);
         
         float t = s.nextFloat();
         System.out.println(t);

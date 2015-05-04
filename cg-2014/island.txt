@@ -1,41 +1,40 @@
-+ S,ar,Race , !
-   -243.8 66.9 -277.3 0 0 0 1 1 1
-+ Rocks03prefab2 m , !
-   Rocks_03
-   55 55 29 0 0 0 1 1 1
-+ Rocks03prefab m , !
-   Rocks_03
-   55 55 287 0 0 0 1 1 1
-+ Rocks03prefab9 m , !
-   Rocks_03
-   -399 55 -164 0 157.5995 0 1 1 1
-+ Rocks03prefab4 m , !
-   Rocks_03
-   342 55 -164 0 19.95712 0 1 1 1
-+ Rocks03prefab12 m , !
-   Rocks_03
-   -480 55 459 0 0.5352516 0 1 1 1
-+ Rocks03prefab11 m , !
-   Rocks_03
-   -458 55 243 0 166.9641 0 0.9999998 1 0.9999998
-+ Rocks03prefab8 m , !
-   Rocks_03
-   -429 55 29 0 180 0 1 1 1
-+ Rocks03prefab6 m , !
-   Rocks_03
-   106 55 490 0 216.2687 0 1 1 1
-+ Rocks03prefab10 m , !
-   Rocks_03
-   -282 55 587 0 312.4968 0 1 1 1
-+ Rocks03prefab5 m , !
-   Rocks_03
-   356 55 238 0 350.8153 0 1 1 1
-+ Rocks03prefab1 m , !
-   Rocks_03
-   55 55 -176 0 0 0 1 1 1
-+ Rocks03prefab7 m , !
-   Rocks_03
-   311 55 433 0 339.3075 0 0.9999999 1 0.9999999
-+ Rocks03prefab3 m , !
-   Rocks_03
-   372 55 29 0 0 0 1 1 1
++ Rocks_02_1  !
+  + Rocks_02 m t !
+     Assets/graphics/Rocks_02.obj
+     22.9 -20.7 -369.9 0 0 0 1 1 1
++ Rocks_03_8  !
+  + Rocks_03 m t !
+     Assets/graphics/Rocks_03.obj
+     -2 -26 -34 8.14222E-13 180 270 0.9999999 0.9999999 1
++ Rocks_03_2  !
+  + Rocks_03 m t !
+     Assets/graphics/Rocks_03.obj
+     -98 0 200 0 180 0 1 1 1
++ Rocks_03_5  !
+  + Rocks_03 m t !
+     Assets/graphics/Rocks_03.obj
+     84 0 -42 0 0 0 1 1 1
++ Rocks_03_3  !
+  + Rocks_03 m t !
+     Assets/graphics/Rocks_03.obj
+     -95 0 -213 0 180 0 1 1 1
++ Rocks_03_7  !
+  + Rocks_03 m t !
+     Assets/graphics/Rocks_03.obj
+     -2 -26 182 8.14222E-13 180 270 0.9999999 0.9999999 1
++ Rocks_03_6  !
+  + Rocks_03 m t !
+     Assets/graphics/Rocks_03.obj
+     84 0 142 0 0 0 1 1 1
++ Rocks_03_4  !
+  + Rocks_03 m t !
+     Assets/graphics/Rocks_03.obj
+     84 0 -213 0 0 0 1 1 1
++ Rocks_03_9  !
+  + Rocks_03 m t !
+     Assets/graphics/Rocks_03.obj
+     -2 -26 -247 8.14222E-13 180 270 0.9999999 0.9999999 1
++ Rocks_03_1  !
+  + Rocks_03 m t !
+     Assets/graphics/Rocks_03.obj
+     -98 0 0 0 180 0 1 1 1

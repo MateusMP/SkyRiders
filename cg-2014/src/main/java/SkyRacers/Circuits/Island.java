@@ -4,10 +4,8 @@ package SkyRacers.Circuits;
 import SkyRacers.Airplane;
 import SkyRacers.AirplaneController;
 import SkyRacers.SkyRacers;
-import SkyRacers.core.GameObject;
 import SkyRacers.core.Map;
 import SkyRacers.core.MeshHandler;
-import MathClasses.Vector3;
 import SkyRacers.AirplaneCamera;
 import SkyRacers.core.Camera;
 import br.usp.icmc.vicg.gl.core.Light;
@@ -22,10 +20,11 @@ public class Island extends Map{
     private final Shader shader;
     
     // Meshes
-    JWavefrontObject meshPalmTree1;
-    JWavefrontObject meshIsland;
+    //JWavefrontObject meshPalmTree1;
+    //JWavefrontObject meshIsland;
     Light light;
     //
+    float x, y;
     
     AirplaneController controller;
     
@@ -35,6 +34,9 @@ public class Island extends Map{
         
         this.gl = gl;
         this.shader = shader;
+        
+        x = 0;
+        y = 0;
         
         LoadMeshes();
         InitLights();
@@ -49,7 +51,7 @@ public class Island extends Map{
         addObject(new GameObject(new Vector3(), new Vector3(150,150,150), meshIsland));*/
         
         // Create player airplane and define a controller for it
-        Airplane plane = new Airplane(MeshHandler.hdl().LoadMesh("./data/graphics/cartoonAriplane.obj"));
+        Airplane plane = new Airplane(MeshHandler.hdl().LoadMesh("./Assets/graphics/cartoonAriplane.obj"));
         controller = new AirplaneController(plane);
         SkyRacers.inputHandler.AddHandler(controller);
         addObject(plane);
@@ -66,7 +68,7 @@ public class Island extends Map{
         light = new Light();
         
         //init the light
-        light.setPosition(new float[]{10, 10, 20, 1.0f});
+        light.setPosition(new float[]{0, 20, 0, 1.0f});
         light.setAmbientColor(new float[]{0.1f, 0.1f, 0.1f, 1.0f});
         light.setDiffuseColor(new float[]{0.75f, 0.75f, 0.75f, 1.0f});
         light.setSpecularColor(new float[]{0.7f, 0.7f, 0.7f, 1.0f});
@@ -77,14 +79,28 @@ public class Island extends Map{
     
     private void LoadMeshes()
     {
-        meshPalmTree1 = MeshHandler.hdl().LoadMesh("./data/graphics/coqueiro.obj");
+        // meshPalmTree1 = MeshHandler.hdl().LoadMesh("./Assets/graphics/coqueiro.obj");
         
     }
     
     public void dispose()
     {
         SkyRacers.inputHandler.RemoveHandler(controller);
-        meshPalmTree1.dispose();
+        // meshPalmTree1.dispose();
         super.dispose();
+    }
+    
+    @Override
+    public void draw()
+    {
+        double rad = x * 3.14159 / 180.0;
+        
+        y = (float) (Math.sin( rad )*500);
+        x += 0.5;
+        
+        light.setPosition(new float[]{0.0f, 60, y, 0.0f});
+        light.bind();
+        
+        super.draw();
     }
 }

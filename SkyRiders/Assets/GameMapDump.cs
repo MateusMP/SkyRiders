@@ -65,7 +65,8 @@ public static class GameMapDump
     private static void DumpMesh(StreamWriter writer, string indent, MeshFilter f)
     {
         if (!f) return;
-        writer.WriteLine("{0} {1}", indent, f.sharedMesh.name);
+		string path = AssetDatabase.GetAssetPath (f.sharedMesh);
+        writer.WriteLine("{0} {1}", indent, path);
     }
 
     private static void DumpTransform(StreamWriter writer, string indent, Transform t)

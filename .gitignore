@@ -6,3 +6,7 @@ cg-2014/data/robot/
 models/*.obj
 models/*.mtl
 *.blend1
+cg-2014/Assets/paulovic/
+models/objs/
+*.tga
+SkyRiders/Library/

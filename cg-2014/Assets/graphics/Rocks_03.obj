@@ -1,4 +1,4 @@
-# Blender v2.73 (sub 0) OBJ File: ''
+# Blender v2.73 (sub 0) OBJ File: 'Rocks_03.blend'
 # www.blender.org
 mtllib Rocks_03.mtl
 o Rocks_03
@@ -1033,7 +1033,7 @@ vt 0.648600 0.495600
 vt 0.019900 0.430100
 vt 0.361700 0.056100
 vt 0.846600 0.343400
-usemtl Material.001
+usemtl Rocks_03
 s 1
 f 1/1 2/2 3/3
 f 4/4 3/3 5/5
