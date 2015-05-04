@@ -34,6 +34,20 @@
   + Rocks_03 m t !
      Assets/graphics/Rocks_03.obj
      -2 -26 -247 8.14222E-13 180 270 0.9999999 0.9999999 1
++ Rock_03  !
+  + Rock_03 m t !
+     Assets/graphics/Rock_03.obj
+     15.6 24.9 335.7 0 0 0 1 1 1
++ Rock_03 m t !
+   Assets/graphics/Rock_03.obj
+   15.6 24.9 335.7 0 0 0 1 1 1
++ cartoonAriplane  !
+  + Cube.001_Cube.002 m t !
+     Assets/graphics/cartoonAriplane.obj
+     0 40.7 -305.7 0 0 0 1 1 1
+  + Sphere_Sphere.001 m t !
+     Assets/graphics/cartoonAriplane.obj
+     0 40.7 -305.7 0 0 0 1 1 1
 + Rocks_03_1  !
   + Rocks_03 m t !
      Assets/graphics/Rocks_03.obj
