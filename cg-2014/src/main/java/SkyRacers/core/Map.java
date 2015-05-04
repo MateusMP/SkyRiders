@@ -1,6 +1,5 @@
 package SkyRacers.core;
 
-import SkyRacers.Airplane;
 import java.util.ArrayList;
 
 public class Map {

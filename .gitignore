@@ -1,1 +1,8 @@
 /cg-2014/target/
+cg-2014/data/murci/
+cg-2014/data/knight/
+cg-2014/data/xwing/
+cg-2014/data/robot/
+models/*.obj
+models/*.mtl
+*.blend1

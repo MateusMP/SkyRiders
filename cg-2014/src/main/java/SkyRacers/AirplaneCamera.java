@@ -27,10 +27,10 @@ public class AirplaneCamera implements Camera {
     @Override
     public void DefineViewMatrix(Matrix4 viewMatrix)
     {
-        Vector3 direction = following.direction.mul(-2.0f);
+        Vector3 direction = following.direction.mul(-20.0f);
         
-        position = following.getTransform().position.add( direction ).add( following.top.mul(-(float)following.UDrotationCurrent/30.0f) ).add( following.top.mul(1.07f) );
-        lookat = following.getTransform().position.add( following.direction.mul(2) );
+        position = following.getTransform().position.add( direction ).add( following.top.mul(-(float)following.UDrotationCurrent/30.0f) ).add( following.top.mul(10.70f) );
+        lookat = following.getTransform().position.add( following.direction.mul(20) );
         
         viewMatrix.loadIdentity();
         viewMatrix.lookAt(position.x, position.y, position.z,

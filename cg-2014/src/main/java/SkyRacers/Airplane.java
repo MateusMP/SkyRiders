@@ -66,7 +66,7 @@ public class Airplane extends GameObject {
         direction = FORWARD;
         roationXZ = 0;
         
-        transform.scale.x = transform.scale.y = transform.scale.z = 0.5f;
+        transform.scale.x = transform.scale.y = transform.scale.z = 1.0f;
     }
     
     public void CommandUP(boolean pressed){

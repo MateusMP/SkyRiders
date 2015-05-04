@@ -10,6 +10,12 @@ public class GameObject {
     protected Transform transform;
     protected LODMesh mesh;
     
+    public GameObject(Transform t, JWavefrontObject model3D)
+    {
+        mesh = new LODMesh(model3D);
+        transform = t;
+    }
+    
     public GameObject(Vector3 pos, JWavefrontObject model3D)
     {
         mesh = new LODMesh(model3D);

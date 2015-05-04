@@ -4,6 +4,7 @@ import SkyRacers.Circuits.Island;
 import SkyRacers.core.Camera;
 import SkyRacers.core.InputHandler;
 import SkyRacers.core.Map;
+import SkyRacers.core.MapLoader;
 import SkyRacers.core.MeshHandler;
 import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
@@ -116,7 +117,12 @@ public class SkyRacers implements GLEventListener {
             Logger.getLogger(SkyRacers.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        gameMap = new Island(gl, shader);
+        try {
+            // gameMap = new Island(gl, shader);
+            gameMap = MapLoader.LoadMap("island.txt");
+        } catch (Exception ex) {
+            Logger.getLogger(SkyRacers.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void setCurrentCamera(Camera cam)

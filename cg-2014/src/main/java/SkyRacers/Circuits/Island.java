@@ -39,14 +39,14 @@ public class Island extends Map{
         LoadMeshes();
         InitLights();
         
-        for (int j = 0; j < 25; ++j){
+        /*for (int j = 0; j < 25; ++j){
             for (int i = 0; i < 25; ++i){
                 addObject( new GameObject(new Vector3(i*-6, 0, j*-6), meshPalmTree1) );
             }
         }
         
         meshIsland = MeshHandler.hdl().LoadMesh("./data/graphics/island.obj");
-        addObject(new GameObject(new Vector3(), new Vector3(150,150,150), meshIsland));
+        addObject(new GameObject(new Vector3(), new Vector3(150,150,150), meshIsland));*/
         
         // Create player airplane and define a controller for it
         Airplane plane = new Airplane(MeshHandler.hdl().LoadMesh("./data/graphics/cartoonAriplane.obj"));
