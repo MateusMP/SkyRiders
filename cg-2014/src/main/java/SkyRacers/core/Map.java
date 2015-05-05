@@ -7,31 +7,41 @@ public class Map {
     
     protected ArrayList<GameObject> objects;
     protected ArrayList<GameObject> checkpoints;
+    protected FrustumCulling frusCull;
     
     public Transform startpoint = new Transform();
     
     public Map()
     {
-        objects = new ArrayList<>();
-        checkpoints = new ArrayList<>();
+        this.objects = new ArrayList<>();
+        this.checkpoints = new ArrayList<>();
+        this.frusCull = null;
+    }
+    
+    public Map(FrustumCulling fc)
+    {
+        this.objects = new ArrayList<>();
+        this.checkpoints = new ArrayList<>();
+        this.frusCull = fc;
     }
     
     public void addObject(GameObject obj)
     {
-        objects.add(obj);
+        this.objects.add(obj);
     }
     
     public void update()
     {
-        for (GameObject go : objects){
+        for (GameObject go : this.objects){
             go.update();
         }
     }
     
     public void draw()
     {
-        for (GameObject go : objects){
-            go.draw();
+        for (GameObject go : this.objects){
+            //if(frusCull.pointInFrustum(go.getTransform().position) != frusCull.OUTSIDE)
+                go.draw();
         }
     }
     
@@ -39,6 +49,10 @@ public class Map {
     {
         objects.clear();
         checkpoints.clear();
+    }
+
+    public void setFrusCull(FrustumCulling frusCull) {
+        this.frusCull = frusCull;
     }
     
 }

@@ -13,9 +13,16 @@ import java.awt.event.KeyEvent;
     
 public class StandardCamera extends KeyAdapter implements Camera {
     
-    Vector3 speed;
     Vector3 position;
     Vector3 lookat;
+    Vector3 up;
+    Airplane following;
+    private float angle;
+    private float aspect;
+    private float nearDistance;
+    private float farDistance;
+    
+    Vector3 speed;
     final Vector3 offset = new Vector3(0,0,-10);
     
     public StandardCamera(Vector3 pos)
@@ -38,12 +45,6 @@ public class StandardCamera extends KeyAdapter implements Camera {
                        //following.top.x/1.2f, following.top.y*1.6f, following.top.z/1.2f); 
         viewMatrix.bind();
     }
-
-    @Override
-    public Vector3 GetPosition() {
-        return position;
-    }
-    
     
     public void keyPressed(KeyEvent e)
     {
@@ -95,6 +96,46 @@ public class StandardCamera extends KeyAdapter implements Camera {
                 break;
         }
         
+    }
+
+    @Override
+    public void DefineProjectionMatrix(Matrix4 projectionMatrix, float angle, float aspect, float nearDistance, float farDistance) {
+        this.angle = angle;
+        this.aspect = aspect;
+        this.nearDistance = nearDistance;
+        this.farDistance = farDistance;
+        projectionMatrix.loadIdentity();
+        projectionMatrix.perspective(angle, aspect, nearDistance, farDistance);
+        projectionMatrix.bind();
+    }
+
+    @Override
+    public Vector3 GetPosition() {
+        return position;
+    }
+    @Override
+    public float getAngle() {
+        return angle;
+    }
+    @Override
+    public float getAspect() {
+        return aspect;
+    }
+    @Override
+    public float getNearDistance() {
+        return nearDistance;
+    }
+    @Override
+    public float getFarDistance() {
+        return farDistance;
+    }
+    @Override
+    public Vector3 getLookat() {
+        return lookat;
+    }
+    @Override
+    public Vector3 getUp() {
+        return up;
     }
 }
 
