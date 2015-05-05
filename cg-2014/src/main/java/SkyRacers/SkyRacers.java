@@ -2,16 +2,24 @@ package SkyRacers;
 
 import SkyRacers.Circuits.Island;
 import SkyRacers.core.Camera;
+import SkyRacers.core.FrustumCulling;
 import SkyRacers.core.InputHandler;
 import SkyRacers.core.Map;
 import SkyRacers.core.MapLoader;
 import SkyRacers.core.MeshHandler;
 import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
+import br.usp.icmc.vicg.gl.util.Shader;
+import br.usp.icmc.vicg.gl.util.ShaderFactory;
+import br.usp.icmc.vicg.gl.util.ShaderFactory.ShaderType;
+import com.jogamp.opengl.util.AnimatorBase;
+import com.jogamp.opengl.util.FPSAnimator;
 import java.awt.Frame;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL3;
 import javax.media.opengl.GLAutoDrawable;
@@ -19,16 +27,6 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
-
-import br.usp.icmc.vicg.gl.util.Shader;
-import br.usp.icmc.vicg.gl.util.ShaderFactory;
-import br.usp.icmc.vicg.gl.util.ShaderFactory.ShaderType;
-
-import com.jogamp.opengl.util.AnimatorBase;
-import com.jogamp.opengl.util.FPSAnimator;
-import java.awt.KeyboardFocusManager;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class SkyRacers implements GLEventListener {
     
@@ -39,11 +37,15 @@ public class SkyRacers implements GLEventListener {
     
     private Map gameMap;
     private Camera currentCamera;
+    private FrustumCulling frusCull;
     
     public static Matrix4 modelMatrix = new Matrix4();
     private final Matrix4 projectionMatrix;
     private final Matrix4 viewMatrix;
+    private final float angle = 60;
     private float aspect;
+    private final float nearDistance = 0.1f;
+    private final float farDistance = 1000;
 
     private static AnimatorBase animator;
     private static Frame frame;
@@ -120,6 +122,7 @@ public class SkyRacers implements GLEventListener {
         try {
             // gameMap = new Island(gl, shader);
             gameMap = MapLoader.LoadMap("island.txt");
+            gameMap.setFrusCull(frusCull);
         } catch (Exception ex) {
             Logger.getLogger(SkyRacers.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -133,6 +136,14 @@ public class SkyRacers implements GLEventListener {
     public Camera getCurrentCamera()
     {
         return currentCamera;
+    }
+
+    public FrustumCulling getFrusCull() {
+        return frusCull;
+    }
+
+    public void setFrusCull(FrustumCulling frusCull) {
+        this.frusCull = frusCull;
     }
 
     @Override
@@ -159,10 +170,8 @@ public class SkyRacers implements GLEventListener {
         // Limpa o frame buffer com a cor definida
         gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
         gl.glClearColor(0.9f, 0.9f, 1, 1);
-
-        projectionMatrix.loadIdentity();
-        projectionMatrix.perspective(60, aspect, 0.1f, 1000);
-        projectionMatrix.bind();
+        
+        currentCamera.DefineProjectionMatrix(projectionMatrix, angle, aspect, nearDistance, farDistance);
         
         currentCamera.DefineViewMatrix(viewMatrix);
 

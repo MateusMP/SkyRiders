@@ -1,0 +1,139 @@
+package SkyRacers.core;
+
+import MathClasses.Plane;
+import MathClasses.Vector3;
+
+public class FrustumCulling {
+    private static final int TOP = 0;
+    private static final int BOT = 1;
+    private static final int LEFT = 2;
+    private static final int RIGHT = 3;
+    private static final int NEAR = 4;
+    private static final int FAR = 5;
+    
+    public static final int OUTSIDE = 0;
+    public static final int INTERSECT = 0;
+    public static final int INSIDE = 0;
+    
+    public static final float ANG2RAD = (float) (3.1415926536/180.0);
+    
+    public Plane[] planes = new Plane[6];
+    
+    public Vector3 nearTopLeft, nearTopRight, nearBottomLeft, nearBottomRight;
+    public Vector3 farTopLeft, farTopRight, farBottomLeft, farBottomRight;
+    
+    public float nearDistance, farDistance, aspect, angle, tang;
+    public float nearWidth, nearHeight, farWidth, farHeight;
+    
+    //Stores info from Camera and computes width and height of the near and far planes
+    //Also calculates near's and far's width and height
+    public void setCamInternals(float angle, float ratio, float nearDist, float farDist)
+    {
+        this.aspect = ratio;
+        this.angle = angle;
+        this.nearDistance = nearDist;
+        this.farDistance = farDist;
+        
+        this.tang = (float)Math.tan(this.ANG2RAD * angle * 0.5);
+        this.nearHeight = nearDist * this.tang;
+        this.nearWidth = this.nearHeight * this.aspect;
+        this.farHeight = this.farDistance * this.tang;
+        this.farWidth = this.farHeight * this.aspect;
+    }
+    
+    //Receives three vectors, the position of the camera, a point where the camera is pointing
+    //And the up vector
+    public void setCamDef(Vector3 position, Vector3 looking, Vector3 up)
+    {
+        Vector3 direction, nearCenter, farCenter, xAxis, yAxis, zAxis;
+        Vector3 normalX, normalY, normalZ;
+        //Compute the Z axis of camera, points in the opposite direction from the looking direction
+        zAxis = position.sub(looking);
+        normalZ = zAxis.normalize();
+        
+        //X axis of camera with given "up" vector and Z axis
+        xAxis = up.cross(normalZ);
+        normalX = xAxis.normalize();
+        
+        //The real "up" vector is the cross product of Z and X
+        yAxis = normalZ.cross(normalX);
+        
+        //Find centers of the near and far planes
+        /*
+        nc = p - Z * nearD;
+	fc = p - Z * farD;
+        */
+        nearCenter = position.sub(normalZ.mul(this.nearDistance));
+        farCenter = position.sub(normalZ.mul(this.farDistance));
+        
+        // compute the 4 corners of the frustum on the near plane
+	/*
+        ntl = nc + Y * nh - X * nw;
+	ntr = nc + Y * nh + X * nw;
+	nbl = nc - Y * nh - X * nw;
+	nbr = nc - Y * nh + X * nw;
+        */
+        this.nearTopLeft = nearCenter.add(yAxis.mul(this.nearHeight).sub(normalX.mul(this.nearWidth)));
+        this.nearTopRight = nearCenter.add(yAxis.mul(this.nearHeight).add(normalX.mul(this.nearWidth)));
+        this.nearBottomLeft = nearCenter.sub(yAxis.mul(this.nearHeight).sub(normalX.mul(this.nearWidth)));
+        this.nearBottomRight = nearCenter.sub(yAxis.mul(this.nearHeight).add(normalX.mul(this.nearWidth)));
+        
+        // compute the 4 corners of the frustum on the far plane
+	/*
+        ftl = fc + Y * fh - X * fw;
+	ftr = fc + Y * fh + X * fw;
+	fbl = fc - Y * fh - X * fw;
+	fbr = fc - Y * fh + X * fw;
+        */
+        this.farTopLeft = farCenter.add(yAxis.mul(this.farHeight).sub(normalX.mul(this.farWidth)));
+        this.farTopRight = farCenter.add(yAxis.mul(this.farHeight).add(normalX.mul(this.farWidth)));
+        this.farBottomLeft = farCenter.sub(yAxis.mul(this.farHeight).sub(normalX.mul(this.farWidth)));
+        this.farBottomRight = farCenter.sub(yAxis.mul(this.farHeight).add(normalX.mul(this.farWidth)));
+        
+        // compute the six planes
+	// the function set3Points assumes that the points
+	// are given in counter clockwise order
+	this.planes[TOP].createPlane3Points(nearTopRight, nearTopLeft, farTopLeft);
+        this.planes[BOT].createPlane3Points(nearBottomLeft, nearBottomRight, farBottomRight);
+        this.planes[LEFT].createPlane3Points(nearTopLeft, nearBottomLeft, farBottomLeft);
+        this.planes[RIGHT].createPlane3Points(nearBottomRight, nearTopRight, farBottomRight);
+        this.planes[NEAR].createPlane3Points(nearTopLeft, nearTopRight, nearBottomRight);
+        this.planes[FAR].createPlane3Points(farTopRight, farTopLeft, farBottomLeft);
+        
+        /*
+        pl[TOP].set3Points(ntr,ntl,ftl);
+	pl[BOTTOM].set3Points(nbl,nbr,fbr);
+	pl[LEFT].set3Points(ntl,nbl,fbl);
+	pl[RIGHT].set3Points(nbr,ntr,fbr);
+	pl[NEARP].set3Points(ntl,ntr,nbr);
+	pl[FARP].set3Points(ftr,ftl,fbl);
+        */
+    }
+    
+    public int pointInFrustum(Vector3 point)
+    {
+        int result = this.INSIDE;
+        for(int i = 0; i < 6; i++)
+        {
+            if(this.planes[i].distance(point) < 0)
+                return this.OUTSIDE;
+        }
+        return result;
+    }
+    
+    public int sphereInFrustum(Vector3 point, float radius)
+    {
+        float distance;
+        int result = this.INSIDE;
+        for(int  i = 0; i < 6; i++)
+        {
+            distance = this.planes[i].distance(point);
+            if(distance < -radius)
+                return this.OUTSIDE;
+            else if (distance < radius)
+                result = this.INTERSECT;
+        }
+        return result;
+    }
+    
+}

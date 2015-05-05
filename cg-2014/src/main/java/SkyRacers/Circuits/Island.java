@@ -2,12 +2,13 @@
 package SkyRacers.Circuits;
 
 import SkyRacers.Airplane;
+import SkyRacers.AirplaneCamera;
 import SkyRacers.AirplaneController;
 import SkyRacers.SkyRacers;
+import SkyRacers.core.Camera;
+import SkyRacers.core.FrustumCulling;
 import SkyRacers.core.Map;
 import SkyRacers.core.MeshHandler;
-import SkyRacers.AirplaneCamera;
-import SkyRacers.core.Camera;
 import br.usp.icmc.vicg.gl.core.Light;
 import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
 import br.usp.icmc.vicg.gl.util.Shader;
@@ -59,7 +60,11 @@ public class Island extends Map{
         
         // Set camera fo the player airplane
         Camera cam = new AirplaneCamera(plane);
+        FrustumCulling frusCull = new FrustumCulling();
         SkyRacers.hdl().setCurrentCamera(cam);
+        frusCull.setCamInternals(cam.getAngle(), cam.getAspect(), cam.getNearDistance(), cam.getFarDistance());
+        frusCull.setCamDef(cam.GetPosition(), cam.getLookat(), cam.getUp());
+        SkyRacers.hdl().setFrusCull(frusCull);
         
     }
     
