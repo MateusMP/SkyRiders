@@ -40,7 +40,7 @@ public class AirplaneCamera implements Camera {
         viewMatrix.loadIdentity();
         viewMatrix.lookAt(position.x, position.y, position.z,
                         lookat.x, lookat.y, lookat.z,
-                        0,1,0);
+                        up.x,up.y,up.z);
                        //following.top.x/1.2f, following.top.y*1.6f, following.top.z/1.2f); 
         viewMatrix.bind();
     }

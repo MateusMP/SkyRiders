@@ -13,12 +13,12 @@ public class FrustumCulling {
     private static final int FAR = 5;
     
     public static final int OUTSIDE = 0;
-    public static final int INTERSECT = 0;
-    public static final int INSIDE = 0;
+    public static final int INTERSECT = 1;
+    public static final int INSIDE = 2;
     
     public static final float ANG2RAD = (float) (3.1415926536/180.0);
     
-    public ArrayList<Plane> planes = new ArrayList<Plane>(6);
+    public ArrayList<Plane> planes = new ArrayList<>(6);
     
     public Vector3 nearTopLeft, nearTopRight, nearBottomLeft, nearBottomRight;
     public Vector3 farTopLeft, farTopRight, farBottomLeft, farBottomRight;
@@ -30,7 +30,7 @@ public class FrustumCulling {
     {
         for(int i = 0; i < 6; i++)
         {
-            planes.add(new Plane());
+            this.planes.add(new Plane());
         }
     }
     
@@ -43,19 +43,31 @@ public class FrustumCulling {
         this.nearDistance = nearDist;
         this.farDistance = farDist;
         
-        this.tang = (float)Math.tan(this.ANG2RAD * angle * 0.5);
-        this.nearHeight = nearDist * this.tang;
+        this.tang = (float)Math.tan(FrustumCulling.ANG2RAD * angle * 0.5);
+        this.nearHeight = this.nearDistance * this.tang;
         this.nearWidth = this.nearHeight * this.aspect;
         this.farHeight = this.farDistance * this.tang;
         this.farWidth = this.farHeight * this.aspect;
+        
+        /*
+        System.out.println("aspect: "+this.aspect);
+        System.out.println("angle: "+this.angle);
+        System.out.println("nearD: "+this.nearDistance);
+        System.out.println("farD: "+this.farDistance);
+        System.out.println("tang: "+this.tang);
+        System.out.println("nearHeight: "+this.nearHeight);
+        System.out.println("nearWidth: "+this.nearWidth);
+        System.out.println("farHeight: "+this.farHeight);
+        System.out.println("farWidth: "+this.farWidth);
+        */
     }
     
     //Receives three vectors, the position of the camera, a point where the camera is pointing
     //And the up vector
     public void setCamDef(Vector3 position, Vector3 looking, Vector3 up)
     {
-        Vector3 direction, nearCenter, farCenter, xAxis, yAxis, zAxis;
-        Vector3 normalX, normalY, normalZ;
+        Vector3 nearCenter, farCenter, xAxis, yAxis, zAxis;
+        Vector3 normalX, normalZ;
         //Compute the Z axis of camera, points in the opposite direction from the looking direction
         zAxis = position.sub(looking);
         normalZ = zAxis.normalize();
@@ -102,12 +114,12 @@ public class FrustumCulling {
         // compute the six planes
 	// the function set3Points assumes that the points
 	// are given in counter clockwise order
-	this.planes.get(this.TOP).createPlane3Points(this.nearTopRight, this.nearTopLeft, this.farTopLeft);
-        this.planes.get(this.BOT).createPlane3Points(this.nearBottomLeft, this.nearBottomRight, this.farBottomRight);
-        this.planes.get(this.LEFT).createPlane3Points(this.nearTopLeft, this.nearBottomLeft, this.farBottomLeft);
-        this.planes.get(this.RIGHT).createPlane3Points(this.nearBottomRight, this.nearTopRight, this.farBottomRight);
-        this.planes.get(this.NEAR).createPlane3Points(this.nearTopLeft, this.nearTopRight, this.nearBottomRight);
-        this.planes.get(this.FAR).createPlane3Points(this.farTopRight, this.farTopLeft, this.farBottomLeft);
+	this.planes.get(FrustumCulling.TOP).createPlane3Points(this.nearTopRight, this.nearTopLeft, this.farTopLeft);
+        this.planes.get(FrustumCulling.BOT).createPlane3Points(this.nearBottomLeft, this.nearBottomRight, this.farBottomRight);
+        this.planes.get(FrustumCulling.LEFT).createPlane3Points(this.nearTopLeft, this.nearBottomLeft, this.farBottomLeft);
+        this.planes.get(FrustumCulling.RIGHT).createPlane3Points(this.nearBottomRight, this.nearTopRight, this.farBottomRight);
+        this.planes.get(FrustumCulling.NEAR).createPlane3Points(this.nearTopLeft, this.nearTopRight, this.nearBottomRight);
+        this.planes.get(FrustumCulling.FAR).createPlane3Points(this.farTopRight, this.farTopLeft, this.farBottomLeft);
         
         /*
         pl[TOP].set3Points(ntr,ntl,ftl);
@@ -121,11 +133,12 @@ public class FrustumCulling {
     
     public int pointInFrustum(Vector3 point)
     {
-        int result = this.INSIDE;
+        int result = FrustumCulling.INSIDE;
         for(int i = 0; i < 6; i++)
         {
+            System.out.println("i: "+i+" dist: "+ this.planes.get(i).distance(point));
             if(this.planes.get(i).distance(point) < 0)
-                return this.OUTSIDE;
+                return FrustumCulling.OUTSIDE;
         }
         return result;
     }
@@ -133,14 +146,14 @@ public class FrustumCulling {
     public int sphereInFrustum(Vector3 point, float radius)
     {
         float distance;
-        int result = this.INSIDE;
+        int result = FrustumCulling.INSIDE;
         for(int  i = 0; i < 6; i++)
         {
             distance = this.planes.get(i).distance(point);
             if(distance < -radius)
-                return this.OUTSIDE;
+                return FrustumCulling.OUTSIDE;
             else if (distance < radius)
-                result = this.INTERSECT;
+                result = FrustumCulling.INTERSECT;
         }
         return result;
     }

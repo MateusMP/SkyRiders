@@ -1,5 +1,7 @@
 package SkyRacers;
 
+import MathClasses.Plane;
+import MathClasses.Vector3;
 import SkyRacers.Circuits.Island;
 import SkyRacers.core.Camera;
 import SkyRacers.core.FrustumCulling;
@@ -18,6 +20,7 @@ import java.awt.Frame;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.opengl.GL;
@@ -167,7 +170,7 @@ public class SkyRacers implements GLEventListener {
     {
         // Recupera o pipeline
         GL3 gl = drawable.getGL().getGL3();
-
+        ArrayList<Plane> planes = new ArrayList<>();
         // Limpa o frame buffer com a cor definida
         gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
         gl.glClearColor(0.9f, 0.9f, 1, 1);
