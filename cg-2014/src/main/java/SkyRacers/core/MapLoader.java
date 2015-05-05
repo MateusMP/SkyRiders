@@ -39,6 +39,17 @@ public class MapLoader
             
             return -1;
         }
+        
+        public VirtualData GetFirstOf(VirtualData.DATA_TYPE t)
+        {
+            for (int i = 0; i < vdata.size(); ++i)
+            {
+                if (vdata.get(i).type == t)
+                    return vdata.get(i);
+            }
+            
+            return null;
+        }
     }
 
     public static Map LoadMap(String name) throws FileNotFoundException, Exception
@@ -84,7 +95,7 @@ public class MapLoader
         switch (obj.name)
         {
             case "StartRace":
-                // TODO
+                m.startpoint = (Transform) obj.GetFirstOf(VirtualData.DATA_TYPE.TRANSFORM).data;
                 return true;
         }
         

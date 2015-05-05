@@ -5,6 +5,7 @@
  */
 package SkyRacers;
 
+import MathClasses.Transform;
 import SkyRacers.core.GameObject;
 import MathClasses.Vector3;
 import static SkyRacers.SkyRacers.modelMatrix;
@@ -28,8 +29,11 @@ public class Airplane extends GameObject {
     float brakespeed;
     Vector3 direction;  // forward direction
     Vector3 top;
+    Vector3 initialRot;
+    
     final Vector3 UP = new Vector3(0,1,0);
-    final Vector3 FORWARD = new Vector3(0,0,1);
+    final Vector3 FORWARD = new Vector3(0,0,-1);
+    final Vector3 GRAVITY = new Vector3(0, -0.03f, 0);
     
     float LRrotationTarget;
     float LRrotationCurrent;
@@ -42,9 +46,11 @@ public class Airplane extends GameObject {
     final float MAX_LR = 70; // Direcao horizontal
     final float MAX_SPEED = 6;
     
-    public Airplane(JWavefrontObject mesh)
+    public Airplane(Transform t, JWavefrontObject mesh)
     {
-        super(new Vector3(0,50,0), mesh);
+        super(t, mesh);
+        
+        initialRot = t.rotation.clone();
         
         cmd_up = false;
         cmd_down = false;
@@ -55,7 +61,7 @@ public class Airplane extends GameObject {
         
         accel = 0.005f;
         speed = 0.0f;
-        brakespeed = 0.002f;
+        brakespeed = 0.008f;
         velocity = new Vector3();
         
         LRrotationTarget = 0.0f;
@@ -66,8 +72,6 @@ public class Airplane extends GameObject {
         
         direction = FORWARD;
         roationXZ = 0;
-        
-        transform.scale.x = transform.scale.y = transform.scale.z = 1.0f;
     }
     
     public void CommandUP(boolean pressed){
@@ -175,21 +179,21 @@ public class Airplane extends GameObject {
         mx.loadIdentity();
         
         // Visual
-        transform.rotation.x =(float)UDrotationCurrent; // pitch
-        transform.rotation.y = (float)roationXZ; // yaw
-        transform.rotation.z = (float)LRrotationCurrent*1.2f; // roll
+        transform.rotation.x = (float)UDrotationCurrent     +initialRot.x; // pitch
+        transform.rotation.y = (float)roationXZ             +initialRot.y; // yaw
+        transform.rotation.z = (float)LRrotationCurrent*1.2f+initialRot.z; // roll
         
         // Calcular rotacao para movimento
         mx.rotate(-LRrotationCurrent, 0, 0, 1.0f);
-        mx.rotate(-transform.rotation.x, 1.0f, 0, 0);
-        mx.rotate(-transform.rotation.y, 0, 1.0f, 0);
+        mx.rotate(UDrotationCurrent, 1.0f, 0, 0);
+        mx.rotate(-roationXZ, 0, 1.0f, 0);
         direction = mx.Mult( FORWARD );
         top = mx.Mult( UP );
         
         float vy = velocity.y;
-        velocity = direction.mul(speed/10.0f).add( new Vector3(0, -0.016f, 0) );
+        velocity = direction.mul(speed/2.0f).add( GRAVITY );
         if (vy < 0){
-            velocity.y += vy/1.5;
+            velocity.y += vy/1.3;
         }
         
 //        System.out.println(speed + " - " + velocity);

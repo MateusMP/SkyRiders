@@ -71,10 +71,15 @@ public static class GameMapDump
 
     private static void DumpTransform(StreamWriter writer, string indent, Transform t)
     {
-        if (!t) return;
+		if (!t) return;
+		Vector3 position = t.position;
+		position.z = -position.z;
+		Quaternion rotation = t.rotation;
+		rotation *= Quaternion.Euler(0, 180, 0); // Add 180 deg to Y rotation
+
         writer.WriteLine("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9}", indent,
-                         t.position.x, t.position.y, t.position.z,
-                         t.rotation.eulerAngles.x, t.rotation.eulerAngles.y, t.rotation.eulerAngles.z,
+                         position.x, position.y, position.z,
+                         rotation.eulerAngles.x, rotation.eulerAngles.y, rotation.eulerAngles.z,
                          t.lossyScale.x, t.lossyScale.y, t.lossyScale.z);
     }
 }

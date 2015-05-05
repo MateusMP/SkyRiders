@@ -6,10 +6,7 @@ import SkyRacers.AirplaneController;
 import SkyRacers.SkyRacers;
 import SkyRacers.core.Map;
 import SkyRacers.core.MeshHandler;
-import SkyRacers.AirplaneCamera;
-import SkyRacers.core.Camera;
 import br.usp.icmc.vicg.gl.core.Light;
-import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
 import br.usp.icmc.vicg.gl.util.Shader;
 import javax.media.opengl.GL3;
 
@@ -25,9 +22,7 @@ public class Island extends Map{
     Light light;
     //
     float x, y;
-    
-    AirplaneController controller;
-    
+        
     public Island(GL3 gl, Shader shader)
     {
         super();
@@ -49,17 +44,6 @@ public class Island extends Map{
         
         meshIsland = MeshHandler.hdl().LoadMesh("./data/graphics/island.obj");
         addObject(new GameObject(new Vector3(), new Vector3(150,150,150), meshIsland));*/
-        
-        // Create player airplane and define a controller for it
-        Airplane plane = new Airplane(MeshHandler.hdl().LoadMesh("./Assets/graphics/cartoonAriplane.obj"));
-        controller = new AirplaneController(plane);
-        SkyRacers.inputHandler.AddHandler(controller);
-        addObject(plane);
-        
-        
-        // Set camera fo the player airplane
-        Camera cam = new AirplaneCamera(plane);
-        SkyRacers.hdl().setCurrentCamera(cam);
         
     }
     
@@ -85,7 +69,6 @@ public class Island extends Map{
     
     public void dispose()
     {
-        SkyRacers.inputHandler.RemoveHandler(controller);
         // meshPalmTree1.dispose();
         super.dispose();
     }

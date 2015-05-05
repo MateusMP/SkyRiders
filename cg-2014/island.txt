@@ -1,103 +1,113 @@
-+ Rocks_02_1  !
-  + Rocks_02 m t !
-     Assets/graphics/Rocks_02.obj
-     -9 -21 -360 0 0 0 1 1 1
-+ Rocks_03_8  !
-  + Rocks_03 m t !
-     Assets/graphics/Rocks_03.obj
-     -34 -26 -24 8.14222E-13 180 270 0.9999999 0.9999999 1
-+ Rocks_03_2  !
-  + Rocks_03 m t !
-     Assets/graphics/Rocks_03.obj
-     -152 0 207 0 172.445 0 1 1 1
-+ Rocks_03_5  !
-  + Rocks_03 m t !
-     Assets/graphics/Rocks_03.obj
-     138.5 0 -60.3 0 15.94429 0 1 1 1
-+ Rocks_03_3  !
-  + Rocks_03 m t !
-     Assets/graphics/Rocks_03.obj
-     -127 0 -203 0 180 0 1 1 1
-+ Rocks_03_7  !
-  + Rocks_03 m t !
-     Assets/graphics/Rocks_03.obj
-     -34 -26 192 8.14222E-13 180 270 0.9999999 0.9999999 1
-+ Rocks_03_6  !
-  + Rocks_03 m t !
-     Assets/graphics/Rocks_03.obj
-     189 0 134 0 12.41672 0 1 1 1
-+ Rocks_03_4  !
-  + Rocks_03 m t !
-     Assets/graphics/Rocks_03.obj
-     130.2 0 -250.8 0 342.5189 0 1 1 1
-+ Rocks_03_9  !
-  + Rocks_03 m t !
-     Assets/graphics/Rocks_03.obj
-     -34 -26 -237 8.14222E-13 180 270 0.9999999 0.9999999 1
-+ Rocks_02_2  !
-  + Rocks_02 m t !
-     Assets/graphics/Rocks_02.obj
-     -295.7617 62.6732 242.3215 359.1589 356.9857 15.3232 0.9999999 1 1
-+ Rock_03_1  !
-  + Rock_03 m t !
-     Assets/graphics/Rock_03.obj
-     -132.8 25 361.3 0 286.706 0 1 1 1
-+ Rocks_02_3  !
-  + Rocks_02 m t !
-     Assets/graphics/Rocks_02.obj
-     -189.4 62.9 209.3 -1.017778E-13 180 8.864638 1 1 1
-+ Rocks_03_14  !
-  + Rocks_03 m t !
-     Assets/graphics/Rocks_03.obj
-     -162 0 -399 0 203.748 0 1 1 1
-+ Rocks_03_13  !
-  + Rocks_03 m t !
-     Assets/graphics/Rocks_03.obj
-     -350.4 0 -420.8 0 148.0935 0 1.000001 1 1.000001
-+ Rocks_03_12  !
-  + Rocks_03 m t !
-     Assets/graphics/Rocks_03.obj
-     -414.6 0 0 0 180 0 1 1 1
 + Rocks_03_15  !
   + Rocks_03 m t !
      Assets/graphics/Rocks_03.obj
-     195.3 0 342 0 350.0858 0 1 1 1
-+ Rocks_02_5  !
-  + Rocks_02 m t !
-     Assets/graphics/Rocks_02.obj
-     -156.5134 -27.49489 450.4048 355.4098 329.0177 352.4082 1.307279 1.307279 1.307279
-+ cartoonAriplane  !
-  + Cube.001_Cube.002 m t !
-     Assets/graphics/cartoonAriplane.obj
-     -32 41 -296 0 0 0 1 1 1
-  + Sphere_Sphere.001 m t !
-     Assets/graphics/cartoonAriplane.obj
-     -32 41 -296 0 0 0 1 1 1
+     195.3 0 -342 0 170.0858 0 1 1 1
 + Rocks_02_4  !
   + Rocks_02 m t !
      Assets/graphics/Rocks_02.obj
-     151.9 -26.7 488.9 0 230.7815 0 1 1 1
-+ Rocks_03_11  !
+     151.9 -26.7 -488.9 0 50.78151 0 1 1 1
++ Rocks_02_1  !
+  + Rocks_02 m t !
+     Assets/graphics/Rocks_02.obj
+     -9 -21 360 0 180 0 1 1 1
++ Rocks_03_8  !
   + Rocks_03 m t !
      Assets/graphics/Rocks_03.obj
-     -379.3 0 188.6 0 196.9237 0 1 1 1
-+ Rocks_03_10  !
-  + Rocks_03 m t !
-     Assets/graphics/Rocks_03.obj
-     -411.6 0 -213 0 180 0 1 1 1
-+ Rock_03_2  !
-  + Rock_03 m t !
-     Assets/graphics/Rock_03.obj
-     -55.8 25 404.6 0 347.803 0 1 1 1
-+ Rocks_03_17  !
-  + Rocks_03 m t !
-     Assets/graphics/Rocks_03.obj
-     -52.2 19.1 310.2 0 205.7776 0 1 1 1
+     -34 -26 24 -5.008957E-06 1.866933E-05 90.00001 0.9999999 0.9999999 1
 + Rocks_03_16  !
   + Rocks_03 m t !
      Assets/graphics/Rocks_03.obj
-     -29 0 -426 0 329.1909 0 1 1 1
+     -29 0 426 0 149.1909 0 1 1 1
++ Rocks_03_2  !
+  + Rocks_03 m t !
+     Assets/graphics/Rocks_03.obj
+     -152 0 -207 0 352.4451 0 1 1 1
++ Rocks_03_17  !
+  + Rocks_03 m t !
+     Assets/graphics/Rocks_03.obj
+     -52.2 19.1 -310.2 0 25.77762 0 1 1 1
++ Rock_03_1  !
+  + Rock_03 m t !
+     Assets/graphics/Rock_03.obj
+     -132.8 25 -361.3 0 106.706 0 1 1 1
++ Rocks_03_5  !
+  + Rocks_03 m t !
+     Assets/graphics/Rocks_03.obj
+     138.5 0 60.3 0 195.9443 0 1 1 1
++ Rocks_02_3  !
+  + Rocks_02 m t !
+     Assets/graphics/Rocks_02.obj
+     -215.3332 66.98589 -215.6401 3.879608 25.77366 352.0233 1 1 1
++ Rocks_03_11  !
+  + Rocks_03 m t !
+     Assets/graphics/Rocks_03.obj
+     -379.3 0 -188.6 0 16.92374 0 1 1 1
++ Rocks_03_3  !
+  + Rocks_03 m t !
+     Assets/graphics/Rocks_03.obj
+     -127 0 203 0 2.367829E-05 0 1 1 1
++ Rocks_03_7  !
+  + Rocks_03 m t !
+     Assets/graphics/Rocks_03.obj
+     -34 -26 -192 -5.008957E-06 1.866933E-05 90.00001 0.9999999 0.9999999 1
++ Rocks_03_10  !
+  + Rocks_03 m t !
+     Assets/graphics/Rocks_03.obj
+     -411.6 0 213 0 2.367829E-05 0 1 1 1
++ Rocks_03_6  !
+  + Rocks_03 m t !
+     Assets/graphics/Rocks_03.obj
+     189 0 -134 0 192.4167 0 1 1 1
++ Rocks_03_4  !
+  + Rocks_03 m t !
+     Assets/graphics/Rocks_03.obj
+     130.2 0 250.8 0 162.5188 0 1 1 1
++ cartoonAriplane  !
+  + Cube.001_Cube.002 m t !
+     Assets/graphics/cartoonAriplane.obj
+     -32 41 296 0 180 0 1 1 1
+  + Sphere_Sphere.001 m t !
+     Assets/graphics/cartoonAriplane.obj
+     -32 41 296 0 180 0 1 1 1
+  + StartRace t !
+     -32 41 296 0 180 0 1 1 1
++ Cube.001_Cube.002 m t !
+   Assets/graphics/cartoonAriplane.obj
+   -32 41 296 0 180 0 1 1 1
++ Sphere_Sphere.001 m t !
+   Assets/graphics/cartoonAriplane.obj
+   -32 41 296 0 180 0 1 1 1
++ Rocks_02_2  !
+  + Rocks_02 m t !
+     Assets/graphics/Rocks_02.obj
+     -300.4141 67.58449 -225.3639 357.3361 9.709003 13.5656 1.000001 1 1.000001
++ Rock_03_2  !
+  + Rock_03 m t !
+     Assets/graphics/Rock_03.obj
+     -55.8 25 -404.6 0 167.803 0 1 1 1
++ Rocks_02_5  !
+  + Rocks_02 m t !
+     Assets/graphics/Rocks_02.obj
+     -156.5134 -27.49489 -450.4048 4.5902 149.0177 7.591795 1.307279 1.307279 1.307279
++ Rocks_03_9  !
+  + Rocks_03 m t !
+     Assets/graphics/Rocks_03.obj
+     -34 -26 237 -5.008957E-06 1.866933E-05 90.00001 0.9999999 0.9999999 1
++ Rocks_03_14  !
+  + Rocks_03 m t !
+     Assets/graphics/Rocks_03.obj
+     -162 0 399 0 23.74795 0 1 1 1
++ StartRace t !
+   -32 41 296 0 180 0 1 1 1
++ Rocks_03_13  !
+  + Rocks_03 m t !
+     Assets/graphics/Rocks_03.obj
+     -350.4 0 420.8 0 328.0935 0 1.000001 1 1.000001
 + Rocks_03_1  !
   + Rocks_03 m t !
      Assets/graphics/Rocks_03.obj
-     -130 0 10 0 180 0 1 1 1
+     -130 0 -10 0 2.367829E-05 0 1 1 1
++ Rocks_03_12  !
+  + Rocks_03 m t !
+     Assets/graphics/Rocks_03.obj
+     -414.6 0 0 0 2.367829E-05 0 1 1 1

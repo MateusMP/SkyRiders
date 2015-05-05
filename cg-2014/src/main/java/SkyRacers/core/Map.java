@@ -1,11 +1,14 @@
 package SkyRacers.core;
 
+import MathClasses.Transform;
 import java.util.ArrayList;
 
 public class Map {
     
     protected ArrayList<GameObject> objects;
     protected ArrayList<GameObject> checkpoints;
+    
+    public Transform startpoint = new Transform();
     
     public Map()
     {

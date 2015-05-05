@@ -120,6 +120,26 @@ public class SkyRacers implements GLEventListener {
         try {
             // gameMap = new Island(gl, shader);
             gameMap = MapLoader.LoadMap("island.txt");
+            
+            // Create player airplane and define a controller for it
+            Airplane plane = new Airplane(gameMap.startpoint, MeshHandler.hdl().LoadMesh("./Assets/graphics/cartoonAriplane.obj"));
+            gameMap.addObject(plane);
+            AirplaneController controller = new AirplaneController(plane);
+            inputHandler.AddHandler(controller);
+
+            // Set camera fo the player airplane
+            Camera cam = new AirplaneCamera(plane);
+            setCurrentCamera(cam);   
+        
+            // SkyRacers.inputHandler.RemoveHandler(controller);
+            
+            // STANDARD CAMERA
+            
+            /*StandardCamera stdcam = new StandardCamera(gameMap.startpoint.position);
+            inputHandler.AddHandler(stdcam);
+            setCurrentCamera(stdcam);*/
+            
+            
         } catch (Exception ex) {
             Logger.getLogger(SkyRacers.class.getName()).log(Level.SEVERE, null, ex);
         }
