@@ -73,10 +73,11 @@ public class SkyRacers implements GLEventListener {
         skyracers = this;
         
         // Carrega os shaders
-        shader = ShaderFactory.getInstance(ShaderType.COMPLETE_SHADER);
+        this.shader = ShaderFactory.getInstance(ShaderType.COMPLETE_SHADER);
         // modelMatrix = new Matrix4();
-        projectionMatrix = new Matrix4();
-        viewMatrix = new Matrix4();
+        this.projectionMatrix = new Matrix4();
+        this.viewMatrix = new Matrix4();
+        this.frusCull = new FrustumCulling();
 
     }
     
@@ -89,40 +90,40 @@ public class SkyRacers implements GLEventListener {
     public void init(GLAutoDrawable drawable)
     {
         // Get pipeline
-        gl = drawable.getGL().getGL3();
+        this.gl = drawable.getGL().getGL3();
 
         // Print OpenGL version
-        System.out.println("OpenGL Version: " + gl.glGetString(GL.GL_VERSION) + "\n");
+        System.out.println("OpenGL Version: " + this.gl.glGetString(GL.GL_VERSION) + "\n");
 
-        gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        gl.glClearDepth(1.0f);
+        this.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        this.gl.glClearDepth(1.0f);
 
-        gl.glEnable(GL.GL_DEPTH_TEST);
-        gl.glEnable(GL.GL_CULL_FACE);
+        this.gl.glEnable(GL.GL_DEPTH_TEST);
+        this.gl.glEnable(GL.GL_CULL_FACE);
         //gl.glEnable(GL.GL_BLEND);
         //gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
         //inicializa os shaders
-        shader.init(gl);
+        this.shader.init(this.gl);
 
         //ativa os shaders
-        shader.bind();
+        this.shader.bind();
         
         //inicializa a matrix Model and Projection
-        modelMatrix.init(gl, shader.getUniformLocation("u_modelMatrix"));
-        projectionMatrix.init(gl, shader.getUniformLocation("u_projectionMatrix"));
-        viewMatrix.init(gl, shader.getUniformLocation("u_viewMatrix"));
+        modelMatrix.init(this.gl, this.shader.getUniformLocation("u_modelMatrix"));
+        this.projectionMatrix.init(this.gl, this.shader.getUniformLocation("u_projectionMatrix"));
+        this.viewMatrix.init(this.gl, this.shader.getUniformLocation("u_viewMatrix"));
         
         try{
-            MeshHandler mh = new MeshHandler(gl, shader);
+            MeshHandler mh = new MeshHandler(this.gl, this.shader);
         } catch (Exception ex) {
             Logger.getLogger(SkyRacers.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         try {
             // gameMap = new Island(gl, shader);
-            gameMap = MapLoader.LoadMap("island.txt");
-            gameMap.setFrusCull(frusCull);
+            this.gameMap = MapLoader.LoadMap("island.txt");
+            this.gameMap.setFrusCull(this.frusCull);
         } catch (Exception ex) {
             Logger.getLogger(SkyRacers.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -130,16 +131,16 @@ public class SkyRacers implements GLEventListener {
     
     public void setCurrentCamera(Camera cam)
     {
-        currentCamera = cam;
+        this.currentCamera = cam;
     }
     
     public Camera getCurrentCamera()
     {
-        return currentCamera;
+        return this.currentCamera;
     }
 
     public FrustumCulling getFrusCull() {
-        return frusCull;
+        return this.frusCull;
     }
 
     public void setFrusCull(FrustumCulling frusCull) {
@@ -154,12 +155,12 @@ public class SkyRacers implements GLEventListener {
         update();
         render(drawable);
         
-        frame.setTitle("Sky Racers "+animator.getLastFPS()+" - OBJS: "+renderingObjects+" - Vertices: "+renderingVertex);
+        this.frame.setTitle("Sky Racers "+animator.getLastFPS()+" - OBJS: "+renderingObjects+" - Vertices: "+renderingVertex);
     }
     
     private void update()
     {
-        gameMap.update();
+        this.gameMap.update();
     }
     
     private void render(GLAutoDrawable drawable)
@@ -171,11 +172,14 @@ public class SkyRacers implements GLEventListener {
         gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
         gl.glClearColor(0.9f, 0.9f, 1, 1);
         
-        currentCamera.DefineProjectionMatrix(projectionMatrix, angle, aspect, nearDistance, farDistance);
+        this.currentCamera.DefineProjectionMatrix(this.projectionMatrix, this.angle, this.aspect, this.nearDistance, this.farDistance);
         
-        currentCamera.DefineViewMatrix(viewMatrix);
+        this.currentCamera.DefineViewMatrix(viewMatrix);
+        
+        this.frusCull.setCamInternals(this.currentCamera.getAngle(), this.currentCamera.getAspect(), this.currentCamera.getNearDistance(), this.currentCamera.getFarDistance());
+        this.frusCull.setCamDef(this.currentCamera.GetPosition(), this.currentCamera.getLookat(), this.currentCamera.getUp());
 
-        gameMap.draw();
+        this.gameMap.draw();
 
         // Execute
         gl.glFlush();
@@ -183,13 +187,13 @@ public class SkyRacers implements GLEventListener {
 
     @Override
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-        aspect = width / height;
+        this.aspect = width / height;
         drawable.getGL().getGL3().glViewport(0, 0, width, height);
     }
 
     @Override
     public void dispose(GLAutoDrawable drawable) {
-        gameMap.dispose();
+        this.gameMap.dispose();
     }
 
     public static void main(String[] args) {

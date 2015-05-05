@@ -37,7 +37,7 @@ public class Map {
     public void draw()
     {
         for (GameObject go : this.objects){
-            if(frusCull.pointInFrustum(go.getTransform().position) != frusCull.OUTSIDE)
+            //if(frusCull.pointInFrustum(go.getTransform().position) != frusCull.OUTSIDE)
                 go.draw();
         }
     }

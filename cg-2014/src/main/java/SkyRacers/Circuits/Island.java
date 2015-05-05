@@ -60,11 +60,7 @@ public class Island extends Map{
         
         // Set camera fo the player airplane
         Camera cam = new AirplaneCamera(plane);
-        FrustumCulling frusCull = new FrustumCulling();
         SkyRacers.hdl().setCurrentCamera(cam);
-        frusCull.setCamInternals(cam.getAngle(), cam.getAspect(), cam.getNearDistance(), cam.getFarDistance());
-        frusCull.setCamDef(cam.GetPosition(), cam.getLookat(), cam.getUp());
-        SkyRacers.hdl().setFrusCull(frusCull);
         
     }
     

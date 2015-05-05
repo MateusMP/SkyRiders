@@ -2,6 +2,7 @@ package SkyRacers.core;
 
 import MathClasses.Plane;
 import MathClasses.Vector3;
+import java.util.ArrayList;
 
 public class FrustumCulling {
     private static final int TOP = 0;
@@ -17,13 +18,21 @@ public class FrustumCulling {
     
     public static final float ANG2RAD = (float) (3.1415926536/180.0);
     
-    public Plane[] planes = new Plane[6];
+    public ArrayList<Plane> planes = new ArrayList<Plane>(6);
     
     public Vector3 nearTopLeft, nearTopRight, nearBottomLeft, nearBottomRight;
     public Vector3 farTopLeft, farTopRight, farBottomLeft, farBottomRight;
     
     public float nearDistance, farDistance, aspect, angle, tang;
     public float nearWidth, nearHeight, farWidth, farHeight;
+    
+    public FrustumCulling()
+    {
+        for(int i = 0; i < 6; i++)
+        {
+            planes.add(new Plane());
+        }
+    }
     
     //Stores info from Camera and computes width and height of the near and far planes
     //Also calculates near's and far's width and height
@@ -93,12 +102,12 @@ public class FrustumCulling {
         // compute the six planes
 	// the function set3Points assumes that the points
 	// are given in counter clockwise order
-	this.planes[TOP].createPlane3Points(nearTopRight, nearTopLeft, farTopLeft);
-        this.planes[BOT].createPlane3Points(nearBottomLeft, nearBottomRight, farBottomRight);
-        this.planes[LEFT].createPlane3Points(nearTopLeft, nearBottomLeft, farBottomLeft);
-        this.planes[RIGHT].createPlane3Points(nearBottomRight, nearTopRight, farBottomRight);
-        this.planes[NEAR].createPlane3Points(nearTopLeft, nearTopRight, nearBottomRight);
-        this.planes[FAR].createPlane3Points(farTopRight, farTopLeft, farBottomLeft);
+	this.planes.get(this.TOP).createPlane3Points(this.nearTopRight, this.nearTopLeft, this.farTopLeft);
+        this.planes.get(this.BOT).createPlane3Points(this.nearBottomLeft, this.nearBottomRight, this.farBottomRight);
+        this.planes.get(this.LEFT).createPlane3Points(this.nearTopLeft, this.nearBottomLeft, this.farBottomLeft);
+        this.planes.get(this.RIGHT).createPlane3Points(this.nearBottomRight, this.nearTopRight, this.farBottomRight);
+        this.planes.get(this.NEAR).createPlane3Points(this.nearTopLeft, this.nearTopRight, this.nearBottomRight);
+        this.planes.get(this.FAR).createPlane3Points(this.farTopRight, this.farTopLeft, this.farBottomLeft);
         
         /*
         pl[TOP].set3Points(ntr,ntl,ftl);
@@ -115,7 +124,7 @@ public class FrustumCulling {
         int result = this.INSIDE;
         for(int i = 0; i < 6; i++)
         {
-            if(this.planes[i].distance(point) < 0)
+            if(this.planes.get(i).distance(point) < 0)
                 return this.OUTSIDE;
         }
         return result;
@@ -127,7 +136,7 @@ public class FrustumCulling {
         int result = this.INSIDE;
         for(int  i = 0; i < 6; i++)
         {
-            distance = this.planes[i].distance(point);
+            distance = this.planes.get(i).distance(point);
             if(distance < -radius)
                 return this.OUTSIDE;
             else if (distance < radius)
