@@ -40,7 +40,10 @@ public class Map {
     public void draw()
     {
         for (GameObject go : this.objects){
-            //if(frusCull.pointInFrustum(go.getTransform().position) != frusCull.OUTSIDE)
+        //for(int i = 0; i < 1; i++){
+            //GameObject go = this.objects.get(i);
+            System.out.println("object x y z: "+ go.getTransform().position.x +" "+ go.getTransform().position.y +" "+go.getTransform().position.z);
+            if(frusCull.pointInFrustum(go.getTransform().position) != FrustumCulling.OUTSIDE)
                 go.draw();
         }
     }
