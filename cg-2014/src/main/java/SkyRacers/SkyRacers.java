@@ -141,8 +141,7 @@ public class SkyRacers implements GLEventListener {
         
             // SkyRacers.inputHandler.RemoveHandler(controller);
             
-            // STANDARD CAMERA
-            
+            // STANDARD CAMERA            
             /*StandardCamera stdcam = new StandardCamera(gameMap.startpoint.position);
             inputHandler.AddHandler(stdcam);
             setCurrentCamera(stdcam);*/
@@ -190,13 +189,12 @@ public class SkyRacers implements GLEventListener {
     {
         // Recupera o pipeline
         GL3 gl = drawable.getGL().getGL3();
-        ArrayList<Plane> planes = new ArrayList<>();
+        
         // Limpa o frame buffer com a cor definida
         gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
         gl.glClearColor(0.9f, 0.9f, 1, 1);
         
         this.currentCamera.DefineProjectionMatrix(this.projectionMatrix, this.angle, this.aspect, this.nearDistance, this.farDistance);
-        
         this.currentCamera.DefineViewMatrix(viewMatrix);
         
         this.frusCull.setCamInternals(this.currentCamera.getAngle(), this.currentCamera.getAspect(), this.currentCamera.getNearDistance(), this.currentCamera.getFarDistance());

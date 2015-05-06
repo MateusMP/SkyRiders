@@ -51,8 +51,9 @@ public class MeshHandler {
         if (mesh == null)
         {
             mesh = new JWavefrontObject(new File(name));
+            meshes.put(name, mesh);
             PrepareMesh(mesh);
-        } 
+        }
         
         return mesh;
     }

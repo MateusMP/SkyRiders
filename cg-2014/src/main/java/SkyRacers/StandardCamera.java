@@ -30,6 +30,12 @@ public class StandardCamera extends KeyAdapter implements Camera {
         speed = new Vector3();
         position = pos;
         lookat = new Vector3();
+        up = new Vector3(0, 1, 0);
+        
+        angle = 60;
+        aspect = 16.0f/9.0f;
+        nearDistance = 0.1f;
+        farDistance = 1000;
     }
     
     @Override
