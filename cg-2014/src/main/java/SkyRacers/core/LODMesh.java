@@ -58,4 +58,7 @@ public class LODMesh {
         SkyRacers.AddRenderingObject(w);
     }
    
+    public JWavefrontObject getActiveMesh(){
+        return meshes.get(activeModel);
+    }
 }

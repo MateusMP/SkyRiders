@@ -43,7 +43,8 @@ public class Map {
         //for(int i = 0; i < 1; i++){
             //GameObject go = this.objects.get(i);
             System.out.println("object x y z: "+ go.getTransform().position.x +" "+ go.getTransform().position.y +" "+go.getTransform().position.z);
-            if(frusCull.pointInFrustum(go.getTransform().position) != FrustumCulling.OUTSIDE)
+            //if(frusCull.pointInFrustum(go.getTransform().position) != FrustumCulling.OUTSIDE)
+            if(frusCull.sphereInFrustum(go.getTransform().position, go.getObjectRadius()) != FrustumCulling.OUTSIDE)
                 go.draw();
         }
     }

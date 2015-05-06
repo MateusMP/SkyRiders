@@ -118,5 +118,9 @@ public class Vector3
     {
         return "( " + this.x + " " + this.y + " " + this.z + " )"; 
     }
-	
+    
+    public float calcAbsolDistance(Vector3 point)
+    {
+        return (float)Math.sqrt(Math.pow((this.x - point.x),2) + Math.pow((this.y - point.y),2) + Math.pow((this.z - point.z),2));
+    }
 }
