@@ -23,13 +23,13 @@ public class AirplaneCamera implements Camera {
     @Override
     public void DefineViewMatrix(Matrix4 viewMatrix)
     {
-        Vector3 offset = following.direction.mul(-20.0f);
+        Vector3 offset = following.forward.mul(-20.0f);
         
-        position = following.getTransform().position.add( offset.add(following.top.mul(-(float)following.UDrotationCurrent/25.0f).add( following.top.mul(-Math.abs(following.LRrotationCurrent)/15)) ) );
-        position = position.add(following.top.mul(15));
+        position = following.getTransform().position.add( offset.add(following.up.mul(-(float)following.UDrotationCurrent/20.0f).add( following.up.mul(-Math.abs(following.LRrotationCurrent)/3)) ) );
+        position = position.add(following.up.mul(15));
         
         //this.position = following.getTransform().position.add( direction ).add( following.top.mul(-(float)following.UDrotationCurrent/30.0f) ).add( following.top.mul(10.70f) );
-        this.lookat = following.getTransform().position.add( following.direction.mul(20) );
+        this.lookat = following.getTransform().position.add( following.forward.mul(30) );
         this.up = new Vector3(0, 1, 0);
         
         viewMatrix.loadIdentity();
