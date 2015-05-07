@@ -15,10 +15,10 @@ import br.usp.icmc.vicg.gl.matrix.Matrix4;
 
 public class Airplane extends GameObject {
     
-    final Vector3 UP = new Vector3(0,1,0);
-    final Vector3 FORWARD = new Vector3(0,0,-1);
-    final Vector3 RIGHT = new Vector3(1,0,0);
-    final Vector3 GRAVITY = new Vector3(0, -9.81f, 0);
+    public final Vector3 UP = new Vector3(0,1,0);
+    public final Vector3 FORWARD = new Vector3(0,0,-1);
+    public final Vector3 RIGHT = new Vector3(1,0,0);
+    public final Vector3 GRAVITY = new Vector3(0, -9.81f, 0);
     
     // Comands
     private boolean cmd_up;
@@ -34,16 +34,14 @@ public class Airplane extends GameObject {
     Vector3 friction;
     
     private float current_accel;
-    private final float normal_accel;
-    private final float normal_friction;
+    private final float accelMax_normal;
     private final float air_friction;
-    private final float brake_force;
     
     public Vector3 up;
     public Vector3 forward;
     public Vector3 right;
     
-    private Vector3 initialRot;
+    private final Vector3 initialRot;
     
     // Rotation
     float LRrotationTarget;
@@ -73,11 +71,9 @@ public class Airplane extends GameObject {
         velocity = new Vector3();
         friction = new Vector3();
         
-        normal_accel = 250.0f;
-        current_accel = normal_accel;
-        normal_friction = 0.35f;
-        air_friction = 0.001f;
-        brake_force = 1.0f;
+        accelMax_normal = 100.0f;
+        current_accel = 0;
+        air_friction = 0.03f;
         
         up = UP;
         forward = FORWARD;
@@ -151,45 +147,26 @@ public class Airplane extends GameObject {
             }
         }
         
-        // acceleration = acceleration.add( up.mul(-UDrotationCurrent/2.0f) );
-        
-        // acceleration = acceleration.add( right.mul( -LRrotationCurrent/20.0f ) );
     }
     
     private void handleAcceleration()
     {
-        /*
-        float fabsUD = (float)Math.abs(UDrotationCurrent);
-        
-//        System.out.println("Amount: "+(accel/((fabsUD+MAX_LR*10)/MAX_LR)));
-        if ( cmd_accel ){
-            if ( UDrotationCurrent <= 0){
-                speed += (float) (accel/((fabsUD+MAX_LR)/MAX_LR));
-            } else {
-                speed += (float) (accel*((MAX_LR+UDrotationCurrent/3.0f)/MAX_LR));
-            }
-        } else if (cmd_brake) {
-            speed -= brakespeed;
-        } else {
-            speed -= brakespeed/2;
-        }
-        
-        if (speed > MAX_SPEED)
-            speed = MAX_SPEED;
-        else if (speed < 0)
-            speed = 0;*/
-        
         if (cmd_accel){
-            acceleration = acceleration.add(forward.mul(current_accel));
-            friction = velocity.mul(velocity.norm() * normal_friction);
+            if (current_accel < accelMax_normal)
+                current_accel += 1;            
         } else if (cmd_brake){
-            acceleration = acceleration.add(forward.mul(-brake_force));
-            friction = velocity.mul(velocity.norm() * normal_friction);
+            current_accel /= 1.3;
         } else {
-            friction = velocity.mul(velocity.norm() * air_friction);
+            current_accel /= 1.1;
         }
-        
+               
+        if ( current_accel < 0.01f )
+            current_accel = 0.0f;
+
+        friction = velocity.mul(velocity.norm() * air_friction);
+        acceleration = acceleration.add(forward.mul(current_accel));
     }
+    
     
     @Override
     public void update()
@@ -201,35 +178,27 @@ public class Airplane extends GameObject {
         
         handleRotation();
         handleAcceleration();
-                
+       
+        // Matrix to calculate new rotation
         Matrix4 mx = new Matrix4();
         mx.loadIdentity();
         
-        // Visual
+        // Update transform rotation values
         transform.rotation.x = (float)UDrotationCurrent     +initialRot.x; // pitch
-        transform.rotation.y = (float)roationXZ/3             +initialRot.y; // yaw
-        transform.rotation.z = (float)LRrotationCurrent*1.2f+initialRot.z; // roll
+        transform.rotation.y = (float)roationXZ/2.0f             +initialRot.y; // yaw
+        transform.rotation.z = (float)LRrotationCurrent*1.1f+initialRot.z; // roll
         
-        // Calcular rotacao para movimento
+        // Movement rotation
         mx.rotate(-LRrotationCurrent, 0, 0, 1.0f);
         mx.rotate(UDrotationCurrent, 1.0f, 0, 0);
-        mx.rotate(-roationXZ/3, 0, 1.0f, 0);
+        mx.rotate(-roationXZ/2.0f, 0, 1.0f, 0);
         forward = mx.Mult( FORWARD );
         up = mx.Mult( UP );
         
-        
-        /*
-        float vy = velocity.y;
-        velocity = direction.mul(speed/2.0f).add( GRAVITY );
-        if (vy < 0){
-            velocity.y += vy/1.3;
-        }*/
-        
-//        System.out.println(speed + " - " + velocity);
-        
+        // Consider gravity
         acceleration = acceleration.add( GRAVITY );
         
-        
+        // V = V + (A-F)*h
         velocity = velocity.add(acceleration.sub(friction).mul(h));
         
         System.out.println("A: "+ acceleration + " V: "+ velocity + velocity.norm());
@@ -241,6 +210,7 @@ public class Airplane extends GameObject {
     @Override
     public void draw()
     {
+        // DEBUG LINE
         modelMatrix.loadIdentity();
         modelMatrix.bind();
         Vector3 b = transform.position;
@@ -250,15 +220,7 @@ public class Airplane extends GameObject {
         l.bind();
         l.draw();
         
-//        modelMatrix.loadIdentity();
-//        modelMatrix.bind();
-//        b = getPosition().clone();
-//        e = getPosition().add( top.normalize().mul(1.0f) );
-//        l = new Line( b, e);
-//        l.init(SkyRacers.hdl().gl, SkyRacers.hdl().shader);
-//        l.bind();
-//        l.draw();
-        
+        // Transform Model Matrix
         modelMatrix.loadIdentity();
         modelMatrix.translate(transform.position.x, transform.position.y, transform.position.z);
         modelMatrix.rotate(transform.rotation.y, 0, 1.0f, 0);
