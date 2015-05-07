@@ -73,9 +73,9 @@ public class Airplane extends GameObject {
         velocity = new Vector3();
         friction = new Vector3();
         
-        normal_accel = 90.0f;
+        normal_accel = 250.0f;
         current_accel = normal_accel;
-        normal_friction = 0.3f;
+        normal_friction = 0.35f;
         air_friction = 0.001f;
         brake_force = 1.0f;
         

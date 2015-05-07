@@ -21,7 +21,7 @@ public class AirplaneCamera implements Camera {
     {
         Vector3 offset = following.forward.mul(-20.0f);
         
-        position = following.getTransform().position.add( offset.add(following.up.mul(-(float)following.UDrotationCurrent/20.0f).add( following.up.mul(-Math.abs(following.LRrotationCurrent)/3)) ) );
+        position = following.getTransform().position.add( offset.add(following.up.mul(-(float)following.UDrotationCurrent/15.0f).add( following.up.mul(-Math.abs(following.LRrotationCurrent)/3)) ) );
         position = position.add(following.up.mul(15));
         
         //this.position = following.getTransform().position.add( direction ).add( following.top.mul(-(float)following.UDrotationCurrent/30.0f) ).add( following.top.mul(10.70f) );
