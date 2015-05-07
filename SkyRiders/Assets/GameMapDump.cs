@@ -65,18 +65,19 @@ public static class GameMapDump
     private static void DumpMesh(StreamWriter writer, string indent, MeshFilter f)
     {
         if (!f) return;
-		string path = AssetDatabase.GetAssetPath (f.sharedMesh);
-        writer.WriteLine("{0} {1}", indent, path);
+		string path = AssetDatabase.GetAssetPath(f.sharedMesh);
+        writer.WriteLine("{0} {1} {2}", indent, path, f.sharedMesh.name);
     }
 
     private static void DumpTransform(StreamWriter writer, string indent, Transform t)
     {
 		if (!t) return;
 		Vector3 position = t.position;
-		position.z = -position.z;
+		// position.z = -position.z;
 		Quaternion rotation = t.rotation;
-		rotation *= Quaternion.Euler(0, 180, 0); // Add 180 deg to Y rotation
+        // rotation = new Quaternion(-rotation.x, rotation.y, rotation.z, -rotation.z);
 
+		
         writer.WriteLine("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9}", indent,
                          position.x, position.y, position.z,
                          rotation.eulerAngles.x, rotation.eulerAngles.y, rotation.eulerAngles.z,

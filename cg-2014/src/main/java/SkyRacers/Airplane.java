@@ -16,7 +16,7 @@ import br.usp.icmc.vicg.gl.matrix.Matrix4;
 public class Airplane extends GameObject {
     
     public final Vector3 UP = new Vector3(0,1,0);
-    public final Vector3 FORWARD = new Vector3(0,0,-1);
+    public final Vector3 FORWARD = new Vector3(0,0,1);
     public final Vector3 RIGHT = new Vector3(1,0,0);
     public final Vector3 GRAVITY = new Vector3(0, -9.81f, 0);
     
@@ -190,7 +190,7 @@ public class Airplane extends GameObject {
         
         // Movement rotation
         mx.rotate(-LRrotationCurrent, 0, 0, 1.0f);
-        mx.rotate(UDrotationCurrent, 1.0f, 0, 0);
+        mx.rotate(-UDrotationCurrent, 1.0f, 0, 0);
         mx.rotate(-roationXZ/2.0f, 0, 1.0f, 0);
         forward = mx.Mult( FORWARD );
         up = mx.Mult( UP );

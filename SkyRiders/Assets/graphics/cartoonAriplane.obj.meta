@@ -9,19 +9,44 @@ ModelImporter:
     100002: default
     100004: Cube.001_Cube.002
     100006: Sphere_Sphere.001
+    100008: Helice_Sphere.001
+    100010: Plane_Cube.002
+    100012: Airplane
+    100014: Helice_Helice_dots
+    100016: Helice
     400000: //RootNode
     400002: default
     400004: Cube.001_Cube.002
     400006: Sphere_Sphere.001
+    400008: Helice_Sphere.001
+    400010: Plane_Cube.002
+    400012: Airplane
+    400014: Helice_Helice_dots
+    400016: Helice
     2300000: default
     2300002: Cube.001_Cube.002
     2300004: Sphere_Sphere.001
+    2300006: Helice_Sphere.001
+    2300008: Plane_Cube.002
+    2300010: Airplane
+    2300012: Helice_Helice_dots
+    2300014: Helice
     3300000: default
     3300002: Cube.001_Cube.002
     3300004: Sphere_Sphere.001
+    3300006: Helice_Sphere.001
+    3300008: Plane_Cube.002
+    3300010: Airplane
+    3300012: Helice_Helice_dots
+    3300014: Helice
     4300000: default
     4300002: Cube.001_Cube.002
     4300004: Sphere_Sphere.001
+    4300006: Helice_Sphere.001
+    4300008: Plane_Cube.002
+    4300010: Airplane
+    4300012: Helice_Helice_dots
+    4300014: Helice
   materials:
     importMaterials: 1
     materialName: 0

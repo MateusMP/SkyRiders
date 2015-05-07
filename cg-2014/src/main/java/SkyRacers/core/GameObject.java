@@ -103,12 +103,12 @@ public class GameObject {
         /*
          * calculate model width, height, and depth
          */
-        float w = (maxx - minx)/2;
-        float h = (maxy - miny)/2;
-        float d = (maxz - minz)/2;
+        float w = (maxx - minx);
+        float h = (maxy - miny);
+        float d = (maxz - minz);
         
         Vector3 v = new Vector3(w*transform.scale.x, h*transform.scale.y, d*transform.scale.z);
-        objectRadius = v.norm();
+        objectRadius = v.norm()/2;
         System.out.println("RADIUS: "+objectRadius);
     }
 

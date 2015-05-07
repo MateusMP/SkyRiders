@@ -14,7 +14,10 @@ public class MapLoader
 {
     protected static class VirtualData
     {
-        enum DATA_TYPE{TRANSFORM, MESHFILE};
+        public static enum DATA_TYPE{ TRANSFORM,  // Transform CLASS
+                        MESHFILE    // String[2] -> Filepath, GroupName
+        };
+        
         public DATA_TYPE type;
         public Object data;
     }
@@ -94,7 +97,7 @@ public class MapLoader
         
         switch (obj.name)
         {
-            case "StartRace":
+            case "RaceStart":
                 m.startpoint = (Transform) obj.GetFirstOf(VirtualData.DATA_TYPE.TRANSFORM).data;
                 return true;
         }
@@ -111,8 +114,10 @@ public class MapLoader
         
         if (mesh_id != -1 && transform_id != -1)
         {
+            String[] meshinfo = (String[]) obj.vdata.get(mesh_id).data;
+            
             Transform transform = (Transform) obj.vdata.get(transform_id).data;
-            JWavefrontObject mesh = MeshHandler.hdl().LoadMesh((String) obj.vdata.get(mesh_id).data);
+            JWavefrontObject mesh = MeshHandler.hdl().LoadMesh(meshinfo[0]);
             
             m.addObject( new GameObject(transform, mesh) );
         }
@@ -165,12 +170,16 @@ public class MapLoader
     private static VirtualData LoadMesh(Scanner s)
     {
         VirtualData vd = new VirtualData();
-        String name = s.next();
+        
+        String [] array = new String[2];
+        array[0] = s.next();    // .obj Filepath
+        array[1] = s.nextLine(); // group name
         
         vd.type = VirtualData.DATA_TYPE.MESHFILE;
-        vd.data = name;
+        vd.data = array;
         
         // MeshHandler.hdl().LoadMesh("data/graphics/"+name+".obj")
+        System.out.println("MESH: "+array[0]+" GROUP: "+array[1]);
         
         return vd;
     }
