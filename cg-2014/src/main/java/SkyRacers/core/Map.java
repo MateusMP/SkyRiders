@@ -7,7 +7,7 @@ public class Map {
     
     protected ArrayList<GameObject> objects;
     protected ArrayList<GameObject> checkpoints;
-    protected FrustumCulling frusCull;
+    protected Frustum frusCull;
     
     public Transform startpoint = new Transform();
     
@@ -18,7 +18,7 @@ public class Map {
         this.frusCull = null;
     }
     
-    public Map(FrustumCulling fc)
+    public Map(Frustum fc)
     {
         this.objects = new ArrayList<>();
         this.checkpoints = new ArrayList<>();
@@ -42,9 +42,9 @@ public class Map {
         for (GameObject go : this.objects){
         //for(int i = 0; i < 1; i++){
             //GameObject go = this.objects.get(i);
-            System.out.println("object x y z: "+ go.getTransform().position.x +" "+ go.getTransform().position.y +" "+go.getTransform().position.z);
+            // System.out.println("object x y z: "+ go.getTransform().position.x +" "+ go.getTransform().position.y +" "+go.getTransform().position.z);
             //if(frusCull.pointInFrustum(go.getTransform().position) != FrustumCulling.OUTSIDE)
-            if(frusCull.sphereInFrustum(go.getTransform().position, go.getObjectRadius()) != FrustumCulling.OUTSIDE)
+            if ( frusCull.sphereIntersects(go.getTransform().position.x, go.getTransform().position.y, go.getTransform().position.z, go.getObjectRadius()) != Frustum.Result.Miss )
                 go.draw();
         }
     }
@@ -55,7 +55,7 @@ public class Map {
         checkpoints.clear();
     }
 
-    public void setFrusCull(FrustumCulling frusCull) {
+    public void setFrusCull(Frustum frusCull) {
         this.frusCull = frusCull;
     }
     

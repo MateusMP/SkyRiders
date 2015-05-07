@@ -114,7 +114,7 @@ public class MapLoader
             Transform transform = (Transform) obj.vdata.get(transform_id).data;
             JWavefrontObject mesh = MeshHandler.hdl().LoadMesh((String) obj.vdata.get(mesh_id).data);
             
-            m.addObject( new GameObject(transform, mesh));
+            m.addObject( new GameObject(transform, mesh) );
         }
     }
     

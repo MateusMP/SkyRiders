@@ -1,9 +1,7 @@
 package SkyRacers;
 
-import MathClasses.Plane;
-import MathClasses.Vector3;
-import SkyRacers.Circuits.Island;
 import SkyRacers.core.Camera;
+import SkyRacers.core.Frustum;
 import SkyRacers.core.FrustumCulling;
 import SkyRacers.core.InputHandler;
 import SkyRacers.core.Map;
@@ -20,7 +18,6 @@ import java.awt.Frame;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.opengl.GL;
@@ -40,7 +37,7 @@ public class SkyRacers implements GLEventListener {
     
     private Map gameMap;
     private Camera currentCamera;
-    private FrustumCulling frusCull;
+    private Frustum frusCull;
     
     public static Matrix4 modelMatrix = new Matrix4();
     private final Matrix4 projectionMatrix;
@@ -80,7 +77,7 @@ public class SkyRacers implements GLEventListener {
         // modelMatrix = new Matrix4();
         this.projectionMatrix = new Matrix4();
         this.viewMatrix = new Matrix4();
-        this.frusCull = new FrustumCulling();
+        this.frusCull = new Frustum();
 
     }
     
@@ -113,7 +110,7 @@ public class SkyRacers implements GLEventListener {
         this.shader.bind();
         
         //inicializa a matrix Model and Projection
-        modelMatrix.init(this.gl, this.shader.getUniformLocation("u_modelMatrix"));
+        this.modelMatrix.init(this.gl, this.shader.getUniformLocation("u_modelMatrix"));
         this.projectionMatrix.init(this.gl, this.shader.getUniformLocation("u_projectionMatrix"));
         this.viewMatrix.init(this.gl, this.shader.getUniformLocation("u_viewMatrix"));
         
@@ -161,11 +158,11 @@ public class SkyRacers implements GLEventListener {
         return this.currentCamera;
     }
 
-    public FrustumCulling getFrusCull() {
+    public Frustum getFrusCull() {
         return this.frusCull;
     }
 
-    public void setFrusCull(FrustumCulling frusCull) {
+    public void setFrusCull(Frustum frusCull) {
         this.frusCull = frusCull;
     }
 
@@ -194,11 +191,15 @@ public class SkyRacers implements GLEventListener {
         gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
         gl.glClearColor(0.9f, 0.9f, 1, 1);
         
-        this.currentCamera.DefineProjectionMatrix(this.projectionMatrix, this.angle, this.aspect, this.nearDistance, this.farDistance);
+        // Projection Matrix
+        projectionMatrix.loadIdentity();
+        projectionMatrix.perspective(angle, aspect, nearDistance, farDistance);
+        projectionMatrix.bind();
+
+        // View Matrix
         this.currentCamera.DefineViewMatrix(viewMatrix);
         
-        this.frusCull.setCamInternals(this.currentCamera.getAngle(), this.currentCamera.getAspect(), this.currentCamera.getNearDistance(), this.currentCamera.getFarDistance());
-        this.frusCull.setCamDef(this.currentCamera.GetPosition(), this.currentCamera.getLookat(), this.currentCamera.getUp());
+        this.frusCull.extractFromOGL(projectionMatrix, viewMatrix);
 
         this.gameMap.draw();
 

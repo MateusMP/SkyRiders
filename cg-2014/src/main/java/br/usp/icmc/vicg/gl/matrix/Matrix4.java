@@ -36,6 +36,11 @@ public class Matrix4 {
         gl.glUniformMatrix4fv(handle, 1, false, this.matrix, 0);
     }
 
+    public float[] getMatrix()
+    {
+        return matrix;
+    }
+    
     public final void loadIdentity() {
         this.matrix[0] = 1.0f;
         this.matrix[1] = 0.0f;

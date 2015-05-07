@@ -10,11 +10,7 @@ public class AirplaneCamera implements Camera {
     Vector3 lookat;
     Vector3 up;
     Airplane following;
-    private float angle;
-    private float aspect;
-    private float nearDistance;
-    private float farDistance;
-    
+   
     public AirplaneCamera(Airplane plane)
     {
         following = plane;
@@ -40,37 +36,10 @@ public class AirplaneCamera implements Camera {
         viewMatrix.bind();
     }
     
-    public void DefineProjectionMatrix(Matrix4 projectionMatrix, float angle, float aspect, float nearDistance, float farDistance)
-    {
-        this.angle = angle;
-        this.aspect = aspect;
-        this.nearDistance = nearDistance;
-        this.farDistance = farDistance;
-        projectionMatrix.loadIdentity();
-        projectionMatrix.perspective(angle, aspect, nearDistance, farDistance);
-        projectionMatrix.bind();
-        
-    }
 
     @Override
     public Vector3 GetPosition() {
         return position;
-    }
-    @Override
-    public float getAngle() {
-        return angle;
-    }
-    @Override
-    public float getAspect() {
-        return aspect;
-    }
-    @Override
-    public float getNearDistance() {
-        return nearDistance;
-    }
-    @Override
-    public float getFarDistance() {
-        return farDistance;
     }
     @Override
     public Vector3 getLookat() {

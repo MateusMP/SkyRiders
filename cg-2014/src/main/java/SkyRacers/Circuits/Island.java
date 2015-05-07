@@ -1,14 +1,7 @@
 
 package SkyRacers.Circuits;
 
-import SkyRacers.Airplane;
-import SkyRacers.AirplaneCamera;
-import SkyRacers.AirplaneController;
-import SkyRacers.SkyRacers;
-import SkyRacers.core.Camera;
-import SkyRacers.core.FrustumCulling;
 import SkyRacers.core.Map;
-import SkyRacers.core.MeshHandler;
 import br.usp.icmc.vicg.gl.core.Light;
 import br.usp.icmc.vicg.gl.util.Shader;
 import javax.media.opengl.GL3;

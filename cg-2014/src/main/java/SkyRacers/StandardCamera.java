@@ -17,10 +17,6 @@ public class StandardCamera extends KeyAdapter implements Camera {
     Vector3 lookat;
     Vector3 up;
     Airplane following;
-    private float angle;
-    private float aspect;
-    private float nearDistance;
-    private float farDistance;
     
     Vector3 speed;
     final Vector3 offset = new Vector3(0,0,-10);
@@ -32,10 +28,6 @@ public class StandardCamera extends KeyAdapter implements Camera {
         lookat = new Vector3();
         up = new Vector3(0, 1, 0);
         
-        angle = 60;
-        aspect = 16.0f/9.0f;
-        nearDistance = 0.1f;
-        farDistance = 1000;
     }
     
     @Override
@@ -104,36 +96,11 @@ public class StandardCamera extends KeyAdapter implements Camera {
         
     }
 
-    @Override
-    public void DefineProjectionMatrix(Matrix4 projectionMatrix, float angle, float aspect, float nearDistance, float farDistance) {
-        this.angle = angle;
-        this.aspect = aspect;
-        this.nearDistance = nearDistance;
-        this.farDistance = farDistance;
-        projectionMatrix.loadIdentity();
-        projectionMatrix.perspective(angle, aspect, nearDistance, farDistance);
-        projectionMatrix.bind();
-    }
+   
 
     @Override
     public Vector3 GetPosition() {
         return position;
-    }
-    @Override
-    public float getAngle() {
-        return angle;
-    }
-    @Override
-    public float getAspect() {
-        return aspect;
-    }
-    @Override
-    public float getNearDistance() {
-        return nearDistance;
-    }
-    @Override
-    public float getFarDistance() {
-        return farDistance;
     }
     @Override
     public Vector3 getLookat() {
