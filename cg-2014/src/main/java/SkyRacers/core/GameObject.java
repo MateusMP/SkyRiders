@@ -3,7 +3,6 @@ package SkyRacers.core;
 import MathClasses.Transform;
 import MathClasses.Vector3;
 import static SkyRacers.SkyRacers.modelMatrix;
-import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
 import br.usp.icmc.vicg.gl.jwavefront.Vertex;
 import java.util.ArrayList;
 
@@ -14,15 +13,15 @@ public class GameObject {
     protected float objectRadius;
 
     
-    public GameObject(Transform t, JWavefrontObject model3D)
+    public GameObject(Transform t, MeshRenderer model3D)
     {
         mesh = new LODMesh(model3D);
         transform = t;
-        
+                
         calculateObjectRadius();
     }
     
-    public GameObject(Vector3 pos, JWavefrontObject model3D)
+    public GameObject(Vector3 pos, MeshRenderer model3D)
     {
         mesh = new LODMesh(model3D);
         transform = new Transform();
@@ -34,7 +33,7 @@ public class GameObject {
         calculateObjectRadius();
     }
     
-    public GameObject(Vector3 pos, Vector3 scale, JWavefrontObject model3D)
+    public GameObject(Vector3 pos, Vector3 scale, MeshRenderer model3D)
     {
         mesh = new LODMesh(model3D);
         transform = new Transform();
@@ -65,50 +64,13 @@ public class GameObject {
     }
     
     private void calculateObjectRadius() 
-    {
-        ArrayList<Vertex> vertices = mesh.getActiveMesh().getVertices();
+    {        
+        Vector3 sizes = mesh.getActiveMesh().getSizes();
+        sizes.x *= transform.scale.x;
+        sizes.y *= transform.scale.y;
+        sizes.z *= transform.scale.z;
+        objectRadius = sizes.norm()/2.0f;
         
-        float maxx, minx, maxy, miny, maxz, minz;
-
-        /*
-         * get the max/mins
-         */
-        maxx = minx = vertices.get(1).x;
-        maxy = miny = vertices.get(1).y;
-        maxz = minz = vertices.get(1).z;
-
-        for (int i = 1; i <= vertices.size(); i++) {
-            if (maxx < vertices.get(i).x) {
-              maxx = vertices.get(i).x;
-            }
-            if (minx > vertices.get(i).x) {
-              minx = vertices.get(i).x;
-            }
-
-            if (maxy < vertices.get(i).y) {
-              maxy = vertices.get(i).y;
-            }
-            if (miny > vertices.get(i).y) {
-              miny = vertices.get(i).y;
-            }
-
-            if (maxz < vertices.get(i).z) {
-              maxz = vertices.get(i).z;
-            }
-            if (minz > vertices.get(i).z) {
-              minz = vertices.get(i).z;
-            }
-        }
-
-        /*
-         * calculate model width, height, and depth
-         */
-        float w = (maxx - minx);
-        float h = (maxy - miny);
-        float d = (maxz - minz);
-        
-        Vector3 v = new Vector3(w*transform.scale.x, h*transform.scale.y, d*transform.scale.z);
-        objectRadius = v.norm()/2;
         System.out.println("RADIUS: "+objectRadius);
     }
 

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class LODMesh {
     
-    private final ArrayList<JWavefrontObject> meshes;
+    private final ArrayList<MeshRenderer> meshes;
     private int activeModel;
     
     private static final int LOD_LEVEL_DIST = 1000;    // Every X units, decrease 1 level of detail
@@ -17,9 +17,9 @@ public class LODMesh {
     /**
      * @param lods Modelos de diferentes resolucoes. 0 = melhor.
      */
-    public LODMesh( JWavefrontObject lods[] )
+    public LODMesh( MeshRenderer lods[] )
     {
-        meshes = new ArrayList<JWavefrontObject>();
+        meshes = new ArrayList<MeshRenderer>();
         for (int i = 0; i < lods.length; ++i){
             meshes.add(lods[i]);
         }
@@ -27,9 +27,9 @@ public class LODMesh {
         activeModel = 0;
     }
     
-    public LODMesh( JWavefrontObject lods )
+    public LODMesh( MeshRenderer lods )
     {
-        meshes = new ArrayList<JWavefrontObject>();
+        meshes = new ArrayList<MeshRenderer>();
         meshes.add(lods);
         
         activeModel = 0;
@@ -53,12 +53,12 @@ public class LODMesh {
         if (activeModel < 0)
             return;
         
-        JWavefrontObject w = meshes.get(activeModel);
+        MeshRenderer w = meshes.get(activeModel);
         w.draw();
         SkyRacers.AddRenderingObject(w);
     }
    
-    public JWavefrontObject getActiveMesh(){
+    public MeshRenderer getActiveMesh(){
         return meshes.get(activeModel);
     }
 }

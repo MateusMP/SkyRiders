@@ -19,7 +19,7 @@ public class StandardCamera extends KeyAdapter implements Camera {
     Airplane following;
     
     Vector3 speed;
-    final Vector3 offset = new Vector3(0,0,-10);
+    final Vector3 offset = new Vector3(0,0,10);
     
     public StandardCamera(Vector3 pos)
     {

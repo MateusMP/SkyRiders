@@ -10,6 +10,7 @@ import SkyRacers.core.GameObject;
 import MathClasses.Vector3;
 import static SkyRacers.SkyRacers.modelMatrix;
 import SkyRacers.core.Line;
+import SkyRacers.core.MeshRenderer;
 import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 
@@ -56,7 +57,7 @@ public class Airplane extends GameObject {
     final float MAX_LR = 70; // Direcao horizontal
     final float MAX_SPEED = 6;
     
-    public Airplane(Transform t, JWavefrontObject mesh)
+    public Airplane(Transform t, MeshRenderer mesh)
     {
         super(t, mesh);
         

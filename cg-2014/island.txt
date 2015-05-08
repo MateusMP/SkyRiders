@@ -1,22 +1,14 @@
++ Tree1  !
+  + TreeLeaf1 m t !
+     Assets/graphics/PalmTrees.obj PalmTree_dual_bended_trunk
+     0 0 0 0 0 0 0.5 0.5 0.5
+  + TreeTrunk1 m t !
+     Assets/graphics/PalmTrees.obj PalmTree_dual_bended_leafs_2sided
+     0 0 0 0 0 0 0.5 0.5 0.5
 + Rocks_03_15  !
   + Rocks_03 m t !
      Assets/graphics/Rocks_03.obj Rocks_03
      195.3 0 342 0 350.0858 0 1 1 1
-+ RaceStart m t !
-   Assets/graphics/cartoonAriplane.obj Airplane
-   2.3 60.7 -338.4 0 0 0 1 1 1
-+ Rocks_02_2  !
-  + Rocks_02 m t !
-     Assets/graphics/Rocks_02.obj Rocks_02
-     -295.7617 62.6732 242.3215 0.8144531 356.9784 15.32461 1 1 0.9999999
-+ Rocks_03_9  !
-  + Rocks_03 m t !
-     Assets/graphics/Rocks_03.obj Rocks_03
-     -34 -26 -237 -5.008963E-06 180 270 0.9999999 0.9999999 1
-+ Rock_03_3  !
-  + Rock_03 m t !
-     Assets/graphics/Rock_03.obj Rock_03
-     96.5 0.1 166.4 0 90.00001 0 0.9999999 1 0.9999999
 + Rocks_02_4  !
   + Rocks_02 m t !
      Assets/graphics/Rocks_02.obj Rocks_02
@@ -45,9 +37,6 @@
   + Rock_03 m t !
      Assets/graphics/Rock_03.obj Rock_03
      -139.7 25 369.2 0 86.59441 0 1 1 1
-+ Rock_03 m t !
-   Assets/graphics/Rock_03.obj Rock_03
-   -139.7 25 369.2 0 86.59441 0 1 1 1
 + Rocks_03_5  !
   + Rocks_03 m t !
      Assets/graphics/Rocks_03.obj Rocks_03
@@ -80,27 +69,33 @@
   + Rocks_03 m t !
      Assets/graphics/Rocks_03.obj Rocks_03
      130.2 0 -250.8 0 342.5189 0 1 1 1
++ Rock_03_3  !
+  + Rock_03 m t !
+     Assets/graphics/Rock_03.obj Rock_03
+     96.5 0.1 166.4 0 90.00001 0 0.9999999 1 0.9999999
++ Rocks_02_2  !
+  + Rocks_02 m t !
+     Assets/graphics/Rocks_02.obj Rocks_02
+     -295.7617 62.6732 242.3215 0.8144531 356.9784 15.32461 1 1 0.9999999
 + Rock_03_2  !
   + Rock_03 m t !
      Assets/graphics/Rock_03.obj Rock_03
      -44.10208 25 422.601 0 175.262 0 1 1 1
-+ Rock_03 m t !
-   Assets/graphics/Rock_03.obj Rock_03
-   -44.10208 25 422.601 0 175.262 0 1 1 1
 + Rocks_02_5  !
   + Rocks_02 m t !
      Assets/graphics/Rocks_02.obj Rocks_02
      -143.7278 -21.38596 428.9337 351.1412 329.8706 0.3226192 1.54259 1.542589 1.542589
++ Rocks_03_9  !
+  + Rocks_03 m t !
+     Assets/graphics/Rocks_03.obj Rocks_03
+     -34 -26 -237 -5.008963E-06 180 270 0.9999999 0.9999999 1
++ RaceStart m t !
+   Assets/graphics/cartoonAriplane.obj Airplane
+   2.3 60.7 -338.4 0 0 0 1 1 1
 + Rocks_03_14  !
   + Rocks_03 m t !
      Assets/graphics/Rocks_03.obj Rocks_03
      -162 0 -399 0 203.748 0 1 1 1
-+ Rock_03 m t !
-   Assets/graphics/Rock_03.obj Rock_03
-   96.5 0.1 166.4 0 90.00001 0 0.9999999 1 0.9999999
-+ Rocks_03 m t !
-   Assets/graphics/Rocks_03.obj Rocks_03
-   -34 -26 -237 -5.008963E-06 180 270 0.9999999 0.9999999 1
 + Rocks_03_13  !
   + Rocks_03 m t !
      Assets/graphics/Rocks_03.obj Rocks_03

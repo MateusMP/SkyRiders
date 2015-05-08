@@ -44,7 +44,6 @@ public class JWavefrontObject {
   private ArrayList<Texture> textures;
   private ArrayList<TextureCoord> textures_coord;
   private File pathname;
-  private Group current_group;
   
   public ArrayList<Vertex> getVertices(){
       return vertices;
@@ -81,7 +80,6 @@ public class JWavefrontObject {
     textures = new ArrayList<Texture>();
 
     pathname = file;
-    current_group = null;
   }
 
   public void init(GL3 gl, Shader shader) throws IOException {
@@ -188,6 +186,8 @@ public class JWavefrontObject {
     String token;
     String line = null;
     int id = 0;
+    
+    Group current_group = null;
 
     try {
       in = new BufferedReader(new FileReader(file));
@@ -287,11 +287,12 @@ public class JWavefrontObject {
 
               tok = new StringTokenizer(line, " ");
               tok.nextToken(); //ignores g
-
+              
               if (tok.hasMoreTokens()) {
                 token = tok.nextToken();
+                                
                 current_group = findGroup(token);
-
+               
                 if (current_group == null) {
                   current_group = new Group(token);
                   groups.add(current_group);
@@ -512,7 +513,7 @@ public class JWavefrontObject {
    * @param name Group name.
    * @return Return the first group with the given name.
    */
-  private Group findGroup(String name) {
+  public Group findGroup(String name) {
     for (int i = 0; i < groups.size(); i++) {
       if (groups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
         return groups.get(i);
@@ -714,7 +715,38 @@ public class JWavefrontObject {
     }
   }
 
-  /**
+    public void drawGroup(Group group)
+    {
+        if (vao == null) {
+            create_vao();
+          }
+        
+        if (group.triangles.isEmpty()) {
+            return;
+        }
+
+        if (group.material.texture != null) {
+            gl.glUniform1i(is_texture_handle, 1);
+            gl.glUniform1i(texture_handle, 0);
+            gl.glActiveTexture(GL3.GL_TEXTURE0);
+            group.material.texture.texturedata.bind(gl);
+        } else {
+            gl.glUniform1i(is_texture_handle, 0);
+        }
+
+        if (group.material != null) {
+            material.setAmbientColor(group.material.ambient);
+            material.setDiffuseColor(group.material.diffuse);
+            material.setSpecularColor(group.material.specular);
+            material.setSpecularExponent(group.material.shininess);
+            material.bind();
+        }
+
+        gl.glBindVertexArray(vao[group.vaoid]);
+        gl.glDrawArrays(GL.GL_TRIANGLES, 0, 3 * group.triangles.size());
+    }
+  
+    /**
    * Renders the model to the current OpenGL context using the mode specified.
    *
    * @param gLAutoDrawable The OpenGL context to draw.
@@ -726,36 +758,14 @@ public class JWavefrontObject {
   public void draw() {
     if (vao == null) {
       create_vao();
-    } else {
-      for (int i = 0; i < groups.size(); i++) {
-        Group group = groups.get(i);
-        if (group.triangles.isEmpty()) {
-          continue;
-        }
-
-        if (group.material.texture != null) {
-          gl.glUniform1i(is_texture_handle, 1);
-          gl.glUniform1i(texture_handle, 0);
-          gl.glActiveTexture(GL3.GL_TEXTURE0);
-          group.material.texture.texturedata.bind(gl);
-        } else {
-          gl.glUniform1i(is_texture_handle, 0);
-        }
-
-        if (group.material != null) {
-          material.setAmbientColor(group.material.ambient);
-          material.setDiffuseColor(group.material.diffuse);
-          material.setSpecularColor(group.material.specular);
-          material.setSpecularExponent(group.material.shininess);
-          material.bind();
-        }
-
-        gl.glBindVertexArray(vao[i]);
-        gl.glDrawArrays(GL.GL_TRIANGLES, 0, 3 * group.triangles.size());
-      }
-
-      gl.glBindVertexArray(0);
     }
+    
+    for (int i = 0; i < groups.size(); i++) {
+        Group group = groups.get(i);
+        drawGroup(group);
+    }
+    gl.glBindVertexArray(0);
+    
   }
 
   public void dispose() {
@@ -776,6 +786,7 @@ public class JWavefrontObject {
 
     for (int i = 0; i < groups.size(); i++) {
       Group group = groups.get(i);
+      group.vaoid = i;
       if (group.triangles.isEmpty()) {
         continue;
       }

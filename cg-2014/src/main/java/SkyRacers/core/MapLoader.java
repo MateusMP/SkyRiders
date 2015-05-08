@@ -118,8 +118,9 @@ public class MapLoader
             
             Transform transform = (Transform) obj.vdata.get(transform_id).data;
             JWavefrontObject mesh = MeshHandler.hdl().LoadMesh(meshinfo[0]);
+            ObjMesh om = new ObjMesh(mesh, meshinfo[1]);
             
-            m.addObject( new GameObject(transform, mesh) );
+            m.addObject( new GameObject(transform, om) );
         }
     }
     
@@ -173,13 +174,13 @@ public class MapLoader
         
         String [] array = new String[2];
         array[0] = s.next();    // .obj Filepath
-        array[1] = s.nextLine(); // group name
+        array[1] = s.next(); // group name
         
         vd.type = VirtualData.DATA_TYPE.MESHFILE;
         vd.data = array;
         
         // MeshHandler.hdl().LoadMesh("data/graphics/"+name+".obj")
-        System.out.println("MESH: "+array[0]+" GROUP: "+array[1]);
+        System.out.println("MESH: "+array[0]+" GROUP: '"+array[1]+"'");
         
         return vd;
     }

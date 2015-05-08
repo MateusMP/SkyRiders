@@ -7,6 +7,8 @@ import SkyRacers.core.InputHandler;
 import SkyRacers.core.Map;
 import SkyRacers.core.MapLoader;
 import SkyRacers.core.MeshHandler;
+import SkyRacers.core.MeshRenderer;
+import SkyRacers.core.ObjMesh;
 import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import br.usp.icmc.vicg.gl.util.Shader;
@@ -55,7 +57,7 @@ public class SkyRacers implements GLEventListener {
     // ---- PERFORMANCE STATISTICS ----
     private static int renderingObjects;
     private static int renderingVertex;
-    public static void AddRenderingObject(JWavefrontObject mesh)
+    public static void AddRenderingObject(MeshRenderer mesh)
     {
         renderingObjects++;
         renderingVertex += mesh.getVertices().size();
@@ -127,14 +129,15 @@ public class SkyRacers implements GLEventListener {
             gameMap.setFrusCull(this.frusCull);
             
             // Create player airplane and define a controller for it
-            Airplane plane = new Airplane(gameMap.startpoint, MeshHandler.hdl().LoadMesh("./Assets/graphics/cartoonAriplane.obj"));
+            ObjMesh om = new ObjMesh(MeshHandler.hdl().LoadMesh("./Assets/graphics/cartoonAriplane.obj"), "");
+            Airplane plane = new Airplane(gameMap.startpoint, om);
             gameMap.addObject(plane);
             AirplaneController controller = new AirplaneController(plane);
             inputHandler.AddHandler(controller);
 
             // Set camera fo the player airplane
             Camera cam = new AirplaneCamera(plane);
-            setCurrentCamera(cam);   
+            setCurrentCamera(cam);
         
             // SkyRacers.inputHandler.RemoveHandler(controller);
             
