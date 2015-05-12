@@ -2,14 +2,12 @@ package SkyRacers;
 
 import SkyRacers.core.Camera;
 import SkyRacers.core.Frustum;
-import SkyRacers.core.FrustumCulling;
 import SkyRacers.core.InputHandler;
 import SkyRacers.core.Map;
 import SkyRacers.core.MapLoader;
 import SkyRacers.core.MeshHandler;
 import SkyRacers.core.MeshRenderer;
 import SkyRacers.core.ObjMesh;
-import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import br.usp.icmc.vicg.gl.util.Shader;
 import br.usp.icmc.vicg.gl.util.ShaderFactory;
@@ -97,14 +95,10 @@ public class SkyRacers implements GLEventListener {
         // Print OpenGL version
         System.out.println("OpenGL Version: " + this.gl.glGetString(GL.GL_VERSION) + "\n");
 
-        this.gl.glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        this.gl.glClearDepth(1.0f);
-
         this.gl.glEnable(GL.GL_DEPTH_TEST);
-        this.gl.glEnable(GL.GL_CULL_FACE);
-        //gl.glEnable(GL.GL_BLEND);
-        //gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
-
+        // this.gl.glEnable(GL.GL_CULL_FACE);
+        // this.gl.glCullFace(GL.GL_BACK);
+        
         //inicializa os shaders
         this.shader.init(this.gl);
 
@@ -200,11 +194,11 @@ public class SkyRacers implements GLEventListener {
         projectionMatrix.bind();
 
         // View Matrix
-        this.currentCamera.DefineViewMatrix(viewMatrix);
+        currentCamera.DefineViewMatrix(viewMatrix);
         
-        this.frusCull.extractFromOGL(projectionMatrix, viewMatrix);
+        frusCull.extractFromOGL(projectionMatrix, viewMatrix);
 
-        this.gameMap.draw();
+        gameMap.draw();
 
         // Execute
         gl.glFlush();
@@ -229,6 +223,7 @@ public class SkyRacers implements GLEventListener {
         GLCapabilities glcaps = new GLCapabilities(profile);
         glcaps.setDoubleBuffered(true);
         glcaps.setHardwareAccelerated(true);
+        glcaps.setDepthBits(20);
 
         // Create canvas
         glCanvas = new GLCanvas(glcaps);

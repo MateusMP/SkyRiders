@@ -1,7 +1,12 @@
 package SkyRacers.core;
 
 import MathClasses.Transform;
+import SkyRacers.SkyRacers;
+import br.usp.icmc.vicg.gl.model.Sphere;
 import java.util.ArrayList;
+import javax.media.opengl.GL;
+import javax.media.opengl.GL2;
+import static javax.media.opengl.GLProfile.GL3;
 
 public class Map {
     
@@ -36,16 +41,45 @@ public class Map {
             go.update();
         }
     }
-    
+
     public void draw()
     {
-        for (GameObject go : this.objects){
-        //for(int i = 0; i < 1; i++){
-            //GameObject go = this.objects.get(i);
-            // System.out.println("object x y z: "+ go.getTransform().position.x +" "+ go.getTransform().position.y +" "+go.getTransform().position.z);
-            //if(frusCull.pointInFrustum(go.getTransform().position) != FrustumCulling.OUTSIDE)
+        ArrayList<GameObject> postponed = new ArrayList<>();
+        
+        SkyRacers.hdl().gl.glEnable(GL2.GL_CULL_FACE);
+        
+        // SOLIDS
+        for (GameObject go : this.objects)
+        {
             if ( frusCull.sphereIntersects(go.getTransform().position.x, go.getTransform().position.y, go.getTransform().position.z, go.getObjectRadius()) != Frustum.Result.Miss )
-                go.draw();
+            {
+                if ( go.name.contains("transparent") )
+                {
+                    postponed.add(go);
+                }
+                else
+                {
+                    go.draw();
+                }
+            }
+        }
+
+        // TRANSPARENTS
+        SkyRacers.hdl().gl.glDisable(GL2.GL_CULL_FACE);
+        for (GameObject go : postponed)
+        {
+            // DEBUG
+//            float radius = go.getObjectRadius();
+//            Transform t = go.getTransform();
+//            Sphere sp = new Sphere(radius);
+//            sp.init(SkyRacers.hdl().gl, SkyRacers.hdl().shader);
+//            sp.bind();
+//            SkyRacers.modelMatrix.loadIdentity();
+//            SkyRacers.modelMatrix.translate(t.position.x, t.position.y, t.position.z);
+//            sp.draw();
+            //
+            
+            go.draw();
         }
     }
     

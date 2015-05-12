@@ -41,10 +41,20 @@ void main(void)
 
 	float nDotL = max(dot(direction, normal), 0.0);
 
+	float alpha = 1.0;
+	
+	vec4 textureColor = texture(u_texture, v_texcoord);
+	if (textureColor.a < 0.5)
+		discard;
+	
 	if (nDotL > 0.0)
 	{
         if(u_is_texture) {
-            color += texture(u_texture, v_texcoord) * nDotL;
+			// vec4 textureColor = texture(u_texture, v_texcoord);
+            color += textureColor * nDotL;
+			if (textureColor.a < 0.5)
+				discard;
+			alpha = textureColor.a;
         } else {
             color += u_light.diffuseColor * u_material.diffuseColor * nDotL;
         }
@@ -64,6 +74,8 @@ void main(void)
 
 		color += u_light.specularColor * u_material.specularColor * specularIntensity;
 	}
-
+	
+	color.a = alpha;
+	
 	fragColor = color;
 }

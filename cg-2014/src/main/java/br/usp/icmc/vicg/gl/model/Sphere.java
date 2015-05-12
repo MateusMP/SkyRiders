@@ -22,7 +22,20 @@ public class Sphere extends SimpleModel {
         this.radius = 1;
         this.lats = 40;
         this.longs = 40;
+        
+        create_vertex();
+    }
+    
+    public Sphere(float radius) {
+        this.radius = radius;
+        this.lats = 40;
+        this.longs = 40;
 
+        create_vertex();
+    }
+    
+    private void create_vertex()
+    {
         vertex_buffer = new float[(lats + 1) * (longs + 1) * 6];
 
         int i, j, k;

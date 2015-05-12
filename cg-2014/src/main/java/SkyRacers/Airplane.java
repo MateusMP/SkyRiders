@@ -202,7 +202,7 @@ public class Airplane extends GameObject {
         // V = V + (A-F)*h
         velocity = velocity.add(acceleration.sub(friction).mul(h));
         
-        System.out.println("A: "+ acceleration + " V: "+ velocity + velocity.norm());
+        //System.out.println("A: "+ acceleration + " V: "+ velocity + velocity.norm());
         
         // Move
         transform.position = transform.position.add(velocity.mul(h));

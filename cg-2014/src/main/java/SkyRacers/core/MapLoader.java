@@ -100,7 +100,7 @@ public class MapLoader
             case "RaceStart":
                 m.startpoint = (Transform) obj.GetFirstOf(VirtualData.DATA_TYPE.TRANSFORM).data;
                 return true;
-        }
+        }    
         
         System.out.print (" NOT FOUND -> ");
         return false;
@@ -120,7 +120,17 @@ public class MapLoader
             JWavefrontObject mesh = MeshHandler.hdl().LoadMesh(meshinfo[0]);
             ObjMesh om = new ObjMesh(mesh, meshinfo[1]);
             
-            m.addObject( new GameObject(transform, om) );
+            GameObject gameobj = new GameObject(transform, om);
+            
+            if ( meshinfo[1].contains("leaf") ){
+                gameobj.name = "Generic_transparent"+m.objects.size();
+                // om.hintRenderMode = MeshRenderer.RENDER_MODE.TRANSPARENT;
+            } else {
+                //om.hintRenderMode = MeshRenderer.RENDER_MODE.SOLID;
+                gameobj.name = "Generic_solid"+m.objects.size();
+            }
+            
+            m.addObject(gameobj);
         }
     }
     

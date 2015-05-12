@@ -3,18 +3,20 @@ package SkyRacers.core;
 import MathClasses.Transform;
 import MathClasses.Vector3;
 import static SkyRacers.SkyRacers.modelMatrix;
-import br.usp.icmc.vicg.gl.jwavefront.Vertex;
-import java.util.ArrayList;
 
 public class GameObject {
     
     protected Transform transform;
     protected LODMesh mesh;
     protected float objectRadius;
+    
+    public String name;
 
     
     public GameObject(Transform t, MeshRenderer model3D)
     {
+        name = "_unnamed_";
+        
         mesh = new LODMesh(model3D);
         transform = t;
                 
@@ -69,7 +71,7 @@ public class GameObject {
         sizes.x *= transform.scale.x;
         sizes.y *= transform.scale.y;
         sizes.z *= transform.scale.z;
-        objectRadius = sizes.norm()/2.0f;
+        objectRadius = sizes.norm();
         
         System.out.println("RADIUS: "+objectRadius);
     }

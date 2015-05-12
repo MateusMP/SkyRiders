@@ -51,9 +51,9 @@ public class Frustum
      * Extracts a frustum from OpenGL. Beware PixelFlinger! It does not
      * implement glGetFloat!
      */
-    public void extractFromOGL(Matrix4 projection, Matrix4 model)
+    public void extractFromOGL(Matrix4 projection, Matrix4 view)
     {
-        update( projection.getMatrix(), model.getMatrix() );
+        update( projection.getMatrix(), view.getMatrix() );
     }
 
     /**
