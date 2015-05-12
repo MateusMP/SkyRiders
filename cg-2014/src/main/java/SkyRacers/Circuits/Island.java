@@ -12,11 +12,7 @@ public class Island extends Map{
     private final GL3 gl;
     private final Shader shader;
     
-    // Meshes
-    //JWavefrontObject meshPalmTree1;
-    //JWavefrontObject meshIsland;
     Light light;
-    //
     float x, y;
         
     public Island(GL3 gl, Shader shader)
@@ -29,18 +25,7 @@ public class Island extends Map{
         x = 0;
         y = 0;
         
-        LoadMeshes();
         InitLights();
-        
-        /*for (int j = 0; j < 25; ++j){
-            for (int i = 0; i < 25; ++i){
-                addObject( new GameObject(new Vector3(i*-6, 0, j*-6), meshPalmTree1) );
-            }
-        }
-        
-        meshIsland = MeshHandler.hdl().LoadMesh("./data/graphics/island.obj");
-        addObject(new GameObject(new Vector3(), new Vector3(150,150,150), meshIsland));*/
-        
     }
     
     private void InitLights()
@@ -57,20 +42,8 @@ public class Island extends Map{
         light.bind();
     }
     
-    private void LoadMeshes()
-    {
-        // meshPalmTree1 = MeshHandler.hdl().LoadMesh("./Assets/graphics/coqueiro.obj");
-        
-    }
-    
-    public void dispose()
-    {
-        // meshPalmTree1.dispose();
-        super.dispose();
-    }
-    
     @Override
-    public void draw()
+    public void update()
     {
         double rad = x * 3.14159 / 180.0;
         
@@ -80,6 +53,12 @@ public class Island extends Map{
         light.setPosition(new float[]{0.0f, 60, y, 0.0f});
         light.bind();
         
-        super.draw();
+        super.update();
+    }
+    
+    @Override
+    public void dispose()
+    {
+        super.dispose();
     }
 }

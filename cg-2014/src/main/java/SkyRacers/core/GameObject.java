@@ -6,13 +6,13 @@ import static SkyRacers.SkyRacers.modelMatrix;
 
 public class GameObject {
     
+    protected GameRenderer.RENDER_TYPE rendermode;
     protected Transform transform;
     protected LODMesh mesh;
     protected float objectRadius;
     
     public String name;
 
-    
     public GameObject(Transform t, MeshRenderer model3D)
     {
         name = "_unnamed_";
@@ -83,6 +83,14 @@ public class GameObject {
     
     public float getObjectRadius() {
         return objectRadius;
+    }
+    
+    public GameRenderer.RENDER_TYPE getRenderType(){
+        return rendermode;
+    }
+    
+    public void setRenderType(GameRenderer.RENDER_TYPE t){
+        rendermode = t;
     }
     
 }

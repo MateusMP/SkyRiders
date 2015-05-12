@@ -1,8 +1,7 @@
 package SkyRacers.core;
 
 import MathClasses.Vector3;
-import SkyRacers.SkyRacers;
-import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
+import SkyRacers.Profiler;
 import java.util.ArrayList;
 
 
@@ -55,7 +54,7 @@ public class LODMesh {
         
         MeshRenderer w = meshes.get(activeModel);
         w.draw();
-        SkyRacers.AddRenderingObject(w);
+        Profiler.AddRenderingObject(w);
     }
    
     public MeshRenderer getActiveMesh(){

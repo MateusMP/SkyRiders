@@ -1,12 +1,11 @@
 package SkyRacers;
 
 import SkyRacers.core.Camera;
-import SkyRacers.core.Frustum;
+import SkyRacers.core.GameRenderer;
 import SkyRacers.core.InputHandler;
 import SkyRacers.core.Map;
 import SkyRacers.core.MapLoader;
 import SkyRacers.core.MeshHandler;
-import SkyRacers.core.MeshRenderer;
 import SkyRacers.core.ObjMesh;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import br.usp.icmc.vicg.gl.util.Shader;
@@ -37,7 +36,6 @@ public class SkyRacers implements GLEventListener {
     
     private Map gameMap;
     private Camera currentCamera;
-    private Frustum frusCull;
     
     public static Matrix4 modelMatrix = new Matrix4();
     private final Matrix4 projectionMatrix;
@@ -52,21 +50,6 @@ public class SkyRacers implements GLEventListener {
     private static GLCanvas glCanvas;
     public static InputHandler inputHandler;
     
-    // ---- PERFORMANCE STATISTICS ----
-    private static int renderingObjects;
-    private static int renderingVertex;
-    public static void AddRenderingObject(MeshRenderer mesh)
-    {
-        renderingObjects++;
-        renderingVertex += mesh.getVertices().size();
-    }
-    private static void ResetVertexCount()
-    {
-        renderingObjects = 0;
-        renderingVertex = 0;
-    }
-    // ---------------------------------
-    
 
     public SkyRacers() {
         
@@ -77,7 +60,6 @@ public class SkyRacers implements GLEventListener {
         // modelMatrix = new Matrix4();
         this.projectionMatrix = new Matrix4();
         this.viewMatrix = new Matrix4();
-        this.frusCull = new Frustum();
 
     }
     
@@ -120,7 +102,6 @@ public class SkyRacers implements GLEventListener {
             // gameMap = new Island(gl, shader);
 
             gameMap = MapLoader.LoadMap("island.txt");
-            gameMap.setFrusCull(this.frusCull);
             
             // Create player airplane and define a controller for it
             ObjMesh om = new ObjMesh(MeshHandler.hdl().LoadMesh("./Assets/graphics/cartoonAriplane.obj"), "");
@@ -155,23 +136,15 @@ public class SkyRacers implements GLEventListener {
         return this.currentCamera;
     }
 
-    public Frustum getFrusCull() {
-        return this.frusCull;
-    }
-
-    public void setFrusCull(Frustum frusCull) {
-        this.frusCull = frusCull;
-    }
-
     @Override
     public void display(GLAutoDrawable drawable) {
         
-        ResetVertexCount();
+        Profiler.ResetVertexCount();
         
         update();
         render(drawable);
         
-        this.frame.setTitle("Sky Racers "+animator.getLastFPS()+" - OBJS: "+renderingObjects+" - Vertices: "+renderingVertex);
+        this.frame.setTitle("Sky Racers "+animator.getLastFPS()+" - OBJS: "+Profiler.getRenderingObjects()+" - Vertices: "+Profiler.getRenderingVertex());
     }
     
     private void update()
@@ -195,11 +168,10 @@ public class SkyRacers implements GLEventListener {
 
         // View Matrix
         currentCamera.DefineViewMatrix(viewMatrix);
+
+        GameRenderer.SetFrustum(projectionMatrix, viewMatrix);
+        GameRenderer.Render(gameMap);
         
-        frusCull.extractFromOGL(projectionMatrix, viewMatrix);
-
-        gameMap.draw();
-
         // Execute
         gl.glFlush();
     }
@@ -242,7 +214,6 @@ public class SkyRacers implements GLEventListener {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(inputHandler);
         animator = new FPSAnimator(glCanvas, 60);
         
-
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(WindowEvent e) {

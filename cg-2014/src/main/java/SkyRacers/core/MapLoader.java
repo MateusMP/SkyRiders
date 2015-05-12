@@ -122,12 +122,13 @@ public class MapLoader
             
             GameObject gameobj = new GameObject(transform, om);
             
-            if ( meshinfo[1].contains("leaf") ){
+            if ( meshinfo[1].contains("leaf") )
+            {
                 gameobj.name = "Generic_transparent"+m.objects.size();
-                // om.hintRenderMode = MeshRenderer.RENDER_MODE.TRANSPARENT;
+                gameobj.setRenderType(GameRenderer.RENDER_TYPE.RENDER_TRANSPARENT);
             } else {
-                //om.hintRenderMode = MeshRenderer.RENDER_MODE.SOLID;
                 gameobj.name = "Generic_solid"+m.objects.size();
+                gameobj.setRenderType(GameRenderer.RENDER_TYPE.RENDER_SOLID);
             }
             
             m.addObject(gameobj);

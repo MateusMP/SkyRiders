@@ -9,9 +9,10 @@ import MathClasses.Transform;
 import SkyRacers.core.GameObject;
 import MathClasses.Vector3;
 import static SkyRacers.SkyRacers.modelMatrix;
+import SkyRacers.core.GameRenderer;
+import SkyRacers.core.GameRenderer.RENDER_TYPE;
 import SkyRacers.core.Line;
 import SkyRacers.core.MeshRenderer;
-import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 
 public class Airplane extends GameObject {
@@ -89,6 +90,8 @@ public class Airplane extends GameObject {
         rollSpeed = 1.1f;
         
         roationXZ = 0;
+        
+        rendermode = RENDER_TYPE.RENDER_SOLID;
     }
     
     public void CommandUP(boolean pressed){
@@ -232,4 +235,5 @@ public class Airplane extends GameObject {
         
         mesh.ActiveMeshDraw();
     }
+
 }
