@@ -9,7 +9,6 @@ import MathClasses.Transform;
 import SkyRacers.core.GameObject;
 import MathClasses.Vector3;
 import static SkyRacers.SkyRacers.modelMatrix;
-import SkyRacers.core.GameRenderer;
 import SkyRacers.core.GameRenderer.RENDER_TYPE;
 import SkyRacers.core.Line;
 import SkyRacers.core.MeshRenderer;

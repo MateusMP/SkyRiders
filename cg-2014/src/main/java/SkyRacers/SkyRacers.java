@@ -88,7 +88,7 @@ public class SkyRacers implements GLEventListener {
         this.shader.bind();
         
         //inicializa a matrix Model and Projection
-        this.modelMatrix.init(this.gl, this.shader.getUniformLocation("u_modelMatrix"));
+        SkyRacers.modelMatrix.init(this.gl, this.shader.getUniformLocation("u_modelMatrix"));
         this.projectionMatrix.init(this.gl, this.shader.getUniformLocation("u_projectionMatrix"));
         this.viewMatrix.init(this.gl, this.shader.getUniformLocation("u_viewMatrix"));
         

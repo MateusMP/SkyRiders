@@ -7,12 +7,20 @@ import java.util.ArrayList;
 public interface MeshRenderer {
     
     /**
-     * 
      * @return raios em x,y,z
      */
     Vector3 getSizes();
     
+    /**
+     * 
+     * @return Return a vector of vertices
+     */
     ArrayList<Vertex> getVertices();
+    
+    /**
+     * @return Return meshes VAO id
+     */
+    int getVAO();
     
     void draw();
     

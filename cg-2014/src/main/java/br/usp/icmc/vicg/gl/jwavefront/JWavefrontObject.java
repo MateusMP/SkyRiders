@@ -32,11 +32,11 @@ public class JWavefrontObject {
   private int[] vao;
   private GL3 gl;
   private br.usp.icmc.vicg.gl.core.Material material;
-  private int vertex_positions_handle;
-  private int vertex_normals_handle;
-  private int vertex_textures_handle;
-  private int is_texture_handle;
-  private int texture_handle;
+  private int vertex_positions_handle;  // On Shader
+  private int vertex_normals_handle;    // On Shader
+  private int vertex_textures_handle;   // On Shader
+  private int is_texture_handle;        // On Shader
+  private int texture_handle;           // On Shader
   private ArrayList<Group> groups;
   private ArrayList<Vertex> vertices;
   private ArrayList<Normal> normals;
@@ -744,7 +744,7 @@ public class JWavefrontObject {
             material.bind();
         }
 
-        gl.glBindVertexArray(vao[group.vaoid]);
+        gl.glBindVertexArray(group.vao);
         gl.glDrawArrays(GL.GL_TRIANGLES, 0, 3 * group.triangles.size());
     }
   
@@ -788,7 +788,7 @@ public class JWavefrontObject {
 
     for (int i = 0; i < groups.size(); i++) {
       Group group = groups.get(i);
-      group.vaoid = i;
+      group.vao = vao[i];
       if (group.triangles.isEmpty()) {
         continue;
       }

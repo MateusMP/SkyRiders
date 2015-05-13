@@ -104,6 +104,11 @@ public class ObjMesh implements MeshRenderer {
         
         return new Vector3(w, h, d);
     }
+
+    @Override
+    public int getVAO() {
+        return g.vao;
+    }
     
     
 }
