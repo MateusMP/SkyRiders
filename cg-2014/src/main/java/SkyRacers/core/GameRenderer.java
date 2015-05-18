@@ -8,15 +8,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import javax.media.opengl.GL2;
+import javax.media.opengl.GL3;
 
 public class GameRenderer {
-    
+
     public static enum RENDER_TYPE{
         RENDER_SOLID,
         RENDER_WATER,
         RENDER_TRANSPARENT,
     }
-    
+   
     private static final Frustum frustum = new Frustum();
     private static final HashMap<RENDER_TYPE, HashMap<Shader, ArrayList<GameObject>> > objects = new HashMap<>();
     
@@ -49,21 +50,25 @@ public class GameRenderer {
         }
         lista.add(obj);
     }
-    
+  
     public static void Render(Map map){
+        GL3 gl = SkyRacers.hdl().gl;
         
         for (GameObject o : map.objects){
             AddObject(o);
         }
-
-        // --
-        SkyRacers.hdl().gl.glEnable(GL2.GL_CULL_FACE);
-        RenderLayer(objects.get(RENDER_TYPE.RENDER_SOLID));
         
         // --
-        SkyRacers.hdl().gl.glDisable(GL2.GL_CULL_FACE);
+        gl.glEnable(GL2.GL_CULL_FACE);
+        gl.glCullFace(GL2.GL_BACK);
+        RenderLayer(objects.get(RENDER_TYPE.RENDER_SOLID));
+    
+        // --
+        gl.glEnable(GL2.GL_BLEND);
+        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+        gl.glDisable(GL2.GL_CULL_FACE);
         RenderLayer(objects.get(RENDER_TYPE.RENDER_TRANSPARENT));
-
+        
         // --
         RenderLayer(objects.get(RENDER_TYPE.RENDER_WATER));
         
