@@ -7,7 +7,6 @@ package br.usp.icmc.vicg.gl.model;
 
 import br.usp.icmc.vicg.gl.util.Shader;
 import com.jogamp.common.nio.Buffers;
-import javax.media.opengl.GL;
 import javax.media.opengl.GL3;
 
 /**
@@ -20,6 +19,7 @@ public abstract class SimpleModel {
   private int vertex_positions_handle;
   private int vertex_normals_handle;
   private int[] vao;
+  private int[] vbo;
   protected float[] vertex_buffer;
   protected float[] normal_buffer;
 
@@ -43,6 +43,8 @@ public abstract class SimpleModel {
   }
 
   public void dispose() {
+      gl.glDeleteBuffers(2, vbo, 0);
+     gl.glDeleteVertexArrays(1, vao, 0);
   }
 
   private void create_object(GL3 gl) {
@@ -51,7 +53,7 @@ public abstract class SimpleModel {
     gl.glBindVertexArray(vao[0]);
 
     // create vertex positions buffer
-    int vbo[] = new int[2];
+    vbo = new int[2];
     gl.glGenBuffers(2, vbo, 0);
 
     //the positions buffer

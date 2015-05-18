@@ -122,6 +122,8 @@ public class Airplane extends GameObject {
             UDrotationCurrent -= pitchSpeed;
             if (UDrotationCurrent < -MAX_UD)
                 UDrotationCurrent = -MAX_UD;
+            
+            acceleration = acceleration.add( up.mul(current_accel/10.0f) );
         }
        
         if (cmd_left){
