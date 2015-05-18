@@ -4,6 +4,7 @@
  */
 package br.usp.icmc.vicg.gl.jwavefront;
 
+import br.usp.icmc.vicg.gl.core.Material;
 import br.usp.icmc.vicg.gl.util.Shader;
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.util.awt.ImageUtil;
@@ -31,7 +32,7 @@ public class JWavefrontObject {
 
   private int[] vao;
   private GL3 gl;
-  private br.usp.icmc.vicg.gl.core.Material material;
+  private Material material;
   private int vertex_positions_handle;  // On Shader
   private int vertex_normals_handle;    // On Shader
   private int vertex_textures_handle;   // On Shader
@@ -40,7 +41,7 @@ public class JWavefrontObject {
   private ArrayList<Group> groups;
   private ArrayList<Vertex> vertices;
   private ArrayList<Normal> normals;
-  private ArrayList<Material> materials;
+  private ArrayList<ObjMaterial> materials;
   private ArrayList<Texture> textures;
   private ArrayList<TextureCoord> textures_coord;
   private File pathname;
@@ -76,7 +77,7 @@ public class JWavefrontObject {
         return super.get(i - 1);
       }
     };
-    materials = new ArrayList<Material>();
+    materials = new ArrayList<ObjMaterial>();
     textures = new ArrayList<Texture>();
 
     pathname = file;
@@ -85,7 +86,7 @@ public class JWavefrontObject {
   public void init(GL3 gl, Shader shader) throws IOException {
     this.gl = gl;
 
-    this.material = new br.usp.icmc.vicg.gl.core.Material();
+    this.material = new Material();
     this.material.init(gl, shader);
 
     this.vertex_positions_handle = shader.getAttribLocation("a_position");
@@ -266,10 +267,10 @@ public class JWavefrontObject {
                   }
                 }
 
-                Material aux = findMaterial(token);
+                ObjMaterial aux = findMaterial(token);
 
                 if (current_group.material != aux
-                        && current_group.material != Material.default_material) {
+                        && current_group.material != ObjMaterial.default_material) {
                   //when changing material inside a group, I
                   //I have to create a new group                                    
                   current_group = new Group("group_" + groups.size());
@@ -514,6 +515,9 @@ public class JWavefrontObject {
    * @return Return the first group with the given name.
    */
   public Group findGroup(String name) {
+      if (name == null)
+          return null;
+      
     for (int i = 0; i < groups.size(); i++) {
       if (groups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
         return groups.get(i);
@@ -528,7 +532,7 @@ public class JWavefrontObject {
    * @param name Material name.
    * @return Return the first material with the given name.
    */
-  private Material findMaterial(String name) {
+  private ObjMaterial findMaterial(String name) {
     /*
      * XXX doing a linear search on a string key'd list is pretty lame, but
      * it works and is fast enough for now.
@@ -539,7 +543,7 @@ public class JWavefrontObject {
       }
     }
 
-    return Material.default_material;
+    return ObjMaterial.default_material;
   }
 
   /**
@@ -577,7 +581,7 @@ public class JWavefrontObject {
 
       try {
         in = new BufferedReader(new FileReader(file));
-        Material material = null;
+        ObjMaterial material = null;
 
         String line;
         while ((line = in.readLine()) != null) {
@@ -595,7 +599,7 @@ public class JWavefrontObject {
 
                 //creating the new material
                 if (token.equals("newmtl")) {
-                  material = new Material(tok.nextToken());
+                  material = new ObjMaterial(tok.nextToken());
                   materials.add(material);
                 } else {
                   Logger.getLogger(JWavefrontObject.class.getName()).log(Level.WARNING,

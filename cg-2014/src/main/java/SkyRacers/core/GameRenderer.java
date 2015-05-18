@@ -2,8 +2,11 @@ package SkyRacers.core;
 
 import SkyRacers.SkyRacers;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
+import br.usp.icmc.vicg.gl.util.GeneralShader;
+import br.usp.icmc.vicg.gl.util.Shader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 import javax.media.opengl.GL2;
 
 public class GameRenderer {
@@ -15,7 +18,7 @@ public class GameRenderer {
     }
     
     private static final Frustum frustum = new Frustum();
-    private static final HashMap<RENDER_TYPE, ArrayList<GameObject>> objects = new HashMap<>();
+    private static final HashMap<RENDER_TYPE, HashMap<Shader, ArrayList<GameObject>> > objects = new HashMap<>();
     
     public static void SetFrustum(Matrix4 projection, Matrix4 view){
         frustum.extractFromOGL(projection, view);
@@ -28,16 +31,23 @@ public class GameRenderer {
             return;
         
         
-        ArrayList<GameObject> lista = objects.get(obj.getRenderType());
+        RENDER_TYPE layer_id = obj.getRenderType();
+        Shader shader_id = obj.mesh.getActiveMesh().getShader();
         
+        HashMap<Shader, ArrayList<GameObject>> layer = objects.get(layer_id);
+        if ( layer == null ) // Criar nova layer
+        {
+            layer = new HashMap<Shader, ArrayList<GameObject>>();
+            objects.put(layer_id, layer);
+        }
+        
+        ArrayList<GameObject> lista = layer.get(shader_id);
         if (lista == null) // Criar nova lista
         {
             lista = new ArrayList<>();
-            lista.add(obj);
-            objects.put(obj.getRenderType(), lista);
-        } else {
-            lista.add(obj);
+            layer.put(shader_id, lista);
         }
+        lista.add(obj);
     }
     
     public static void Render(Map map){
@@ -48,28 +58,43 @@ public class GameRenderer {
 
         // --
         SkyRacers.hdl().gl.glEnable(GL2.GL_CULL_FACE);
-        ArrayList<GameObject> solids = objects.get(RENDER_TYPE.RENDER_SOLID);
-        if (solids != null)
-            for (GameObject o : solids){
-                o.draw();
-            }
+        RenderLayer(objects.get(RENDER_TYPE.RENDER_SOLID));
         
         // --
         SkyRacers.hdl().gl.glDisable(GL2.GL_CULL_FACE);
-        ArrayList<GameObject> transparents = objects.get(RENDER_TYPE.RENDER_TRANSPARENT);
-        if (transparents != null)
-            for (GameObject o : transparents){
-                o.draw();
-            }
+        RenderLayer(objects.get(RENDER_TYPE.RENDER_TRANSPARENT));
 
         // --
-        ArrayList<GameObject> waters = objects.get(RENDER_TYPE.RENDER_WATER);
-        if (waters != null)
-            for (GameObject o : waters){
-                o.draw();
-            }
+        RenderLayer(objects.get(RENDER_TYPE.RENDER_WATER));
         
         objects.clear();
+    }
+    
+    private static void RenderLayer( HashMap<Shader, ArrayList<GameObject>> layer )
+    {
+        if (layer == null)
+            return;
+        
+        Set<Shader> set = layer.keySet();
+        
+        for (Shader s : set){
+            ArrayList<GameObject> ls_objs = layer.get(s);
+            
+            if (ls_objs != null)
+            {
+//                s.fullbind();
+                
+                for ( GameObject o : ls_objs ){
+                    
+//                    GeneralShader gs = (GeneralShader) s;
+//                    gs.LoadModelMatrix( o.getTransform().createMatrix() );
+                    
+                    o.draw();
+                }
+                
+//                s.unbind();
+            }
+        }
     }
     
     

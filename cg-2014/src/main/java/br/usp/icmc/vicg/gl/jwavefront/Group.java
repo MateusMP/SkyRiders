@@ -16,7 +16,7 @@ public class Group {
 
     public Group(String name) {
         this.name = name;
-        this.material = Material.default_material;
+        this.material = ObjMaterial.default_material;
         this.triangles = new ArrayList<Triangle>();
     }
 
@@ -55,6 +55,6 @@ public class Group {
     }
     public String name; // name of this group
     public ArrayList<Triangle> triangles; // array of triangle indices
-    public Material material; // index to material for group
+    public ObjMaterial material; // index to material for group
     public int vao;
 }

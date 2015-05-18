@@ -22,17 +22,17 @@ public class ShaderFactory {
 
   public static Shader getInstance(ShaderType type) {
     if (type == ShaderType.SIMPLE_SHADER) {
-      return new Shader("simple_vertex.glsl", "simple_fragment.glsl");
+      return new GeneralShader("simple_vertex.glsl", "simple_fragment.glsl");
     } else if (type == ShaderType.TRANSFORM_SHADER) {
-      return new Shader("transform_vertex.glsl", "simple_fragment.glsl");
+      return new GeneralShader("transform_vertex.glsl", "simple_fragment.glsl");
     } else if (type == ShaderType.MODEL_MATRIX_SHADER) {
-      return new Shader("model_vertex.glsl", "simple_fragment.glsl");
+      return new GeneralShader("model_vertex.glsl", "simple_fragment.glsl");
     } else if (type == ShaderType.MODEL_PROJECTION_MATRIX_SHADER) {
-      return new Shader("model_projection_vertex.glsl", "simple_fragment.glsl");
+      return new GeneralShader("model_projection_vertex.glsl", "simple_fragment.glsl");
     } else if (type == ShaderType.VIEW_MODEL_PROJECTION_MATRIX_SHADER) {
-      return new Shader("view_model_projection_vertex.glsl", "simple_fragment.glsl");
+      return new GeneralShader("view_model_projection_vertex.glsl", "simple_fragment.glsl");
     } else if (type == ShaderType.COMPLETE_SHADER) {
-      return new Shader("complete_vertex.glsl", "complete_fragment.glsl");
+      return new GeneralShader("complete_vertex.glsl", "complete_fragment.glsl");
     }
     return null;
   }

@@ -219,7 +219,7 @@ public class Airplane extends GameObject {
         Vector3 b = transform.position;
         Vector3 e = transform.position.add(forward.normalize().mul(15.0f) );
         Line l = new Line( b, e);
-        l.init(SkyRacers.hdl().gl, SkyRacers.hdl().shader);
+        l.init(SkyRacers.hdl().gl, SkyRacers.hdl().generalShader);
         l.bind();
         l.draw();
         

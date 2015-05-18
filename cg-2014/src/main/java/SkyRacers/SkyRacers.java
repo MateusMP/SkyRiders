@@ -8,6 +8,7 @@ import SkyRacers.core.MapLoader;
 import SkyRacers.core.MeshHandler;
 import SkyRacers.core.ObjMesh;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
+import br.usp.icmc.vicg.gl.util.GeneralShader;
 import br.usp.icmc.vicg.gl.util.Shader;
 import br.usp.icmc.vicg.gl.util.ShaderFactory;
 import br.usp.icmc.vicg.gl.util.ShaderFactory.ShaderType;
@@ -32,7 +33,7 @@ public class SkyRacers implements GLEventListener {
     private static SkyRacers skyracers;
 
     public GL3 gl;
-    public final Shader shader; // Gerenciador dos shaders
+    public final GeneralShader generalShader; // Gerenciador dos shaders
     
     private Map gameMap;
     private Camera currentCamera;
@@ -56,7 +57,7 @@ public class SkyRacers implements GLEventListener {
         skyracers = this;
         
         // Carrega os shaders
-        this.shader = ShaderFactory.getInstance(ShaderType.COMPLETE_SHADER);
+        this.generalShader = (GeneralShader) ShaderFactory.getInstance(ShaderType.COMPLETE_SHADER);
         // modelMatrix = new Matrix4();
         this.projectionMatrix = new Matrix4();
         this.viewMatrix = new Matrix4();
@@ -82,29 +83,31 @@ public class SkyRacers implements GLEventListener {
         // this.gl.glCullFace(GL.GL_BACK);
         
         //inicializa os shaders
-        this.shader.init(this.gl);
+        this.generalShader.init(this.gl);
 
         //ativa os shaders
-        this.shader.bind();
+        this.generalShader.bind();
         
         //inicializa a matrix Model and Projection
-        SkyRacers.modelMatrix.init(this.gl, this.shader.getUniformLocation("u_modelMatrix"));
-        this.projectionMatrix.init(this.gl, this.shader.getUniformLocation("u_projectionMatrix"));
-        this.viewMatrix.init(this.gl, this.shader.getUniformLocation("u_viewMatrix"));
+        SkyRacers.modelMatrix.init(this.gl, this.generalShader.getUniformLocation("u_modelMatrix"));
+        this.projectionMatrix.init(this.gl, this.generalShader.getUniformLocation("u_projectionMatrix"));
+        this.viewMatrix.init(this.gl, this.generalShader.getUniformLocation("u_viewMatrix"));
+        
+        System.out.println("SHADER view handle: " + generalShader.viewMatrix_hdl);
+        System.out.println("MATRIX view handle: " + viewMatrix.handle);
         
         try{
-            MeshHandler mh = new MeshHandler(this.gl, this.shader);
+            MeshHandler mh = new MeshHandler(this.gl, this.generalShader);
         } catch (Exception ex) {
             Logger.getLogger(SkyRacers.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         try {
-            // gameMap = new Island(gl, shader);
-
             gameMap = MapLoader.LoadMap("island.txt");
             
             // Create player airplane and define a controller for it
-            ObjMesh om = new ObjMesh(MeshHandler.hdl().LoadMesh("./Assets/graphics/cartoonAriplane.obj"), "");
+            ObjMesh om = new ObjMesh(MeshHandler.hdl().LoadMesh("./Assets/graphics/cartoonAriplane.obj"), null);
+            om.setShader(generalShader);
             Airplane plane = new Airplane(gameMap.startpoint, om);
             gameMap.addObject(plane);
             AirplaneController controller = new AirplaneController(plane);
@@ -169,6 +172,8 @@ public class SkyRacers implements GLEventListener {
         // View Matrix
         currentCamera.DefineViewMatrix(viewMatrix);
 
+        generalShader.LoadProjView(projectionMatrix, viewMatrix);
+        
         GameRenderer.SetFrustum(projectionMatrix, viewMatrix);
         GameRenderer.Render(gameMap);
         
@@ -213,6 +218,7 @@ public class SkyRacers implements GLEventListener {
         frame.setFocusable(true);
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(inputHandler);
         animator = new FPSAnimator(glCanvas, 60);
+        animator.setUpdateFPSFrames(3, null);
         
         frame.addWindowListener(new WindowAdapter() {
             @Override

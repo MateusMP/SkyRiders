@@ -9,11 +9,11 @@ package br.usp.icmc.vicg.gl.jwavefront;
  *
  * @author PC
  */
-public class Material {
+public class ObjMaterial {
     
-    public static Material default_material = new Material("_default_");
+    public static ObjMaterial default_material = new ObjMaterial("_default_");
     
-    public Material(String name) {
+    public ObjMaterial(String name) {
         this.name = name;
         this.shininess = 65.0f;
         this.diffuse = new float[]{0.8f, 0.8f, 0.8f, 1.0f};

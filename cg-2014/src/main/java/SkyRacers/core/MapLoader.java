@@ -78,7 +78,7 @@ public class MapLoader
     private static Map ProcessObjects(ArrayList<VirtualObject> objects)
     {
         // Map m = new Map();
-        Map m = new Island(SkyRacers.SkyRacers.hdl().gl, SkyRacers.SkyRacers.hdl().shader);
+        Map m = new Island(SkyRacers.SkyRacers.hdl().gl, SkyRacers.SkyRacers.hdl().generalShader);
         
         for (VirtualObject obj : objects)
         {
@@ -119,6 +119,7 @@ public class MapLoader
             Transform transform = (Transform) obj.vdata.get(transform_id).data;
             JWavefrontObject mesh = MeshHandler.hdl().LoadMesh(meshinfo[0]);
             ObjMesh om = new ObjMesh(mesh, meshinfo[1]);
+            om.setShader(SkyRacers.SkyRacers.hdl().generalShader );
             
             GameObject gameobj = new GameObject(transform, om);
             
