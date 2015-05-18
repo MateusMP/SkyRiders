@@ -58,24 +58,9 @@ public class JWavefrontObject {
    */
   public JWavefrontObject(File file) {
     groups = new ArrayList<Group>();
-    vertices = new ArrayList<Vertex>() {
-      @Override
-      public Vertex get(int i) {
-        return super.get(i - 1);
-      }
-    };
-    normals = new ArrayList<Normal>() {
-      @Override
-      public Normal get(int i) {
-        return super.get(i - 1);
-      }
-    };
-    textures_coord = new ArrayList<TextureCoord>() {
-      @Override
-      public TextureCoord get(int i) {
-        return super.get(i - 1);
-      }
-    };
+    vertices = new ArrayList<Vertex>();
+    normals = new ArrayList<Normal>();
+    textures_coord = new ArrayList<TextureCoord>();
     materials = new ArrayList<Material>();
     textures = new ArrayList<Texture>();
 
@@ -115,11 +100,11 @@ public class JWavefrontObject {
     /*
      * get the max/mins
      */
-    maxx = minx = vertices.get(1).x;
-    maxy = miny = vertices.get(1).y;
-    maxz = minz = vertices.get(1).z;
+    maxx = minx = vertices.get(0).x;
+    maxy = miny = vertices.get(0).y;
+    maxz = minz = vertices.get(0).z;
 
-    for (int i = 1; i <= vertices.size(); i++) {
+    for (int i = 1; i < vertices.size(); i++) {
       if (maxx < vertices.get(i).x) {
         maxx = vertices.get(i).x;
       }
@@ -164,7 +149,7 @@ public class JWavefrontObject {
     /*
      * translate around center then scale
      */
-    for (int i = 1; i <= vertices.size(); i++) {
+    for (int i = 0; i < vertices.size(); i++) {
       vertices.get(i).x -= cx;
       vertices.get(i).y -= cy;
       vertices.get(i).z -= cz;
@@ -328,16 +313,16 @@ public class JWavefrontObject {
                 tok = new StringTokenizer(line, " ");
 
                 tok2 = new StringTokenizer(tok.nextToken(), "/");
-                tri.vertices[0] = vertices.get(Integer.parseInt(tok2.nextToken()));
-                tri.vertex_normals[0] = normals.get(Integer.parseInt(tok2.nextToken()));
+                tri.vertices[0] = vertices.get(Integer.parseInt(tok2.nextToken())-1);
+                tri.vertex_normals[0] = normals.get(Integer.parseInt(tok2.nextToken())-1);
 
                 tok2 = new StringTokenizer(tok.nextToken(), "/");
-                tri.vertices[1] = vertices.get(Integer.parseInt(tok2.nextToken()));
-                tri.vertex_normals[1] = normals.get(Integer.parseInt(tok2.nextToken()));
+                tri.vertices[1] = vertices.get(Integer.parseInt(tok2.nextToken())-1);
+                tri.vertex_normals[1] = normals.get(Integer.parseInt(tok2.nextToken())-1);
 
                 tok2 = new StringTokenizer(tok.nextToken(), "/");
-                tri.vertices[2] = vertices.get(Integer.parseInt(tok2.nextToken()));
-                tri.vertex_normals[2] = normals.get(Integer.parseInt(tok2.nextToken()));
+                tri.vertices[2] = vertices.get(Integer.parseInt(tok2.nextToken())-1);
+                tri.vertex_normals[2] = normals.get(Integer.parseInt(tok2.nextToken())-1);
 
                 current_group.triangles.add(tri);
 
@@ -347,11 +332,11 @@ public class JWavefrontObject {
 
                   new_tri.vertices[0] = tri.vertices[0];
                   new_tri.vertices[1] = tri.vertices[2];
-                  new_tri.vertices[2] = vertices.get(Integer.parseInt(tok2.nextToken()));
+                  new_tri.vertices[2] = vertices.get(Integer.parseInt(tok2.nextToken())-1);
 
                   new_tri.vertex_normals[0] = tri.vertex_normals[0];
                   new_tri.vertex_normals[1] = tri.vertex_normals[2];
-                  new_tri.vertex_normals[2] = normals.get(Integer.parseInt(tok2.nextToken()));
+                  new_tri.vertex_normals[2] = normals.get(Integer.parseInt(tok2.nextToken())-1);
 
                   current_group.triangles.add(new_tri);
                   tri = new_tri;
@@ -363,25 +348,25 @@ public class JWavefrontObject {
 
                 if (tok2.countTokens() == 3) { /* v/t/n */
 
-                  tri.vertices[0] = vertices.get(Integer.parseInt(tok2.nextToken()));
+                  tri.vertices[0] = vertices.get(Integer.parseInt(tok2.nextToken())-1);
                   if (hastexture) {
-                    tri.vertex_tex_coords[0] = textures_coord.get(Integer.parseInt(tok2.nextToken()));
+                    tri.vertex_tex_coords[0] = textures_coord.get(Integer.parseInt(tok2.nextToken())-1);
                   }
-                  tri.vertex_normals[0] = normals.get(Integer.parseInt(tok2.nextToken()));
+                  tri.vertex_normals[0] = normals.get(Integer.parseInt(tok2.nextToken())-1);
 
                   tok2 = new StringTokenizer(tok.nextToken(), "/");
-                  tri.vertices[1] = vertices.get(Integer.parseInt(tok2.nextToken()));
+                  tri.vertices[1] = vertices.get(Integer.parseInt(tok2.nextToken())-1);
                   if (hastexture) {
-                    tri.vertex_tex_coords[1] = textures_coord.get(Integer.parseInt(tok2.nextToken()));
+                    tri.vertex_tex_coords[1] = textures_coord.get(Integer.parseInt(tok2.nextToken())-1);
                   }
-                  tri.vertex_normals[1] = normals.get(Integer.parseInt(tok2.nextToken()));
+                  tri.vertex_normals[1] = normals.get(Integer.parseInt(tok2.nextToken())-1);
 
                   tok2 = new StringTokenizer(tok.nextToken(), "/");
-                  tri.vertices[2] = vertices.get(Integer.parseInt(tok2.nextToken()));
+                  tri.vertices[2] = vertices.get(Integer.parseInt(tok2.nextToken())-1);
                   if (hastexture) {
-                    tri.vertex_tex_coords[2] = textures_coord.get(Integer.parseInt(tok2.nextToken()));
+                    tri.vertex_tex_coords[2] = textures_coord.get(Integer.parseInt(tok2.nextToken())-1);
                   }
-                  tri.vertex_normals[2] = normals.get(Integer.parseInt(tok2.nextToken()));
+                  tri.vertex_normals[2] = normals.get(Integer.parseInt(tok2.nextToken())-1);
 
                   current_group.triangles.add(tri);
 
@@ -391,38 +376,38 @@ public class JWavefrontObject {
 
                     new_tri.vertices[0] = tri.vertices[0];
                     new_tri.vertices[1] = tri.vertices[2];
-                    new_tri.vertices[2] = vertices.get(Integer.parseInt(tok2.nextToken()));
+                    new_tri.vertices[2] = vertices.get(Integer.parseInt(tok2.nextToken())-1);
 
                     if (hastexture) {
                       new_tri.vertex_tex_coords[0] = tri.vertex_tex_coords[0];
                       new_tri.vertex_tex_coords[1] = tri.vertex_tex_coords[2];
-                      new_tri.vertex_tex_coords[2] = textures_coord.get(Integer.parseInt(tok2.nextToken()));
+                      new_tri.vertex_tex_coords[2] = textures_coord.get(Integer.parseInt(tok2.nextToken())-1);
                     }
 
                     new_tri.vertex_normals[0] = tri.vertex_normals[0];
                     new_tri.vertex_normals[1] = tri.vertex_normals[2];
-                    new_tri.vertex_normals[2] = normals.get(Integer.parseInt(tok2.nextToken()));
+                    new_tri.vertex_normals[2] = normals.get(Integer.parseInt(tok2.nextToken())-1);
 
                     current_group.triangles.add(new_tri);
                     tri = new_tri;
                   }
                 } else if (tok2.countTokens() == 2) {  /* v/t */
 
-                  tri.vertices[0] = vertices.get(Integer.parseInt(tok2.nextToken()));
+                  tri.vertices[0] = vertices.get(Integer.parseInt(tok2.nextToken())-1);
                   if (hastexture) {
-                    tri.vertex_tex_coords[0] = textures_coord.get(Integer.parseInt(tok2.nextToken()));
+                    tri.vertex_tex_coords[0] = textures_coord.get(Integer.parseInt(tok2.nextToken())-1);
                   }
 
                   tok2 = new StringTokenizer(tok.nextToken(), "/");
-                  tri.vertices[1] = vertices.get(Integer.parseInt(tok2.nextToken()));
+                  tri.vertices[1] = vertices.get(Integer.parseInt(tok2.nextToken())-1);
                   if (hastexture) {
-                    tri.vertex_tex_coords[1] = textures_coord.get(Integer.parseInt(tok2.nextToken()));
+                    tri.vertex_tex_coords[1] = textures_coord.get(Integer.parseInt(tok2.nextToken())-1);
                   }
 
                   tok2 = new StringTokenizer(tok.nextToken(), "/");
-                  tri.vertices[2] = vertices.get(Integer.parseInt(tok2.nextToken()));
+                  tri.vertices[2] = vertices.get(Integer.parseInt(tok2.nextToken())-1);
                   if (hastexture) {
-                    tri.vertex_tex_coords[2] = textures_coord.get(Integer.parseInt(tok2.nextToken()));
+                    tri.vertex_tex_coords[2] = textures_coord.get(Integer.parseInt(tok2.nextToken())-1);
                   }
 
                   current_group.triangles.add(tri);
@@ -433,12 +418,12 @@ public class JWavefrontObject {
 
                     new_tri.vertices[0] = tri.vertices[0];
                     new_tri.vertices[1] = tri.vertices[2];
-                    new_tri.vertices[2] = vertices.get(Integer.parseInt(tok2.nextToken()));
+                    new_tri.vertices[2] = vertices.get(Integer.parseInt(tok2.nextToken())-1);
 
                     if (hastexture) {
                       new_tri.vertex_tex_coords[0] = tri.vertex_tex_coords[0];
                       new_tri.vertex_tex_coords[1] = tri.vertex_tex_coords[2];
-                      new_tri.vertex_tex_coords[2] = textures_coord.get(Integer.parseInt(tok2.nextToken()));
+                      new_tri.vertex_tex_coords[2] = textures_coord.get(Integer.parseInt(tok2.nextToken())-1);
                     }
 
                     current_group.triangles.add(new_tri);
@@ -447,11 +432,11 @@ public class JWavefrontObject {
                 } else {/* v */
 
                   tok = new StringTokenizer(line, " ");
-                  tri.vertices[0] = vertices.get(Integer.parseInt(tok.nextToken()));
-                  tri.vertices[1] = vertices.get(Integer.parseInt(tok.nextToken()));
+                  tri.vertices[0] = vertices.get(Integer.parseInt(tok.nextToken())-1);
+                  tri.vertices[1] = vertices.get(Integer.parseInt(tok.nextToken())-1);
 
                   if (tok.hasMoreTokens()) {
-                    tri.vertices[2] = vertices.get(Integer.parseInt(tok.nextToken()));
+                    tri.vertices[2] = vertices.get(Integer.parseInt(tok.nextToken())-1);
                   } else {
                     tri.vertices[2] = tri.vertices[0];
                   }
@@ -463,7 +448,7 @@ public class JWavefrontObject {
 
                     new_tri.vertices[0] = tri.vertices[0];
                     new_tri.vertices[1] = tri.vertices[2];
-                    new_tri.vertices[2] = vertices.get(Integer.parseInt(tok.nextToken()));
+                    new_tri.vertices[2] = vertices.get(Integer.parseInt(tok.nextToken())-1);
 
                     current_group.triangles.add(new_tri);
                     tri = new_tri;
@@ -542,25 +527,27 @@ public class JWavefrontObject {
     return Material.default_material;
   }
 
-  /**
-   * Find a texture in the model.
-   *
-   * @param name Texture name.
-   * @return Return the first texture with the given name.
-   */
-  private Texture findTexture(String name) throws IOException {
-    /*
-     * XXX doing a linear search on a string key'd list is pretty lame, but
-     * it works and is fast enough for now.
+    /**
+     * Find a texture in the model.
+     *
+     * @param name Texture name.
+     * @return Return the first texture with the given name.
      */
-    for (int i = 0; i < textures.size(); i++) {
-      if (textures.get(i).name.toLowerCase().equals(name.toLowerCase())) {
-        return textures.get(i);
-      }
-    }
+    private Texture findTexture(String name) throws IOException {
+        /*
+         * XXX doing a linear search on a string key'd list is pretty lame, but
+         * it works and is fast enough for now.
+         */
+        
+        String lowerCaseName = name.toLowerCase();
+        for (int i = 0; i < textures.size(); i++) {
+            if (textures.get(i).name.toLowerCase().equals(lowerCaseName)) {
+                return textures.get(i);
+            }
+        }
 
-    return null;
-  }
+        return null;
+    }
 
   /**
    * Read a wavefront material library file.
@@ -771,6 +758,15 @@ public class JWavefrontObject {
   }
 
   public void dispose() {
+      
+     for (Group g : groups)
+     {
+         if (g.material.texture == null)
+            gl.glDeleteBuffers(2, g.vbo, 0);
+         else
+            gl.glDeleteBuffers(3, g.vbo, 0);
+     }
+      
     gl.glDeleteVertexArrays(vao.length, vao, 0);
     gl.glBindVertexArray(0);
   }
@@ -818,11 +814,11 @@ public class JWavefrontObject {
         }
       }
 
-      int[] vbo = new int[3];
-      gl.glGenBuffers(3, vbo, 0); // Generate two Vertex Buffer Object
+      group.vbo = new int[3];
+      gl.glGenBuffers(3, group.vbo, 0); // Generate two Vertex Buffer Object
 
       //the positions buffer
-      gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vbo[0]); // Bind vertex buffer 
+      gl.glBindBuffer(GL.GL_ARRAY_BUFFER, group.vbo[0]); // Bind vertex buffer 
       gl.glBufferData(GL3.GL_ARRAY_BUFFER, vertex_buffer.length * Buffers.SIZEOF_FLOAT,
               Buffers.newDirectFloatBuffer(vertex_buffer), GL3.GL_STATIC_DRAW);
       gl.glEnableVertexAttribArray(vertex_positions_handle);
@@ -830,7 +826,7 @@ public class JWavefrontObject {
       gl.glBindBuffer(GL3.GL_ARRAY_BUFFER, 0);
 
       //the normals buffer
-      gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vbo[1]); // Bind normals buffer
+      gl.glBindBuffer(GL.GL_ARRAY_BUFFER, group.vbo[1]); // Bind normals buffer
       gl.glBufferData(GL3.GL_ARRAY_BUFFER, normal_buffer.length * Buffers.SIZEOF_FLOAT,
               Buffers.newDirectFloatBuffer(normal_buffer), GL3.GL_STATIC_DRAW);
       gl.glEnableVertexAttribArray(vertex_normals_handle);
@@ -839,7 +835,7 @@ public class JWavefrontObject {
 
       //the texture positions buffer
       if (group.material.texture != null) {
-        gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vbo[2]); // Bind normals buffer
+        gl.glBindBuffer(GL.GL_ARRAY_BUFFER, group.vbo[2]); // Bind normals buffer
         gl.glBufferData(GL3.GL_ARRAY_BUFFER, texture_buffer.length * Buffers.SIZEOF_FLOAT,
                 Buffers.newDirectFloatBuffer(texture_buffer), GL3.GL_STATIC_DRAW);
         gl.glEnableVertexAttribArray(vertex_textures_handle);

@@ -19,7 +19,7 @@ public class Group {
         this.material = Material.default_material;
         this.triangles = new ArrayList<Triangle>();
     }
-
+    
     /**
      * Generates facet normals for a model (by taking the cross product of the
      * two vectors derived from the sides of each triangle). Assumes a
@@ -53,8 +53,10 @@ public class Group {
         material.dump();
    
     }
+    
     public String name; // name of this group
     public ArrayList<Triangle> triangles; // array of triangle indices
     public Material material; // index to material for group
     public int vao;
+    public int[] vbo;
 }
