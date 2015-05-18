@@ -43,17 +43,11 @@ void main(void)
 
 	float alpha = 1.0;
 	
-	vec4 textureColor = texture(u_texture, v_texcoord);
-	if (textureColor.a < 0.5)
-		discard;
-	
 	if (nDotL > 0.0)
 	{
         if(u_is_texture) {
-			// vec4 textureColor = texture(u_texture, v_texcoord);
+			vec4 textureColor = texture(u_texture, v_texcoord);
             color += textureColor * nDotL;
-			if (textureColor.a < 0.5)
-				discard;
 			alpha = textureColor.a;
         } else {
             color += u_light.diffuseColor * u_material.diffuseColor * nDotL;
