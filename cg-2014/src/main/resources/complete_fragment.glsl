@@ -46,14 +46,10 @@ void main(void)
 	vec4 diffuse = brightness * u_light.diffuseColor * u_material.diffuseColor;
 	
 	vec4 texColor = vec4(1.0, 1.0, 1.0, 1.0);
-	//float alpha = 0.0;
 	if (u_is_texture) {
 		texColor = texture(u_texture, v_texcoord);
 		if (texColor.a < 0.1)
 			discard;
-		//alpha = texColor.a;
-	} else {
-		//alpha = 1.0;
 	}
 	
 	vec3 reflectLightDirection = reflect(lightDirection, unitNormal);
@@ -61,7 +57,7 @@ void main(void)
 	specularFactor = max(specularFactor, 0.0);
 	float specularIntensity = pow(specularFactor, u_material.specularExponent);
 	
-	vec3 finalSpecular = u_material.specularColor.xyz * u_light.specularColor.xyz * specularIntensity;
+	vec4 finalSpecular = u_material.specularColor * u_light.specularColor * specularIntensity;
 	
-	fragColor = (diffuse + vec4(finalSpecular, 1.0) + finalAmbientColor) * texColor;
+	fragColor = (diffuse + finalSpecular + finalAmbientColor) * texColor;
 }

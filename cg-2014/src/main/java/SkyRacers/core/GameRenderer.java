@@ -67,7 +67,9 @@ public class GameRenderer {
         gl.glEnable(GL2.GL_BLEND);
         gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
         gl.glDisable(GL2.GL_CULL_FACE);
+        gl.glDepthMask(false);  // disable write to depth buffer
         RenderLayer(objects.get(RENDER_TYPE.RENDER_TRANSPARENT));
+        gl.glDepthMask(true); 
         
         // --
         RenderLayer(objects.get(RENDER_TYPE.RENDER_WATER));

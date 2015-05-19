@@ -679,10 +679,12 @@ public class JWavefrontObject {
 
                       texture = new Texture(name);
                       texture.texturedata = AWTTextureIO.newTexture(GLProfile.get(GLProfile.GL3), image, true);
-                      texture.texturedata.setTexParameteri(gl, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+                      gl.glGenerateMipmap(GL3.GL_TEXTURE_2D);
+                      texture.texturedata.setTexParameteri(gl, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR_MIPMAP_LINEAR);
                       texture.texturedata.setTexParameteri(gl, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
                       texture.texturedata.setTexParameteri(gl, GL.GL_TEXTURE_WRAP_S, GL.GL_REPEAT);
                       texture.texturedata.setTexParameteri(gl, GL.GL_TEXTURE_WRAP_T, GL.GL_REPEAT);
+                      texture.texturedata.setTexParameterf(gl, GL3.GL_TEXTURE_LOD_BIAS, -2);
                       textures.add(texture);
                     } else {
                       Logger.getLogger(JWavefrontObject.class.getName()).log(Level.WARNING,
