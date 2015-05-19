@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package SkyRacers;
+package SkyRiders;
 
-import SkyRacers.core.MeshRenderer;
+import SkyRiders.core.MeshRenderer;
 
 public class Profiler {
     private static int renderingObjects;

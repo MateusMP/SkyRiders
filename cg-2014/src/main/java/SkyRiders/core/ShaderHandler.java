@@ -1,4 +1,4 @@
-package SkyRacers.core;
+package SkyRiders.core;
 
 import br.usp.icmc.vicg.gl.util.GeneralShader;
 import javax.media.opengl.GL3;

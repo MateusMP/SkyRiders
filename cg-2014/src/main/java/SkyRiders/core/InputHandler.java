@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package SkyRacers.core;
+package SkyRiders.core;
 
 import java.awt.KeyEventDispatcher;
 import java.awt.event.KeyAdapter;

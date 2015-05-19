@@ -1,4 +1,4 @@
-package SkyRacers.core;
+package SkyRiders.core;
 
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import jogamp.graph.math.MathFloat;

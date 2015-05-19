@@ -1,7 +1,7 @@
-package SkyRacers.core;
+package SkyRiders.core;
 
 import MathClasses.Transform;
-import SkyRacers.SkyRacers;
+import SkyRiders.SkyRiders;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import br.usp.icmc.vicg.gl.model.Sphere;
 import br.usp.icmc.vicg.gl.util.Shader;
@@ -53,7 +53,7 @@ public class GameRenderer {
     }
   
     public static void Render(Map map){
-        GL3 gl = SkyRacers.hdl().gl;
+        GL3 gl = SkyRiders.hdl().gl;
         
         for (GameObject o : map.objects){
             AddObject(o);
@@ -108,7 +108,7 @@ public class GameRenderer {
         float radius = o.getObjectRadius();
         Transform t = o.getTransform();
         Sphere sp = new Sphere(radius);
-        sp.init(SkyRacers.hdl().gl, ShaderHandler.generalShader);
+        sp.init(SkyRiders.hdl().gl, ShaderHandler.generalShader);
         sp.bind();
         ShaderHandler.generalShader.LoadModelMatrix(t.getMatrix());
         sp.draw();

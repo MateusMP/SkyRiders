@@ -1,13 +1,13 @@
-package SkyRacers;
+package SkyRiders;
 
-import SkyRacers.core.Camera;
-import SkyRacers.core.GameRenderer;
-import SkyRacers.core.InputHandler;
-import SkyRacers.core.Map;
-import SkyRacers.core.MapLoader;
-import SkyRacers.core.MeshHandler;
-import SkyRacers.core.ObjMesh;
-import SkyRacers.core.ShaderHandler;
+import SkyRiders.core.Camera;
+import SkyRiders.core.GameRenderer;
+import SkyRiders.core.InputHandler;
+import SkyRiders.core.Map;
+import SkyRiders.core.MapLoader;
+import SkyRiders.core.MeshHandler;
+import SkyRiders.core.ObjMesh;
+import SkyRiders.core.ShaderHandler;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import com.jogamp.opengl.util.AnimatorBase;
 import com.jogamp.opengl.util.FPSAnimator;
@@ -25,9 +25,9 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 
-public class SkyRacers implements GLEventListener {
+public class SkyRiders implements GLEventListener {
     
-    private static SkyRacers skyracers;
+    private static SkyRiders skyracers;
 
     public GL3 gl;
     
@@ -48,7 +48,7 @@ public class SkyRacers implements GLEventListener {
     public static InputHandler inputHandler;
     
 
-    public SkyRacers() {
+    public SkyRiders() {
         
         skyracers = this;
         
@@ -58,7 +58,7 @@ public class SkyRacers implements GLEventListener {
 
     }
     
-    public static SkyRacers hdl()
+    public static SkyRiders hdl()
     {
         return skyracers;
     }
@@ -93,7 +93,7 @@ public class SkyRacers implements GLEventListener {
         try{
             MeshHandler mh = new MeshHandler(this.gl, ShaderHandler.generalShader);
         } catch (Exception ex) {
-            Logger.getLogger(SkyRacers.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SkyRiders.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         try {
@@ -119,7 +119,7 @@ public class SkyRacers implements GLEventListener {
             setCurrentCamera(stdcam);*/
             
         } catch (Exception ex) {
-            Logger.getLogger(SkyRacers.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SkyRiders.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -199,7 +199,7 @@ public class SkyRacers implements GLEventListener {
         glCanvas = new GLCanvas(glcaps);
 
         // Add listener to panel
-        SkyRacers listener = new SkyRacers();
+        SkyRiders listener = new SkyRiders();
         glCanvas.addGLEventListener(listener);
         
         inputHandler = new InputHandler();

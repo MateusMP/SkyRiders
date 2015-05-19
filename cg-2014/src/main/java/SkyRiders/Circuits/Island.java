@@ -1,8 +1,8 @@
 
-package SkyRacers.Circuits;
+package SkyRiders.Circuits;
 
-import SkyRacers.core.Map;
-import SkyRacers.core.ShaderHandler;
+import SkyRiders.core.Map;
+import SkyRiders.core.ShaderHandler;
 import br.usp.icmc.vicg.gl.core.Light;
 import br.usp.icmc.vicg.gl.util.Shader;
 import javax.media.opengl.GL3;

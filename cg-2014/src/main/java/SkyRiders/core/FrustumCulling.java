@@ -1,4 +1,4 @@
-package SkyRacers.core;
+package SkyRiders.core;
 
 import MathClasses.Plane;
 import MathClasses.Vector3;

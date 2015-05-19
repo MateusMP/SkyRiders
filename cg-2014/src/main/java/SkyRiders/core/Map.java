@@ -1,4 +1,4 @@
-package SkyRacers.core;
+package SkyRiders.core;
 
 import MathClasses.Transform;
 import java.util.ArrayList;

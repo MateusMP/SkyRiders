@@ -3,18 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package SkyRacers;
+package SkyRiders;
 
 import MathClasses.Transform;
-import SkyRacers.core.GameObject;
+import SkyRiders.core.GameObject;
 import MathClasses.Vector3;
-import SkyRacers.core.GameRenderer.RENDER_TYPE;
-import SkyRacers.core.LODMesh;
-import SkyRacers.core.Line;
-import SkyRacers.core.MeshHandler;
-import SkyRacers.core.MeshRenderer;
-import SkyRacers.core.ObjMesh;
-import SkyRacers.core.ShaderHandler;
+import SkyRiders.core.GameRenderer.RENDER_TYPE;
+import SkyRiders.core.LODMesh;
+import SkyRiders.core.Line;
+import SkyRiders.core.MeshHandler;
+import SkyRiders.core.MeshRenderer;
+import SkyRiders.core.ObjMesh;
+import SkyRiders.core.ShaderHandler;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 
 public class Airplane extends GameObject {
@@ -35,8 +35,7 @@ public class Airplane extends GameObject {
     // Propeller
     private ObjMesh om;
     private LODMesh lm;
-    private float rotationCurrent;
-    private float rotationMax;
+    private float rotationPropellerCurrent;
     
     // Movement
     Vector3 acceleration;
@@ -93,6 +92,7 @@ public class Airplane extends GameObject {
         
         om = new ObjMesh(MeshHandler.hdl().LoadMesh("./Assets/graphics/cartoonAriplanePropeller.obj"), "");
         lm = new LODMesh(om);
+        rotationPropellerCurrent = 0;
                 
         LRrotationTarget = 0.0f;
         LRrotationCurrent = 0.0f;
@@ -220,6 +220,13 @@ public class Airplane extends GameObject {
         
         //System.out.println("A: "+ acceleration + " V: "+ velocity + velocity.norm());
         
+        // Propeller
+        rotationPropellerCurrent += velocity.norm()*0.5f;
+        
+        if(rotationPropellerCurrent > 360){
+            rotationPropellerCurrent -= 360;
+        }
+        
         // Move
         transform.position = transform.position.add(velocity.mul(h));
     }
@@ -228,6 +235,7 @@ public class Airplane extends GameObject {
     public void draw()
     {
         Matrix4 modelMatrix = new Matrix4();
+        Matrix4 matrixReloaded = new Matrix4();
         // DEBUG LINE
         modelMatrix.loadIdentity();
         ShaderHandler.generalShader.LoadModelMatrix(modelMatrix);
@@ -235,7 +243,7 @@ public class Airplane extends GameObject {
         Vector3 b = transform.position;
         Vector3 e = transform.position.add(forward.normalize().mul(15.0f) );
         Line l = new Line( b, e);
-        l.init(SkyRacers.hdl().gl, ShaderHandler.generalShader);
+        l.init(SkyRiders.hdl().gl, ShaderHandler.generalShader);
         l.bind();
         l.draw();
         
@@ -244,12 +252,18 @@ public class Airplane extends GameObject {
         modelMatrix.translate(transform.position.x, transform.position.y, transform.position.z);
         modelMatrix.rotate(transform.rotation.y, 0, 1.0f, 0);
         modelMatrix.rotate(transform.rotation.x, 1.0f, 0, 0);
-        modelMatrix.rotate(transform.rotation.z, 0, 0, 1.0f);
-        modelMatrix.scale(transform.scale.x, transform.scale.y, transform.scale.z);
-        //modelMatrix.bind();
-        ShaderHandler.generalShader.LoadModelMatrix(modelMatrix);
+
+        matrixReloaded.copyFrom(modelMatrix);
         
+        modelMatrix.rotate(transform.rotation.z + rotationPropellerCurrent, 0, 0, 1.0f);
+        modelMatrix.scale(transform.scale.x, transform.scale.y, transform.scale.z);
+        ShaderHandler.generalShader.LoadModelMatrix(modelMatrix);
         lm.ActiveMeshDraw();
+        
+        matrixReloaded.rotate(transform.rotation.z, 0, 0, 1.0f);
+        matrixReloaded.scale(transform.scale.x, transform.scale.y, transform.scale.z);
+        
+        ShaderHandler.generalShader.LoadModelMatrix(matrixReloaded);
         mesh.ActiveMeshDraw();
     }
 

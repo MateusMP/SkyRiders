@@ -1,7 +1,7 @@
-package SkyRacers.core;
+package SkyRiders.core;
 
 import MathClasses.Vector3;
-import SkyRacers.Profiler;
+import SkyRiders.Profiler;
 import java.util.ArrayList;
 
 

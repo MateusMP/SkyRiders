@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package SkyRacers.core;
+package SkyRiders.core;
 
 import MathClasses.Vector3;
 import br.usp.icmc.vicg.gl.model.SimpleModel;

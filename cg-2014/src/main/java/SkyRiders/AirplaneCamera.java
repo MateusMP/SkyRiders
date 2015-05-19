@@ -1,7 +1,7 @@
-package SkyRacers;
+package SkyRiders;
 
 import MathClasses.Vector3;
-import SkyRacers.core.Camera;
+import SkyRiders.core.Camera;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 
 public class AirplaneCamera implements Camera {

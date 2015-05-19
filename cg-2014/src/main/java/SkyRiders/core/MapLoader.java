@@ -1,7 +1,7 @@
-package SkyRacers.core;
+package SkyRiders.core;
 
 import MathClasses.Transform;
-import SkyRacers.Circuits.Island;
+import SkyRiders.Circuits.Island;
 import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -78,7 +78,7 @@ public class MapLoader
     private static Map ProcessObjects(ArrayList<VirtualObject> objects)
     {
         // Map m = new Map();
-        Map m = new Island(SkyRacers.SkyRacers.hdl().gl, ShaderHandler.generalShader);
+        Map m = new Island(SkyRiders.SkyRiders.hdl().gl, ShaderHandler.generalShader);
         
         for (VirtualObject obj : objects)
         {

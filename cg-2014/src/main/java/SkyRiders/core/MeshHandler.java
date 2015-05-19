@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package SkyRacers.core;
+package SkyRiders.core;
 
-import SkyRacers.SkyRacers;
+import SkyRiders.SkyRiders;
 import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
 import br.usp.icmc.vicg.gl.util.Shader;
 import java.io.File;
@@ -66,7 +66,7 @@ public class MeshHandler {
             // mesh.unitize();
             mesh.dump();
         } catch (IOException ex) {
-            Logger.getLogger(SkyRacers.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SkyRiders.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

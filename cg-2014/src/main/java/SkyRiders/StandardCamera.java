@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package SkyRacers;
+package SkyRiders;
 
 import MathClasses.Vector3;
-import SkyRacers.core.Camera;
+import SkyRiders.core.Camera;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
