@@ -10,8 +10,11 @@ import SkyRacers.core.GameObject;
 import MathClasses.Vector3;
 import static SkyRacers.SkyRacers.modelMatrix;
 import SkyRacers.core.GameRenderer.RENDER_TYPE;
+import SkyRacers.core.LODMesh;
 import SkyRacers.core.Line;
+import SkyRacers.core.MeshHandler;
 import SkyRacers.core.MeshRenderer;
+import SkyRacers.core.ObjMesh;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 
 public class Airplane extends GameObject {
@@ -28,6 +31,12 @@ public class Airplane extends GameObject {
     private boolean cmd_left;
     private boolean cmd_accel;
     private boolean cmd_brake;
+    
+    // Propeller
+    private ObjMesh om;
+    private LODMesh lm;
+    private float rotationCurrent;
+    private float rotationMax;
     
     // Movement
     Vector3 acceleration;
@@ -82,6 +91,9 @@ public class Airplane extends GameObject {
         
         initialRot = t.rotation.clone();
         
+        om = new ObjMesh(MeshHandler.hdl().LoadMesh("./Assets/graphics/cartoonAriplanePropeller.obj"), "");
+        lm = new LODMesh(om);
+                
         LRrotationTarget = 0.0f;
         LRrotationCurrent = 0.0f;
         UDrotationCurrent = 0.0f;
@@ -190,7 +202,7 @@ public class Airplane extends GameObject {
         
         // Update transform rotation values
         transform.rotation.x = (float)UDrotationCurrent     +initialRot.x; // pitch
-        transform.rotation.y = (float)roationXZ/2.0f             +initialRot.y; // yaw
+        transform.rotation.y = (float)roationXZ/2.0f        +initialRot.y; // yaw
         transform.rotation.z = (float)LRrotationCurrent*1.1f+initialRot.z; // roll
         
         // Movement rotation
@@ -234,6 +246,7 @@ public class Airplane extends GameObject {
         modelMatrix.scale(transform.scale.x, transform.scale.y, transform.scale.z);
         modelMatrix.bind();
         
+        lm.ActiveMeshDraw();
         mesh.ActiveMeshDraw();
     }
 

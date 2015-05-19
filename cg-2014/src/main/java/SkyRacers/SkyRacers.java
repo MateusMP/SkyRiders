@@ -104,7 +104,7 @@ public class SkyRacers implements GLEventListener {
             gameMap = MapLoader.LoadMap("island.txt");
             
             // Create player airplane and define a controller for it
-            ObjMesh om = new ObjMesh(MeshHandler.hdl().LoadMesh("./Assets/graphics/cartoonAriplane.obj"), "");
+            ObjMesh om = new ObjMesh(MeshHandler.hdl().LoadMesh("./Assets/graphics/cartoonAriplaneNoPropeller.obj"), "");
             Airplane plane = new Airplane(gameMap.startpoint, om);
             gameMap.addObject(plane);
             AirplaneController controller = new AirplaneController(plane);
