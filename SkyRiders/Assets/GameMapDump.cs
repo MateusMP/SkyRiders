@@ -29,6 +29,8 @@ public static class GameMapDump
                 }
             }
             Debug.Log("Scene dumped to " + path);
+            
+            var thing = EditorUtility.DisplayDialog("Dump Assets", "It Worked !!", "Uhul !");
         }
     }
 
