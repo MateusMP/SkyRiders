@@ -2,7 +2,7 @@ package SkyRacers.core;
 
 import MathClasses.Transform;
 import MathClasses.Vector3;
-import static SkyRacers.SkyRacers.modelMatrix;
+import br.usp.icmc.vicg.gl.matrix.Matrix4;
 
 public class GameObject {
     
@@ -19,7 +19,8 @@ public class GameObject {
         
         mesh = new LODMesh(model3D);
         transform = t;
-                
+        transform.Invalidate();
+        
         calculateObjectRadius();
     }
     
@@ -31,6 +32,7 @@ public class GameObject {
         transform.rotation.set(0, 0, 0);
         transform.position = pos;
         transform.scale.set(1,1,1);
+        transform.Invalidate();
         
         calculateObjectRadius();
     }
@@ -43,6 +45,7 @@ public class GameObject {
         transform.rotation.set(0, 0, 0);
         transform.position = pos;
         transform.scale = scale;
+        transform.Invalidate();
         
         calculateObjectRadius();
     }
@@ -54,13 +57,7 @@ public class GameObject {
     
     public void draw()
     {
-        modelMatrix.loadIdentity();
-        modelMatrix.translate(transform.position.x, transform.position.y, transform.position.z);
-        modelMatrix.rotate(transform.rotation.x, 1.0f, 0, 0);
-        modelMatrix.rotate(transform.rotation.y, 0, 1.0f, 0);
-        modelMatrix.rotate(transform.rotation.z, 0, 0, 1.0f);
-        modelMatrix.scale(transform.scale.x, transform.scale.y, transform.scale.z);
-        modelMatrix.bind();
+        ShaderHandler.generalShader.LoadModelMatrix(transform.getMatrix());
         
         mesh.ActiveMeshDraw();
     }

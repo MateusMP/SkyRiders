@@ -42,7 +42,7 @@ public class AirplaneCamera implements Camera {
         viewMatrix.lookAt( position.x, position.y, position.z,
                            lookat.x, lookat.y, lookat.z,
                            up.x, up.y, up.z);
-        viewMatrix.bind();
+        //viewMatrix.bind();
     }
     
 

@@ -5,10 +5,12 @@ import br.usp.icmc.vicg.gl.jwavefront.Group;
 import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
 import br.usp.icmc.vicg.gl.jwavefront.Triangle;
 import br.usp.icmc.vicg.gl.jwavefront.Vertex;
+import br.usp.icmc.vicg.gl.util.Shader;
 import java.util.ArrayList;
 
 public class ObjMesh implements MeshRenderer {
     
+    private Shader shader;
     private JWavefrontObject fullmesh;
     private Group g;
     private ArrayList<Vertex> vertices;
@@ -39,7 +41,7 @@ public class ObjMesh implements MeshRenderer {
     @Override
     public void draw()
     {
-        if (g!=null){
+        if (g != null){
             fullmesh.drawGroup(g);
         } else {
             fullmesh.draw();
@@ -103,6 +105,16 @@ public class ObjMesh implements MeshRenderer {
     @Override
     public int getVAO() {
         return g.vao;
+    }
+
+    @Override
+    public Shader getShader() {
+        return shader;
+    }
+    
+    @Override
+    public void setShader(Shader s){
+        shader = s;
     }
     
     

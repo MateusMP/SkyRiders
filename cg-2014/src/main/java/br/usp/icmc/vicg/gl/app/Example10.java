@@ -85,12 +85,12 @@ public class Example10 implements GLEventListener {
             0, 1, 0);
     viewMatrix.bind();
 
-    light.init(gl, shader);
+//    light.init(gl, shader);
     light.setPosition(new float[]{0.0f, 1.0f, 2.0f, 0.0f});
     light.setAmbientColor(new float[]{0.9f, 0.9f, 0.9f, 0.0f});
     light.setDiffuseColor(new float[]{1.0f, 1.0f, 1.0f, 0.0f});
     light.setSpecularColor(new float[]{0.9f, 0.9f, 0.9f, 0.0f});
-    light.bind();
+//    light.bind();
 
     material.init(gl, shader);
     material.setAmbientColor(new float[]{0.1f, 0.1f, 0.1f, 0.0f});

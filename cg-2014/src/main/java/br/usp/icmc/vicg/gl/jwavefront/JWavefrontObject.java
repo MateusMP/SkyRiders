@@ -499,6 +499,9 @@ public class JWavefrontObject {
    * @return Return the first group with the given name.
    */
   public Group findGroup(String name) {
+      if (name == null)
+          return null;
+      
     for (int i = 0; i < groups.size(); i++) {
       if (groups.get(i).name.toLowerCase().equals(name.toLowerCase())) {
         return groups.get(i);

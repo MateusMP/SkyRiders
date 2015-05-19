@@ -24,52 +24,40 @@ uniform mat4 u_modelMatrix;
 uniform sampler2D u_texture;
 uniform bool u_is_texture;
 
-in vec3 v_normal;
-in vec3 v_eye;
+
 in vec2 v_texcoord;
-in vec4 v_position;
+in vec3 v_normal;		// Surface normal
+in vec3 toLightVector;
+in vec3 toCameraVector;
 
 out vec4 fragColor;
 
 void main(void)
 {
-    vec4 color = u_light.ambientColor * u_material.ambientColor;
+	vec4 finalAmbientColor = u_light.ambientColor * u_material.ambientColor;
 
-	vec3 normal = normalize(v_normal);
-
-    vec3 direction = normalize(vec3((u_viewMatrix * u_modelMatrix * u_light.position) - v_position));
-
-	float nDotL = max(dot(direction, normal), 0.0);
-
-	float alpha = 1.0;
+	vec3 unitNormal = normalize(v_normal);
+	vec3 unitLightVector = normalize(toLightVector);
+	vec3 unitToCamera = normalize(toCameraVector);
+	vec3 lightDirection = -unitLightVector;
 	
-	if (nDotL > 0.0)
-	{
-        if(u_is_texture) {
-			vec4 textureColor = texture(u_texture, v_texcoord);
-            color += textureColor * nDotL;
-			alpha = textureColor.a;
-        } else {
-            color += u_light.diffuseColor * u_material.diffuseColor * nDotL;
-        }
-
-        vec3 eye = normalize(v_eye);
-
-        // Incident vector is opposite light direction vector.
-        vec3 reflection = reflect(-direction, normal);
-
-        float eDotR = max(dot(eye, reflection), 0.0);
-
-		float specularIntensity = 0.0;
-		if (eDotR > 0.0)
-		{
-			specularIntensity = pow(eDotR, u_material.specularExponent);
-		}
-
-		color += u_light.specularColor * u_material.specularColor * specularIntensity;
+	float nDotl = dot(unitNormal, unitLightVector);
+	float brightness = max(nDotl, 0.0);
+	vec4 diffuse = brightness * u_light.diffuseColor * u_material.diffuseColor;
+	
+	vec4 texColor = vec4(1.0, 1.0, 1.0, 1.0);
+	if (u_is_texture) {
+		texColor = texture(u_texture, v_texcoord);
+		if (texColor.a < 0.1)
+			discard;
 	}
 	
-	color.a = alpha;
+	vec3 reflectLightDirection = reflect(lightDirection, unitNormal);
+	float specularFactor = dot(reflectLightDirection, unitToCamera);
+	specularFactor = max(specularFactor, 0.0);
+	float specularIntensity = pow(specularFactor, u_material.specularExponent);
 	
-	fragColor = color;
+	vec4 finalSpecular = u_material.specularColor * u_light.specularColor * specularIntensity;
+	
+	fragColor = (diffuse + finalSpecular + finalAmbientColor) * texColor;
 }

@@ -18,7 +18,7 @@ public class Matrix4 {
 
     private Stack<float[]> stack;
     private GL3 gl;
-    private int handle;
+    public int handle;
     private float[] matrix;
 
     public Matrix4() {
@@ -282,5 +282,11 @@ public class Matrix4 {
 
 //        return result;
         return new Vector3(X, Y, Z);
+    }
+
+    public void copyFrom(Matrix4 m) {
+        for ( int i = 0; i < 16; ++i ){
+            this.matrix[i] = m.matrix[i];
+        }
     }
 }
