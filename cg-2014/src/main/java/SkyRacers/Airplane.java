@@ -8,13 +8,13 @@ package SkyRacers;
 import MathClasses.Transform;
 import SkyRacers.core.GameObject;
 import MathClasses.Vector3;
-import static SkyRacers.SkyRacers.modelMatrix;
 import SkyRacers.core.GameRenderer.RENDER_TYPE;
 import SkyRacers.core.LODMesh;
 import SkyRacers.core.Line;
 import SkyRacers.core.MeshHandler;
 import SkyRacers.core.MeshRenderer;
 import SkyRacers.core.ObjMesh;
+import SkyRacers.core.ShaderHandler;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 
 public class Airplane extends GameObject {
@@ -227,13 +227,15 @@ public class Airplane extends GameObject {
     @Override
     public void draw()
     {
+        Matrix4 modelMatrix = new Matrix4();
         // DEBUG LINE
         modelMatrix.loadIdentity();
-        modelMatrix.bind();
+        ShaderHandler.generalShader.LoadModelMatrix(modelMatrix);
+//        modelMatrix.bind();
         Vector3 b = transform.position;
         Vector3 e = transform.position.add(forward.normalize().mul(15.0f) );
         Line l = new Line( b, e);
-        l.init(SkyRacers.hdl().gl, SkyRacers.hdl().shader);
+        l.init(SkyRacers.hdl().gl, ShaderHandler.generalShader);
         l.bind();
         l.draw();
         
@@ -244,7 +246,8 @@ public class Airplane extends GameObject {
         modelMatrix.rotate(transform.rotation.x, 1.0f, 0, 0);
         modelMatrix.rotate(transform.rotation.z, 0, 0, 1.0f);
         modelMatrix.scale(transform.scale.x, transform.scale.y, transform.scale.z);
-        modelMatrix.bind();
+        //modelMatrix.bind();
+        ShaderHandler.generalShader.LoadModelMatrix(modelMatrix);
         
         lm.ActiveMeshDraw();
         mesh.ActiveMeshDraw();

@@ -2,10 +2,10 @@
 package SkyRacers.Circuits;
 
 import SkyRacers.core.Map;
+import SkyRacers.core.ShaderHandler;
 import br.usp.icmc.vicg.gl.core.Light;
 import br.usp.icmc.vicg.gl.util.Shader;
 import javax.media.opengl.GL3;
-
 
 public class Island extends Map{
     
@@ -27,19 +27,19 @@ public class Island extends Map{
         
         InitLights();
     }
-    
+   
     private void InitLights()
     {
         light = new Light();
-        
+     
         //init the light
-        light.setPosition(new float[]{0, 20, 0, 1.0f});
-        light.setAmbientColor(new float[]{0.1f, 0.1f, 0.1f, 1.0f});
+        light.setPosition(new float[]{0, 90, 0, 1.0f});
+        light.setAmbientColor(new float[]{0.6f, 0.6f, 0.6f, 1.0f});
         light.setDiffuseColor(new float[]{0.75f, 0.75f, 0.75f, 1.0f});
         light.setSpecularColor(new float[]{0.7f, 0.7f, 0.7f, 1.0f});
-        light.init(gl, shader);
-        
-        light.bind();
+//        light.init(gl, shader);
+//        
+//        light.bind();
     }
     
     @Override
@@ -47,11 +47,12 @@ public class Island extends Map{
     {
         double rad = x * 3.14159 / 180.0;
         
-        y = (float) (Math.sin( rad )*500);
+        y = (float) (Math.sin( rad )*400);
         x += 0.5;
         
-        light.setPosition(new float[]{0.0f, 60, y, 0.0f});
-        light.bind();
+        light.setPosition(new float[]{0.0f, 90, y, 0.0f});
+        ShaderHandler.generalShader.LoadSunLight(light);
+//        light.bind();
         
         super.update();
     }

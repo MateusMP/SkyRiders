@@ -94,7 +94,7 @@ public class Example09 extends KeyAdapter implements GLEventListener {
     light.setAmbientColor(new float[]{0.1f, 0.1f, 0.1f, 1.0f});
     light.setDiffuseColor(new float[]{0.75f, 0.75f, 0.75f, 1.0f});
     light.setSpecularColor(new float[]{0.7f, 0.7f, 0.7f, 1.0f});
-    light.init(gl, shader);
+//    light.init(gl, shader);
   }
 
   @Override
@@ -124,7 +124,7 @@ public class Example09 extends KeyAdapter implements GLEventListener {
             0, 1, 0);
     viewMatrix.bind();
 
-    light.bind();
+//    light.bind();
 
     model.draw();
 

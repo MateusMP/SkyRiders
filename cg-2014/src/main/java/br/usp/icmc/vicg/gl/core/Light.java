@@ -25,6 +25,24 @@ public class Light {
     setSpecularColor(new float[]{1.0f, 1.0f, 1.0f, 1.0f});
   }
 
+    public float[] getAmbientColor() {
+        return ambientColor;
+    }
+
+    public float[] getDiffuseColor() {
+        return diffuseColor;
+    }
+
+    public float[] getSpecularColor() {
+        return specularColor;
+    }
+
+    public float[] getPosition() {
+        return position;
+    }
+  
+  
+
   public final void setPosition(float[] position) {
     this.position = Arrays.copyOf(position, position.length);
   }
@@ -41,18 +59,18 @@ public class Light {
     this.specularColor = Arrays.copyOf(specularColor, specularColor.length);
   }
 
-  public void init(GL3 gl, Shader shader) {
-    this.gl = gl;
-    this.positionHandle = shader.getUniformLocation("u_light.position");
-    this.ambientColorHandle = shader.getUniformLocation("u_light.ambientColor");
-    this.diffuseColorHandle = shader.getUniformLocation("u_light.diffuseColor");
-    this.specularColorHandle = shader.getUniformLocation("u_light.specularColor");
-  }
-
-  public void bind() {
-    gl.glUniform4fv(positionHandle, 1, Buffers.newDirectFloatBuffer(position));
-    gl.glUniform4fv(ambientColorHandle, 1, Buffers.newDirectFloatBuffer(ambientColor));
-    gl.glUniform4fv(diffuseColorHandle, 1, Buffers.newDirectFloatBuffer(diffuseColor));
-    gl.glUniform4fv(specularColorHandle, 1, Buffers.newDirectFloatBuffer(specularColor));
-  }
+//  public void init(GL3 gl, Shader shader) {
+//    this.gl = gl;
+//    this.positionHandle = shader.getUniformLocation("u_light.position");
+//    this.ambientColorHandle = shader.getUniformLocation("u_light.ambientColor");
+//    this.diffuseColorHandle = shader.getUniformLocation("u_light.diffuseColor");
+//    this.specularColorHandle = shader.getUniformLocation("u_light.specularColor");
+//  }
+//
+//  public void bind() {
+//    gl.glUniform4fv(positionHandle, 1, Buffers.newDirectFloatBuffer(position));
+//    gl.glUniform4fv(ambientColorHandle, 1, Buffers.newDirectFloatBuffer(ambientColor));
+//    gl.glUniform4fv(diffuseColorHandle, 1, Buffers.newDirectFloatBuffer(diffuseColor));
+//    gl.glUniform4fv(specularColorHandle, 1, Buffers.newDirectFloatBuffer(specularColor));
+//  }
 }
