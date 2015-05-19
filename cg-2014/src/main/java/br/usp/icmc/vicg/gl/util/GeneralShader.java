@@ -1,5 +1,6 @@
 package br.usp.icmc.vicg.gl.util;
 
+import br.usp.icmc.vicg.gl.core.Light;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 
 /**
@@ -14,20 +15,25 @@ public class GeneralShader extends Shader {
     //control if it is a texture or material
     private int is_texture_handle;
     private int texture_handle;
-    
+   
     // Matrices
     private int modelMatrix_hdl;
     private int projMatrix_hdl;
     public int viewMatrix_hdl;
     
-    private Matrix4 projMatrix;
-    private Matrix4 viewMatrix;
-
+    // Light
+    private int sunPositionHandle;
+    private int sunAmbientColorHandle;
+    private int sunDiffuseColorHandle;
+    private int sunSpeclarColorHandle;
+    
+    //
+    private Matrix4 projection;
+    private Matrix4 view;
+    private Light sun;
+    
     public GeneralShader(String vertex, String fragment) {
         super(vertex, fragment);
-        
-        projMatrix = new Matrix4();
-        viewMatrix = new Matrix4();
     }
 
     @Override
@@ -43,11 +49,24 @@ public class GeneralShader extends Shader {
         modelMatrix_hdl = super.getUniformLocation("u_modelMatrix");
         projMatrix_hdl = super.getUniformLocation("u_projectionMatrix");
         viewMatrix_hdl = super.getUniformLocation("u_viewMatrix");
+        
+        sunPositionHandle = super.getUniformLocation("u_light.position");
+        sunAmbientColorHandle = super.getUniformLocation("u_light.ambientColor");
+        sunDiffuseColorHandle = super.getUniformLocation("u_light.diffuseColor");
+        sunSpeclarColorHandle = super.getUniformLocation("u_light.specularColor");
+    }
+    
+    @Override
+    public void fullBind(){
+        super.bind();
+        super.loadMatrix(projMatrix_hdl, projection);
+        super.loadMatrix(viewMatrix_hdl, view);
+        LoadSunLight(sun);
     }
     
     public void LoadProjView(Matrix4 proj, Matrix4 view){
-        projMatrix.copyFrom(proj);
-        viewMatrix.copyFrom(view);
+        this.projection = proj;
+        this.view = view;
         
         super.loadMatrix(projMatrix_hdl, proj);
         super.loadMatrix(viewMatrix_hdl, view);
@@ -56,17 +75,13 @@ public class GeneralShader extends Shader {
     public void LoadModelMatrix(Matrix4 model){
         super.loadMatrix(modelMatrix_hdl, model);
     }
-
-    @Override
-    public void fullbind() {
-        super.bind();
-
-//        for (int i = 0; i < 16; ++i)
-//            System.out.print(viewMatrix.getMatrix()[i]+", ");
-//        System.out.println();
-        
-        super.loadMatrix(projMatrix_hdl, projMatrix);
-        super.loadMatrix(viewMatrix_hdl, viewMatrix);
-    }
     
+    public void LoadSunLight(Light l){
+        sun = l;
+        
+        super.loadVector4f(sunPositionHandle, l.getPosition());
+        super.loadVector4f(sunAmbientColorHandle, l.getAmbientColor());
+        super.loadVector4f(sunDiffuseColorHandle, l.getDiffuseColor());
+        super.loadVector4f(sunSpeclarColorHandle, l.getSpecularColor());
+    }
 }

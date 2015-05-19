@@ -67,7 +67,8 @@ public abstract class Shader {
         gl.glUseProgram(programHandle);
     }
     
-    public abstract void fullbind();
+    public abstract void fullBind();
+    
     
     public void unbind() {
         gl.glUseProgram(0);
@@ -105,6 +106,10 @@ public abstract class Shader {
 
     protected void loadVector(int location, Vector3 vector){
         gl.glUniform3f(location, vector.x, vector.y, vector.z);
+    }
+    
+    protected void loadVector4f(int location, float[] vector){
+        gl.glUniform4fv(location, 1, Buffers.newDirectFloatBuffer(vector));
     }
 
     protected void loadBoolean(int location, boolean b){

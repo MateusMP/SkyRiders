@@ -2,7 +2,6 @@ package SkyRacers.core;
 
 import SkyRacers.SkyRacers;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
-import br.usp.icmc.vicg.gl.util.GeneralShader;
 import br.usp.icmc.vicg.gl.util.Shader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,7 +88,7 @@ public class GameRenderer {
             
             if (ls_objs != null)
             {
-//                s.fullbind();
+                s.fullBind();
                 
                 for ( GameObject o : ls_objs ){
                     
@@ -99,7 +98,7 @@ public class GameRenderer {
                     o.draw();
                 }
                 
-//                s.unbind();
+                s.unbind();
             }
         }
     }
