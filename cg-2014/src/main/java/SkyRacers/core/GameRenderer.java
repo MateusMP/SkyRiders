@@ -1,7 +1,9 @@
 package SkyRacers.core;
 
+import MathClasses.Transform;
 import SkyRacers.SkyRacers;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
+import br.usp.icmc.vicg.gl.model.Sphere;
 import br.usp.icmc.vicg.gl.util.Shader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,10 +94,8 @@ public class GameRenderer {
                 
                 for ( GameObject o : ls_objs ){
                     
-//                    GeneralShader gs = (GeneralShader) s;
-//                    gs.LoadModelMatrix( o.getTransform().createMatrix() );
-                    
                     o.draw();
+                    DrawBoundingSphere(o);
                 }
                 
                 s.unbind();
@@ -103,14 +103,14 @@ public class GameRenderer {
         }
     }
     
-    
-            // DEBUG
-//            float radius = go.getObjectRadius();
-//            Transform t = go.getTransform();
-//            Sphere sp = new Sphere(radius);
-//            sp.init(SkyRacers.hdl().gl, SkyRacers.hdl().shader);
-//            sp.bind();
-//            SkyRacers.modelMatrix.loadIdentity();
-//            SkyRacers.modelMatrix.translate(t.position.x, t.position.y, t.position.z);
-//            sp.draw();
+    private static void DrawBoundingSphere(GameObject o)
+    {
+        float radius = o.getObjectRadius();
+        Transform t = o.getTransform();
+        Sphere sp = new Sphere(radius);
+        sp.init(SkyRacers.hdl().gl, ShaderHandler.generalShader);
+        sp.bind();
+        ShaderHandler.generalShader.LoadModelMatrix(t.getMatrix());
+        sp.draw();
+    }
 }
