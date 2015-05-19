@@ -30,12 +30,7 @@ public class ObjMesh implements MeshRenderer {
             return;
         }
         
-        vertices = new ArrayList<Vertex>() {
-      @Override
-      public Vertex get(int i) {
-        return super.get(i - 1);
-      }
-    };
+        vertices = new ArrayList<Vertex>();
         for (Triangle t : g.triangles){
             vertices.add(t.vertices[0]);
             vertices.add(t.vertices[1]);
@@ -70,11 +65,11 @@ public class ObjMesh implements MeshRenderer {
         /*
          * get the max/mins
          */
-        maxx = minx = verts.get(1).x;
-        maxy = miny = verts.get(1).y;
-        maxz = minz = verts.get(1).z;
+        maxx = minx = verts.get(0).x;
+        maxy = miny = verts.get(0).y;
+        maxz = minz = verts.get(0).z;
 
-        for (int i = 1; i <= verts.size(); i++) {
+        for (int i = 1; i < verts.size(); i++) {
             if (maxx < verts.get(i).x) {
               maxx = verts.get(i).x;
             }

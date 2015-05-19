@@ -53,8 +53,10 @@ public class Group {
         material.dump();
    
     }
+    
     public String name; // name of this group
     public ArrayList<Triangle> triangles; // array of triangle indices
     public ObjMaterial material; // index to material for group
     public int vao;
+    public int[] vbo;
 }

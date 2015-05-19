@@ -112,5 +112,6 @@ public class GameRenderer {
         sp.bind();
         ShaderHandler.generalShader.LoadModelMatrix(t.getMatrix());
         sp.draw();
+        sp.dispose();
     }
 }
