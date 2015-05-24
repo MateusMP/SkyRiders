@@ -1,6 +1,7 @@
 package br.usp.icmc.vicg.gl.util;
 
 import MathClasses.Vector3;
+import br.usp.icmc.vicg.gl.jwavefront.Texture;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -41,6 +42,11 @@ public abstract class Shader {
     }
     
     protected abstract void RegisterAllUniformLocations();
+    /**
+     * Load all global shader information
+     * Should load data in common used by all objects like ProjectionMatrix, or lights
+     */
+    public abstract void fullBind();
     
     public void init(final GL3 gl) {
         this.gl = gl;
@@ -63,13 +69,16 @@ public abstract class Shader {
         }
     }
     
+    /**
+     * Activates the shader
+     */
     public void bind() {
         gl.glUseProgram(programHandle);
     }
     
-    public abstract void fullBind();
-    
-    
+    /**
+     * Deactivate the shader
+     */
     public void unbind() {
         gl.glUseProgram(0);
     }
@@ -121,6 +130,12 @@ public abstract class Shader {
     
     protected void loadMatrix(int location, Matrix4 matrix){
         gl.glUniformMatrix4fv(location, 1, false, matrix.getMatrix(), 0);
+    }
+    
+    protected void loadTexture(int location, int textureID, Texture tex){
+        gl.glUniform1i(location, textureID);
+        gl.glActiveTexture(GL3.GL_TEXTURE0+textureID);
+        tex.texturedata.bind(gl);
     }
     
     private String[] readSources() {

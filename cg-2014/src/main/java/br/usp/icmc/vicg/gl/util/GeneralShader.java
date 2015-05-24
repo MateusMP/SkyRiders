@@ -1,12 +1,16 @@
 package br.usp.icmc.vicg.gl.util;
 
 import br.usp.icmc.vicg.gl.core.Light;
+import br.usp.icmc.vicg.gl.jwavefront.Texture;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
+import javax.media.opengl.GL3;
 
 /**
  * Shader generico
  */
 public class GeneralShader extends Shader {
+    
+    private static final int DIFFUSE_ID = 0;
     
     private int vertex_positions_handle;
     private int vertex_normals_handle;
@@ -84,6 +88,15 @@ public class GeneralShader extends Shader {
             super.loadVector4f(sunAmbientColorHandle, l.getAmbientColor());
             super.loadVector4f(sunDiffuseColorHandle, l.getDiffuseColor());
             super.loadVector4f(sunSpeclarColorHandle, l.getSpecularColor());
+        }
+    }
+    
+    public void LoadDiffuseTexture(Texture texture){
+        if (texture != null){
+            loadBoolean(is_texture_handle, true);
+            loadTexture(texture_handle, DIFFUSE_ID, texture);
+        } else {
+            loadBoolean(is_texture_handle, false);
         }
     }
 }
