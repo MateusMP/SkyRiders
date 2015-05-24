@@ -61,13 +61,15 @@ public class Airplane extends GameObject {
     float pitchSpeed;
     
     // Limits
-    final float MAX_UD = 70; // Direcao vertical
+    // final float MAX_UD = 70; // Direcao vertical
     final float MAX_LR = 70; // Direcao horizontal
     final float MAX_SPEED = 6;
     
     public Airplane(Transform t, MeshRenderer mesh)
     {
         super(t, mesh);
+        
+        name = "Airplane";
         
         cmd_up = false;
         cmd_down = false;
@@ -90,7 +92,7 @@ public class Airplane extends GameObject {
         
         initialRot = t.rotation.clone();
         
-        om = new ObjMesh(MeshHandler.hdl().LoadMesh("./Assets/graphics/cartoonAriplanePropeller.obj"), "");
+        om = new ObjMesh(MeshHandler.hdl().LoadMesh("./Assets/graphics/cartoonAriplanePropeller.obj"), "Helice");
         lm = new LODMesh(om);
         rotationPropellerCurrent = 0;
                 
@@ -128,14 +130,16 @@ public class Airplane extends GameObject {
     {
         if (cmd_up){
             UDrotationCurrent += pitchSpeed;
-            if (UDrotationCurrent > MAX_UD)
-                UDrotationCurrent = MAX_UD;
+            if (UDrotationCurrent > 360)
+                UDrotationCurrent -= 360;
+            
+            acceleration = acceleration.add( up.neg().mul(current_accel/5.0f) );
         } else if (cmd_down){
             UDrotationCurrent -= pitchSpeed;
-            if (UDrotationCurrent < -MAX_UD)
-                UDrotationCurrent = -MAX_UD;
+            if (UDrotationCurrent < 0)
+                UDrotationCurrent += 360;
             
-            acceleration = acceleration.add( up.mul(current_accel/10.0f) );
+            acceleration = acceleration.add( up.mul(current_accel/5.0f) );
         }
        
         if (cmd_left){

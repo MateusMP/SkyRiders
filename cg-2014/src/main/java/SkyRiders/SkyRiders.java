@@ -100,7 +100,7 @@ public class SkyRiders implements GLEventListener {
             gameMap = MapLoader.LoadMap("island.txt");
             
             // Create player airplane and define a controller for it
-            ObjMesh om = new ObjMesh(MeshHandler.hdl().LoadMesh("./Assets/graphics/cartoonAriplaneNoPropeller.obj"), null);
+            ObjMesh om = new ObjMesh(MeshHandler.hdl().LoadMesh("./Assets/graphics/cartoonAriplaneNoPropeller.obj"), "Airplane");
             om.setShader(ShaderHandler.generalShader);
             Airplane plane = new Airplane(gameMap.startpoint, om);
             gameMap.addObject(plane);
@@ -161,7 +161,6 @@ public class SkyRiders implements GLEventListener {
         // Projection Matrix
         projectionMatrix.loadIdentity();
         projectionMatrix.perspective(angle, aspect, nearDistance, farDistance);
-        //projectionMatrix.bind();
 
         // View Matrix
         currentCamera.DefineViewMatrix(viewMatrix);

@@ -13,7 +13,16 @@ public class Transform {
     public Transform(){
         position = new Vector3();
         rotation = new Vector3();
-        scale = new Vector3();
+        scale = new Vector3(1,1,1);
+        
+        matrix = new Matrix4();
+        needrebuild = true;
+    }
+    
+    public Transform(Transform t){
+        position = new Vector3(t.position);
+        rotation = new Vector3(t.rotation);
+        scale = new Vector3(t.scale);
         
         matrix = new Matrix4();
         needrebuild = true;

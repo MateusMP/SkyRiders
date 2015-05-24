@@ -12,6 +12,13 @@ public class Vector3
         this.y = 0;
         this.z = 0;
     }
+    
+    public Vector3(Vector3 v)
+    {
+        this.x = v.x;
+        this.y = v.y;
+        this.z = v.z;
+    }
 
     public Vector3(float x, float y, float z)
     {
@@ -86,6 +93,10 @@ public class Vector3
                 this.x*rhs.z - this.z*rhs.x,
                 this.x*rhs.y - this.y*rhs.x
         );
+    }
+    
+    public Vector3 scale(Vector3 scales){
+        return new Vector3( x*scales.x, y*scales.y, z*scales.z );
     }
 
     public boolean equals(Object obj)
