@@ -5,7 +5,6 @@
 package br.usp.icmc.vicg.gl.jwavefront;
 
 import MathClasses.BoundingBox;
-import MathClasses.Vector3;
 import br.usp.icmc.vicg.gl.util.Shader;
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.util.awt.ImageUtil;
@@ -903,30 +902,31 @@ public class JWavefrontObject {
       }
     }
 
+    // Normalize normals
     for (int i = 0; i < vertex_normals.length; i++) {
-      float norm = (float) Math.sqrt(vertex_normals[i].x * vertex_normals[i].x
-              + vertex_normals[i].y * vertex_normals[i].y
-              + vertex_normals[i].z * vertex_normals[i].z);
+        float norm = (float) Math.sqrt(vertex_normals[i].x * vertex_normals[i].x
+                + vertex_normals[i].y * vertex_normals[i].y
+                + vertex_normals[i].z * vertex_normals[i].z);
 
-      if (norm > 0) {
-        vertex_normals[i].x /= norm;
-        vertex_normals[i].y /= norm;
-        vertex_normals[i].z /= norm;
-      }
+        if (norm > 0) {
+            vertex_normals[i].x /= norm;
+            vertex_normals[i].y /= norm;
+            vertex_normals[i].z /= norm;
+        }
 
-      normals.add(vertex_normals[i]);
+        normals.add(vertex_normals[i]);
     }
 
     for (int i = 0; i < groups.size(); i++) {
-      Group group = groups.get(i);
+        Group group = groups.get(i);
 
-      for (int j = 0; j < group.triangles.size(); j++) {
-        Triangle triangle = group.triangles.get(j);
+        for (int j = 0; j < group.triangles.size(); j++) {
+            Triangle triangle = group.triangles.get(j);
 
-        triangle.vertex_normals[0] = vertex_normals[triangle.vertices[0].id];
-        triangle.vertex_normals[1] = vertex_normals[triangle.vertices[1].id];
-        triangle.vertex_normals[2] = vertex_normals[triangle.vertices[2].id];
-      }
+            triangle.vertex_normals[0] = vertex_normals[triangle.vertices[0].id];
+            triangle.vertex_normals[1] = vertex_normals[triangle.vertices[1].id];
+            triangle.vertex_normals[2] = vertex_normals[triangle.vertices[2].id];
+        }
     }
   }
 

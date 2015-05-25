@@ -34,7 +34,7 @@ public class GameRenderer {
         BoundingBox meshbox = obj.getMesh().getBoundingBox();
         
         Transform t = obj.getTransform();
-        Vector3 pos = t.position.add( meshbox.getCenter().add(meshbox.getOffset()).scale(t.scale) );
+        Vector3 pos = t.position.add( meshbox.getCenter().scale(t.scale) );
         
         if ( frustum.sphereIntersects( pos.x, pos.y, pos.z, obj.getObjectRadius()) == Frustum.Result.Miss )
             return;
@@ -136,7 +136,7 @@ public class GameRenderer {
         c.dispose();*/
         
         Transform w = new Transform();
-        w.position = objtrans.position.add( meshbox.getCenter().add(meshbox.getOffset()).scale(objtrans.scale) );
+        w.position = objtrans.position.add( meshbox.getCenter().scale(objtrans.scale) );
         w.scale = w.scale.scale(objtrans.scale);
                 
         Sphere sp = new Sphere(radius);

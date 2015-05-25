@@ -19,18 +19,42 @@ public class BoundingBox {
         this.max = max;
     }
     
+    /**
+     * Vector containing width, height and depth
+     * @return 
+     */
     public Vector3 getDimension(){
         return max.sub(min);
     }
     
+    /**
+     * Box center in space
+     * @return 
+     */
     public Vector3 getCenter(){
+        return max.add(min).div(2);
+    }
+    
+    /**
+     * Center position inside the box
+     * @return 
+     */
+    public Vector3 getBoxCenter(){
         return max.sub(min).div(2);
     }
     
+    /**
+     * Offset from origin
+     * @return 
+     */
     public Vector3 getOffset(){
         return min;
     }
     
+    /**
+     * Grow this box to contain the received box
+     * @param box 
+     */
     public void expand(BoundingBox box){
         if (box.min.x < min.x) min.x = box.min.x;
         if (box.min.y < min.y) min.y = box.min.y;
@@ -41,6 +65,10 @@ public class BoundingBox {
         if (box.max.z > max.z) max.z = box.max.z;
     }
     
+    /**
+     * Maximum bouding sphere obtained from diagonal distance/2
+     * @return 
+     */
     public float getMaximumSphereRadius(){
         return max.sub(min).norm()/2.0f;
     }

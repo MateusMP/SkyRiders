@@ -6,6 +6,7 @@
 
 package br.usp.icmc.vicg.gl.model;
 
+import MathClasses.Vector3;
 import javax.media.opengl.GL;
 
 /**
@@ -67,5 +68,51 @@ public class Sphere extends SimpleModel {
     @Override
     public void draw() {
         draw(GL.GL_LINE_LOOP);
+    }
+    
+    public static void main(String argv[]){
+        
+        Sphere s = new Sphere(1);
+        
+        Vector3 min = new Vector3();
+        Vector3 max = new Vector3();
+        for (int i = 0; i < s.vertex_buffer.length; i+=3){
+            float vx = s.vertex_buffer[i+0];
+            float vy = s.vertex_buffer[i+1];
+            float vz = s.vertex_buffer[i+2];
+            
+            if (vx < min.x) min.x = vx;
+            if (vy < min.y) min.y = vy;
+            if (vz < min.z) min.z = vz;
+            if (vx < min.x) min.x = vx;
+            if (vy < min.y) min.y = vy;
+            if (vz < min.z) min.z = vz;
+            if (vx < min.x) min.x = vx;
+            if (vy < min.y) min.y = vy;
+            if (vz < min.z) min.z = vz;
+            
+            if (vx > max.x) max.x = vx;
+            if (vy > max.y) max.y = vy;
+            if (vz > max.z) max.z = vz;
+            if (vx > max.x) max.x = vx;
+            if (vy > max.y) max.y = vy;
+            if (vz > max.z) max.z = vz;
+            if (vx > max.x) max.x = vx;
+            if (vy > max.y) max.y = vy;
+            if (vz > max.z) max.z = vz;
+        }
+        
+        System.out.println("MIN: "+min);
+        System.out.println("MAX: "+max);
+        System.out.println("DIM: "+max.sub(min));
+        
+        Vector3 middle = max.add(min).div(2);
+        System.out.println("MIDDLE: "+middle);
+        float mindist = middle.sub(min).norm();
+        float maxdist = middle.sub(max).norm();
+        float radius = Math.max(mindist, maxdist);
+        System.out.println("RADIUS: "+ radius);
+        
+        
     }
 }
