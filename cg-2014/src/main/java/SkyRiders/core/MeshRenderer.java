@@ -1,39 +1,39 @@
 package SkyRiders.core;
 
+import MathClasses.BoundingBox;
 import MathClasses.Vector3;
 import br.usp.icmc.vicg.gl.jwavefront.Vertex;
 import br.usp.icmc.vicg.gl.util.Shader;
 import java.util.ArrayList;
 
 public interface MeshRenderer {
-    
+        
     /**
-     * @return raios em x,y,z
+     * @return 
      */
-    Vector3 getSizes();
-    
+    public BoundingBox getBoundingBox();
     /**
      * 
      * @return Return a vector of vertices
      */
-    ArrayList<Vertex> getVertices();
+    public ArrayList<Vertex> getVertices();
     
     /**
      * @return Return meshes VAO id
      */
-    int getVAO();
+    public int getVAO();
     
     /**
      * Shader used to draw this object
      */
-    Shader getShader();
+    public Shader getShader();
     
     /**
      * Set shader used to draw
      * @param s 
      */
-    void setShader(Shader s);
+    public void setShader(Shader s);
     
-    void draw();
+    public void draw();
     
 }

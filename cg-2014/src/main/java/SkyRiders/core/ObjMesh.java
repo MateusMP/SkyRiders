@@ -1,5 +1,6 @@
 package SkyRiders.core;
 
+import MathClasses.BoundingBox;
 import MathClasses.Vector3;
 import br.usp.icmc.vicg.gl.jwavefront.Group;
 import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
@@ -55,54 +56,6 @@ public class ObjMesh implements MeshRenderer {
     }
 
     @Override
-    public Vector3 getSizes() {
-        float maxx, minx, maxy, miny, maxz, minz;
-        
-        ArrayList<Vertex> verts = vertices;
-
-        System.out.println( "TAMANHO DO VETOR: "+verts.size() );
-        
-        /*
-         * get the max/mins
-         */
-        maxx = minx = verts.get(0).x;
-        maxy = miny = verts.get(0).y;
-        maxz = minz = verts.get(0).z;
-
-        for (int i = 1; i < verts.size(); i++) {
-            if (maxx < verts.get(i).x) {
-              maxx = verts.get(i).x;
-            }
-            if (minx > verts.get(i).x) {
-              minx = verts.get(i).x;
-            }
-
-            if (maxy < verts.get(i).y) {
-              maxy = verts.get(i).y;
-            }
-            if (miny > verts.get(i).y) {
-              miny = verts.get(i).y;
-            }
-
-            if (maxz < verts.get(i).z) {
-              maxz = verts.get(i).z;
-            }
-            if (minz > verts.get(i).z) {
-              minz = verts.get(i).z;
-            }
-        }
-
-        /*
-         * calculate model width, height, and depth
-         */
-        float w = (maxx - minx);
-        float h = (maxy - miny);
-        float d = (maxz - minz);
-        
-        return new Vector3(w, h, d);
-    }
-
-    @Override
     public int getVAO() {
         return g.vao;
     }
@@ -116,6 +69,14 @@ public class ObjMesh implements MeshRenderer {
     public void setShader(Shader s){
         shader = s;
     }
-    
+
+    @Override
+    public BoundingBox getBoundingBox() {
+        
+        if (g != null)
+            return g.getBoundingBox();
+
+        return fullmesh.getBoundingBox();
+    }
     
 }

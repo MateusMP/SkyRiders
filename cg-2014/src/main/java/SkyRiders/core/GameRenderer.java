@@ -1,8 +1,11 @@
 package SkyRiders.core;
 
+import MathClasses.BoundingBox;
 import MathClasses.Transform;
+import MathClasses.Vector3;
 import SkyRiders.SkyRiders;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
+import br.usp.icmc.vicg.gl.model.Cube;
 import br.usp.icmc.vicg.gl.model.Sphere;
 import br.usp.icmc.vicg.gl.util.Shader;
 import java.util.ArrayList;
@@ -28,10 +31,13 @@ public class GameRenderer {
     
     public static void AddObject(GameObject obj)
     {
-        if ( frustum.sphereIntersects(obj.getTransform().position.x, obj.getTransform().position.y, 
-                                       obj.getTransform().position.z, obj.getObjectRadius()) == Frustum.Result.Miss )
-            return;
+        BoundingBox meshbox = obj.getMesh().getBoundingBox();
         
+        Transform t = obj.getTransform();
+        Vector3 pos = t.position.add( meshbox.getCenter().add(meshbox.getOffset()).scale(t.scale) );
+        
+        if ( frustum.sphereIntersects( pos.x, pos.y, pos.z, obj.getObjectRadius()) == Frustum.Result.Miss )
+            return;
         
         RENDER_TYPE layer_id = obj.getRenderType();
         Shader shader_id = obj.mesh.getActiveMesh().getShader();
@@ -68,9 +74,9 @@ public class GameRenderer {
         gl.glEnable(GL2.GL_BLEND);
         gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
         gl.glDisable(GL2.GL_CULL_FACE);
-        gl.glDepthMask(false);  // disable write to depth buffer
+//        gl.glDepthMask(false);  // disable write to depth buffer
         RenderLayer(objects.get(RENDER_TYPE.RENDER_TRANSPARENT));
-        gl.glDepthMask(true); 
+//        gl.glDepthMask(true); 
         
         // --
         RenderLayer(objects.get(RENDER_TYPE.RENDER_WATER));
@@ -94,8 +100,11 @@ public class GameRenderer {
                 
                 for ( GameObject o : ls_objs ){
                     
-                    o.draw();
-//                    DrawBoundingSphere(o);
+//                    if (o.getRenderType() == RENDER_TYPE.RENDER_SOLID){
+//                        System.out.println(o.name);
+                        o.draw();
+                        DrawBoundingSphere(o);
+//                    }
                 }
                 
                 s.unbind();
@@ -105,12 +114,35 @@ public class GameRenderer {
     
     private static void DrawBoundingSphere(GameObject o)
     {
+        BoundingBox meshbox = o.getMesh().getBoundingBox();
         float radius = o.getObjectRadius();
-        Transform t = o.getTransform();
+//        Vector3 offset = meshbox.getOffset();
+        Transform objtrans = o.getTransform();
+        
+//        System.out.println(radius + " " + meshbox.getDimension() + "center" + meshbox.getCenter() + " off "+offset);
+        
+        /*Transform w = new Transform();
+        w.position = objtrans.position.add( meshbox.getCenter().add(meshbox.getOffset()).scale(objtrans.scale) );
+        w.scale.x = meshbox.getDimension().x;
+        w.scale.y = meshbox.getDimension().y;
+        w.scale.z = meshbox.getDimension().z;
+        w.scale = w.scale.scale(objtrans.scale);
+        
+        Cube c = new Cube();
+        c.init(SkyRiders.hdl().gl, ShaderHandler.generalShader);
+        c.bind();
+        ShaderHandler.generalShader.LoadModelMatrix(w.getMatrix());
+        c.draw();
+        c.dispose();*/
+        
+        Transform w = new Transform();
+        w.position = objtrans.position.add( meshbox.getCenter().add(meshbox.getOffset()).scale(objtrans.scale) );
+        w.scale = w.scale.scale(objtrans.scale);
+                
         Sphere sp = new Sphere(radius);
         sp.init(SkyRiders.hdl().gl, ShaderHandler.generalShader);
         sp.bind();
-        ShaderHandler.generalShader.LoadModelMatrix(t.getMatrix());
+        ShaderHandler.generalShader.LoadModelMatrix(w.getMatrix());
         sp.draw();
         sp.dispose();
     }

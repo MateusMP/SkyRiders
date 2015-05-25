@@ -41,7 +41,7 @@ public static class GameMapDump
 
         string data = "";
         if (mf) data += "m ";	// Indica presenca de mesh
-        if (t && t.childCount == 0)
+        if (t)
         { // Indica presenca de transform
             data += "t";
         }
@@ -76,13 +76,16 @@ public static class GameMapDump
 		if (!t) return;
 		Vector3 position = t.position;
 		// position.z = -position.z;
+		//Quaternion rotation = new Quaternion(-t.rotation.x, t.rotation.y, t.rotation.z, -t.rotation.z);
+		//position = rotation * position;
+		
 		Quaternion rotation = t.rotation;
-        // rotation = new Quaternion(-rotation.x, rotation.y, rotation.z, -rotation.z);
-
+		
+		// position = Quaternion.Euler(rotation.eulerAngles.x, rotation.eulerAngles.y+180, rotation.eulerAngles.z) * position;
 		
         writer.WriteLine("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9}", indent,
-                         position.x, position.y, position.z,
-                         rotation.eulerAngles.x, rotation.eulerAngles.y, rotation.eulerAngles.z,
+                         -position.x, position.y, position.z,
+                         rotation.eulerAngles.x, -rotation.eulerAngles.y, rotation.eulerAngles.z,
                          t.lossyScale.x, t.lossyScale.y, t.lossyScale.z);
     }
 }

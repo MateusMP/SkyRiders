@@ -2,7 +2,6 @@ package SkyRiders.core;
 
 import MathClasses.Transform;
 import MathClasses.Vector3;
-import br.usp.icmc.vicg.gl.matrix.Matrix4;
 
 public class GameObject {
     
@@ -64,13 +63,9 @@ public class GameObject {
     
     private void calculateObjectRadius() 
     {        
-        Vector3 sizes = mesh.getActiveMesh().getSizes();
-        sizes.x *= transform.scale.x;
-        sizes.y *= transform.scale.y;
-        sizes.z *= transform.scale.z;
-        objectRadius = sizes.norm();
+        objectRadius = mesh.getActiveMesh().getBoundingBox().getMaximumSphereRadius();
         
-        System.out.println("RADIUS: "+objectRadius);
+//        System.out.println("RADIUS: "+objectRadius);
     }
 
     
@@ -79,6 +74,7 @@ public class GameObject {
     }
     
     public float getObjectRadius() {
+        calculateObjectRadius();
         return objectRadius;
     }
     
@@ -88,6 +84,10 @@ public class GameObject {
     
     public void setRenderType(GameRenderer.RENDER_TYPE t){
         rendermode = t;
+    }
+    
+    public MeshRenderer getMesh(){
+        return mesh.getActiveMesh();
     }
     
 }

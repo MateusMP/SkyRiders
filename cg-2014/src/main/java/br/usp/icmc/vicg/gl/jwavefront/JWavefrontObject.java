@@ -4,6 +4,8 @@
  */
 package br.usp.icmc.vicg.gl.jwavefront;
 
+import MathClasses.BoundingBox;
+import MathClasses.Vector3;
 import br.usp.icmc.vicg.gl.util.Shader;
 import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.util.awt.ImageUtil;
@@ -933,11 +935,22 @@ public class JWavefrontObject {
     float dot = a.x * b.x + a.y * b.y + a.z * b.z;
     return (dot > cos_angle);
   }
-
+  
   public void dump() {
     for (int i = 0; i < groups.size(); i++) {
       System.out.println("----");
       groups.get(i).dump();
     }
   }
+
+    public BoundingBox getBoundingBox() {
+        
+        BoundingBox min = groups.get(0).getBoundingBox();
+        for (int i = 1; i < groups.size(); i++) {
+            min.expand(groups.get(i).getBoundingBox());
+        }
+        
+        return min;
+    }
+    
 }
