@@ -185,6 +185,8 @@ public class SkyRiders implements GLEventListener {
     }
 
     public static void main(String[] args) {
+        inputHandler = new InputHandler();
+        
         // Get GL3 profile (to work with OpenGL 4.0)
         GLProfile profile = GLProfile.get(GLProfile.GL3);
 
@@ -200,15 +202,13 @@ public class SkyRiders implements GLEventListener {
         // Add listener to panel
         SkyRiders listener = new SkyRiders();
         glCanvas.addGLEventListener(listener);
-        
-        inputHandler = new InputHandler();
+        glCanvas.addKeyListener(inputHandler);
 
         frame = new Frame("Sky Racers");
         frame.setSize(800, 600);
         frame.add(glCanvas);
         frame.addKeyListener(inputHandler);
         frame.setFocusable(true);
-        KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(inputHandler);
         animator = new FPSAnimator(glCanvas, 60);
         animator.setUpdateFPSFrames(3, null);
         

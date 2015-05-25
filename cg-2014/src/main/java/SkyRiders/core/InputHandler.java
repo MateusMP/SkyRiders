@@ -5,12 +5,11 @@
  */
 package SkyRiders.core;
 
-import java.awt.KeyEventDispatcher;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
-public class InputHandler extends KeyAdapter implements KeyEventDispatcher {
+public class InputHandler extends KeyAdapter {
     
     private ArrayList<KeyAdapter> handlers;
     
@@ -40,18 +39,6 @@ public class InputHandler extends KeyAdapter implements KeyEventDispatcher {
         {
             a.keyReleased(e);
         }
-    }
-    
-    @Override
-    public boolean dispatchKeyEvent(KeyEvent e) {
-        if (e.getID() == KeyEvent.KEY_PRESSED) {
-            keyPressed(e);
-        } else if (e.getID() == KeyEvent.KEY_RELEASED) {
-            keyReleased(e);
-        }
-//        else if (e.getID() == KeyEvent.KEY_TYPED) {    
-//        }
-        return false;
     }
     
     public void AddHandler(KeyAdapter adapter)
