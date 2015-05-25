@@ -1,9 +1,9 @@
 package br.usp.icmc.vicg.gl.util;
 
 import br.usp.icmc.vicg.gl.core.Light;
+import br.usp.icmc.vicg.gl.jwavefront.Material;
 import br.usp.icmc.vicg.gl.jwavefront.Texture;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
-import javax.media.opengl.GL3;
 
 /**
  * Shader generico
@@ -30,6 +30,11 @@ public class GeneralShader extends Shader {
     private int sunAmbientColorHandle;
     private int sunDiffuseColorHandle;
     private int sunSpeclarColorHandle;
+    
+    private int matAmbientColorHandle;
+    private int matDiffuseColorHandle;
+    private int matSpecularColorHandle;
+    private int matSpecularExponentHandle;
     
     //
     private Matrix4 projection;
@@ -58,6 +63,11 @@ public class GeneralShader extends Shader {
         sunAmbientColorHandle = super.getUniformLocation("u_light.ambientColor");
         sunDiffuseColorHandle = super.getUniformLocation("u_light.diffuseColor");
         sunSpeclarColorHandle = super.getUniformLocation("u_light.specularColor");
+        
+        matAmbientColorHandle = super.getUniformLocation("u_material.ambientColor");
+        matDiffuseColorHandle = super.getUniformLocation("u_material.diffuseColor");
+        matSpecularColorHandle = super.getUniformLocation("u_material.specularColor");
+        matSpecularExponentHandle = super.getUniformLocation("u_material.specularExponent");
     }
     
     @Override
@@ -99,4 +109,12 @@ public class GeneralShader extends Shader {
             loadBoolean(is_texture_handle, false);
         }
     }
+    
+    public void LoadMaterial(Material material){
+        super.loadVector4f(matAmbientColorHandle, material.ambient);
+        super.loadVector4f(matDiffuseColorHandle, material.diffuse);
+        super.loadVector4f(matSpecularColorHandle, material.specular);
+        super.loadFloat(matSpecularExponentHandle, material.shininess);
+    }
+
 }
