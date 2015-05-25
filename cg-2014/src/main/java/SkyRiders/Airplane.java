@@ -92,7 +92,7 @@ public class Airplane extends GameObject {
         
         initialRot = t.rotation.clone();
         
-        om = new ObjMesh(MeshHandler.hdl().LoadMesh("./Assets/graphics/cartoonAriplanePropeller.obj"), "Helice");
+        om = new ObjMesh(MeshHandler.LoadMesh("./Assets/graphics/cartoonAriplanePropeller.obj", ShaderHandler.generalShader), "Helice");
         lm = new LODMesh(om);
         rotationPropellerCurrent = 0;
                 

@@ -71,26 +71,17 @@ public class SkyRiders implements GLEventListener {
         // Print OpenGL version
         System.out.println("OpenGL Version: " + this.gl.glGetString(GL.GL_VERSION) + "\n");
 
-        this.gl.glEnable(GL.GL_DEPTH_TEST);
-        // this.gl.glEnable(GL.GL_CULL_FACE);
-        // this.gl.glCullFace(GL.GL_BACK);
-        
         //inicializa os shaders
         ShaderHandler.Init(this.gl);
 
         //ativa os shaders
         ShaderHandler.generalShader.bind();
         
-        //inicializa a matrix Model and Projection
-        //SkyRacers.modelMatrix.init(this.gl, ShaderHandler.generalShader.getUniformLocation("u_modelMatrix"));
-        //this.projectionMatrix.init(this.gl, ShaderHandler.generalShader.getUniformLocation("u_projectionMatrix"));
-        //this.viewMatrix.init(this.gl, ShaderHandler.generalShader.getUniformLocation("u_viewMatrix"));
-        
         System.out.println("SHADER view handle: " + ShaderHandler.generalShader.viewMatrix_hdl);
         System.out.println("MATRIX view handle: " + viewMatrix.handle);
         
         try{
-            MeshHandler mh = new MeshHandler(this.gl, ShaderHandler.generalShader);
+            MeshHandler mh = new MeshHandler(this.gl);
         } catch (Exception ex) {
             Logger.getLogger(SkyRiders.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -99,7 +90,7 @@ public class SkyRiders implements GLEventListener {
             gameMap = MapLoader.LoadMap("island.txt");
             
             // Create player airplane and define a controller for it
-            ObjMesh om = new ObjMesh(MeshHandler.hdl().LoadMesh("./Assets/graphics/cartoonAriplaneNoPropeller.obj"), "Airplane");
+            ObjMesh om = new ObjMesh(MeshHandler.LoadMesh("./Assets/graphics/cartoonAriplaneNoPropeller.obj", ShaderHandler.generalShader), "Airplane");
             om.setShader(ShaderHandler.generalShader);
             Airplane plane = new Airplane(gameMap.startpoint, om);
             gameMap.addObject(plane);
@@ -116,8 +107,9 @@ public class SkyRiders implements GLEventListener {
             /*StandardCamera stdcam = new StandardCamera(gameMap.startpoint.position);
             inputHandler.AddHandler(stdcam);
             setCurrentCamera(stdcam);*/
-            ObjMesh objMesh = new ObjMesh(MeshHandler.hdl().LoadMesh("./Assets/graphics/skydome.obj"), "");
-            System.out.println("SET SKY DOME SHADER!!!!!!!!!!!ONZE");
+            
+            // SKY DOME
+            ObjMesh objMesh = new ObjMesh(MeshHandler.LoadMesh("./Assets/graphics/skydome.obj", ShaderHandler.skyDomeShader), "");
             objMesh.setShader(ShaderHandler.skyDomeShader);
             SkyDome skyDome = new SkyDome(cam, objMesh);
             GameRenderer.setSkyDome(skyDome);

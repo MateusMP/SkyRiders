@@ -14,8 +14,9 @@ public class MapLoader
 {
     protected static class VirtualData
     {
-        public static enum DATA_TYPE{ TRANSFORM,  // Transform CLASS
-                        MESHFILE    // String[2] -> Filepath, GroupName
+        public static enum DATA_TYPE{ 
+            TRANSFORM,  // Transform CLASS
+            MESHFILE    // String[2] -> Filepath, GroupName
         };
         
         public DATA_TYPE type;
@@ -117,7 +118,7 @@ public class MapLoader
             String[] meshinfo = (String[]) obj.vdata.get(mesh_id).data;
             
             Transform transform = (Transform) obj.vdata.get(transform_id).data;
-            JWavefrontObject mesh = MeshHandler.hdl().LoadMesh(meshinfo[0]);
+            JWavefrontObject mesh = MeshHandler.LoadMesh(meshinfo[0], ShaderHandler.generalShader);
             ObjMesh om = new ObjMesh(mesh, meshinfo[1]);
             om.setShader( ShaderHandler.generalShader );
             
@@ -186,12 +187,11 @@ public class MapLoader
         
         String [] array = new String[2];
         array[0] = s.next();    // .obj Filepath
-        array[1] = s.next(); // group name
+        array[1] = s.next();    // group name
         
         vd.type = VirtualData.DATA_TYPE.MESHFILE;
         vd.data = array;
         
-        // MeshHandler.hdl().LoadMesh("data/graphics/"+name+".obj")
         System.out.println("MESH: "+array[0]+" GROUP: '"+array[1]+"'");
         
         return vd;
@@ -202,21 +202,19 @@ public class MapLoader
                
         Transform t = new Transform();
         
-        System.out.println("READING TRANSFORM");
-        
         t.position.x = s.nextFloat();
         t.position.y = s.nextFloat();
         t.position.z = s.nextFloat();
-        
         
         t.rotation.x = s.nextFloat();
         t.rotation.y = s.nextFloat();
         t.rotation.z = s.nextFloat();
         
-        // Escalar
         t.scale.x = s.nextFloat();
         t.scale.y = s.nextFloat();
         t.scale.z = s.nextFloat();
+        
+        System.out.println("TRANSFORM: "+t.position + " "+t.rotation+" "+t.scale);
         
         vd.type = VirtualData.DATA_TYPE.TRANSFORM;
         vd.data = t;

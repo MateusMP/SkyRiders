@@ -12,6 +12,7 @@ import br.usp.icmc.vicg.gl.util.Shader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GL3;
 
@@ -79,7 +80,9 @@ public class GameRenderer {
         }
         
         RenderSkyDome();
+        
         // --
+        gl.glEnable(GL.GL_DEPTH_TEST);
         gl.glEnable(GL2.GL_CULL_FACE);
         gl.glCullFace(GL2.GL_BACK);
         RenderLayer(objects.get(RENDER_TYPE.RENDER_SOLID));
@@ -105,7 +108,13 @@ public class GameRenderer {
         
         Set<Shader> set = layer.keySet();
         
-        for (Shader s : set){
+        for (Shader s : set)
+        {
+            if (s == null){
+                System.out.println("!!!!!! NULL SHADER");
+                continue;
+            }
+            
             ArrayList<GameObject> ls_objs = layer.get(s);
             
             if (ls_objs != null)
@@ -114,11 +123,9 @@ public class GameRenderer {
                 
                 for ( GameObject o : ls_objs ){
                     
-//                    if (o.getRenderType() == RENDER_TYPE.RENDER_SOLID){
 //                        System.out.println(o.name);
                         o.draw();
                         //DrawBoundingSphere(o);
-//                    }
                 }
                 
                 s.unbind();

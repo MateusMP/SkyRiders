@@ -819,7 +819,7 @@ public class JWavefrontObject {
       }
 
       group.vbo = new int[3];
-      gl.glGenBuffers(3, group.vbo, 0); // Generate two Vertex Buffer Object
+      gl.glGenBuffers(3, group.vbo, 0); // Generate 3 Vertex Buffer Object
 
       //the positions buffer
       gl.glBindBuffer(GL.GL_ARRAY_BUFFER, group.vbo[0]); // Bind vertex buffer 
@@ -936,12 +936,12 @@ public class JWavefrontObject {
     return (dot > cos_angle);
   }
   
-  public void dump() {
-    for (int i = 0; i < groups.size(); i++) {
-      System.out.println("----");
-      groups.get(i).dump();
+    public void dump() {
+      for (int i = 0; i < groups.size(); i++) {
+        System.out.println("----");
+        groups.get(i).dump();
+      }
     }
-  }
 
     public BoundingBox getBoundingBox() {
         
@@ -954,8 +954,6 @@ public class JWavefrontObject {
     }
 
     public void SetShader(Shader shader) {
-
-        shader.bind();
         this.material.init(gl, shader);
 
         this.vertex_positions_handle = shader.getAttribLocation("a_position");
@@ -965,11 +963,5 @@ public class JWavefrontObject {
         //control if it is a texture or material
         this.is_texture_handle = shader.getUniformLocation("u_is_texture");
         this.texture_handle = shader.getUniformLocation("u_texture");
-        System.out.println("Set Shader!!!!");
-        System.out.println("a_pos"+vertex_positions_handle);
-        System.out.println("a_norm"+vertex_normals_handle);
-        System.out.println("a_text"+vertex_textures_handle);
-        System.out.println("is_text"+is_texture_handle);
-
     }
 }

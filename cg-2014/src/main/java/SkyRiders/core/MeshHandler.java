@@ -22,29 +22,15 @@ import javax.media.opengl.GL3;
 public class MeshHandler {
     
     private static MeshHandler instance = null;
-    private GL3 gl;
-    private Shader shader;
-    private Hashtable<String, JWavefrontObject> meshes = new Hashtable<String, JWavefrontObject>();
+    private static GL3 gl;
+    private static Hashtable<String, JWavefrontObject> meshes = new Hashtable<String, JWavefrontObject>();
     
-    public MeshHandler(GL3 gl, Shader shader) throws Exception
+    public MeshHandler(GL3 _gl) throws Exception
     {
-        this.gl = gl;
-        this.shader = shader;
-        if (instance == null){
-            instance = this;
-        }
-        else
-        {
-            throw new Exception("ERROR: Just one MeshHandler should be created!");
-        }
+        gl = _gl;
     }
     
-    public static MeshHandler hdl()
-    {
-        return instance;
-    }
-    
-    public JWavefrontObject LoadMesh(String name)
+    public static JWavefrontObject LoadMesh(String name, Shader shader)
     {
         JWavefrontObject mesh = meshes.get(name);
         
@@ -52,19 +38,19 @@ public class MeshHandler {
         {
             mesh = new JWavefrontObject(new File(name));
             meshes.put(name, mesh);
-            PrepareMesh(mesh);
+            PrepareMesh(mesh, shader);
         }
         
         return mesh;
     }
     
-    private void PrepareMesh(JWavefrontObject mesh)
+    private static void PrepareMesh(JWavefrontObject mesh, Shader shader)
     {
         try {
             //init the model
             mesh.init(gl, shader);
-            // mesh.unitize();
-            mesh.dump();
+//             mesh.unitize();
+//            mesh.dump();
         } catch (IOException ex) {
             Logger.getLogger(SkyRiders.class.getName()).log(Level.SEVERE, null, ex);
         }
