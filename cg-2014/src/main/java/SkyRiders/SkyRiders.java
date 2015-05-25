@@ -39,7 +39,7 @@ public class SkyRiders implements GLEventListener {
     private final float angle = 60;
     private float aspect;
     private final float nearDistance = 0.1f;
-    private final float farDistance = 1000;
+    private final float farDistance = 10000;
 
     private static AnimatorBase animator;
     private static Frame frame;
@@ -116,6 +116,11 @@ public class SkyRiders implements GLEventListener {
             /*StandardCamera stdcam = new StandardCamera(gameMap.startpoint.position);
             inputHandler.AddHandler(stdcam);
             setCurrentCamera(stdcam);*/
+            ObjMesh objMesh = new ObjMesh(MeshHandler.hdl().LoadMesh("./Assets/graphics/skydome.obj"), "");
+            System.out.println("SET SKY DOME SHADER!!!!!!!!!!!ONZE");
+            objMesh.setShader(ShaderHandler.skyDomeShader);
+            SkyDome skyDome = new SkyDome(cam, objMesh);
+            GameRenderer.setSkyDome(skyDome);
             
         } catch (Exception ex) {
             Logger.getLogger(SkyRiders.class.getName()).log(Level.SEVERE, null, ex);

@@ -952,5 +952,24 @@ public class JWavefrontObject {
         
         return min;
     }
-    
+
+    public void SetShader(Shader shader) {
+
+        shader.bind();
+        this.material.init(gl, shader);
+
+        this.vertex_positions_handle = shader.getAttribLocation("a_position");
+        this.vertex_normals_handle = shader.getAttribLocation("a_normal");
+        this.vertex_textures_handle = shader.getAttribLocation("a_texcoord");
+
+        //control if it is a texture or material
+        this.is_texture_handle = shader.getUniformLocation("u_is_texture");
+        this.texture_handle = shader.getUniformLocation("u_texture");
+        System.out.println("Set Shader!!!!");
+        System.out.println("a_pos"+vertex_positions_handle);
+        System.out.println("a_norm"+vertex_normals_handle);
+        System.out.println("a_text"+vertex_textures_handle);
+        System.out.println("is_text"+is_texture_handle);
+
+    }
 }

@@ -4,6 +4,8 @@
  */
 package br.usp.icmc.vicg.gl.util;
 
+import Shaders.GeneralShader;
+
 /**
  *
  * @author paulovich

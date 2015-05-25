@@ -68,6 +68,7 @@ public class ObjMesh implements MeshRenderer {
     @Override
     public void setShader(Shader s){
         shader = s;
+        fullmesh.SetShader(s);
     }
 
     @Override
