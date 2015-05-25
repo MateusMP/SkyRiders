@@ -3,6 +3,7 @@ package SkyRiders.core;
 import MathClasses.BoundingBox;
 import MathClasses.Transform;
 import MathClasses.Vector3;
+import SkyRiders.SkyDome;
 import SkyRiders.SkyRiders;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import br.usp.icmc.vicg.gl.model.Cube;
@@ -22,11 +23,23 @@ public class GameRenderer {
         RENDER_TRANSPARENT,
     }
    
+    private static SkyDome skyDome;
     private static final Frustum frustum = new Frustum();
     private static final HashMap<RENDER_TYPE, HashMap<Shader, ArrayList<GameObject>> > objects = new HashMap<>();
+    private static Matrix4 projection, view;
     
-    public static void SetFrustum(Matrix4 projection, Matrix4 view){
-        frustum.extractFromOGL(projection, view);
+    public static void SetFrustum(Matrix4 _projection, Matrix4 _view){
+        frustum.extractFromOGL(_projection, _view);
+        projection = _projection;
+        view = _view;
+    }
+    
+    private static void RenderSkyDome(){
+        ShaderHandler.skyDomeShader.bind();
+        ShaderHandler.skyDomeShader.LoadProjView(projection, view);
+        skyDome.update();
+        skyDome.draw();
+        ShaderHandler.skyDomeShader.unbind();
     }
     
     public static void AddObject(GameObject obj)
@@ -65,6 +78,7 @@ public class GameRenderer {
             AddObject(o);
         }
         
+        RenderSkyDome();
         // --
         gl.glEnable(GL2.GL_CULL_FACE);
         gl.glCullFace(GL2.GL_BACK);
@@ -103,7 +117,7 @@ public class GameRenderer {
 //                    if (o.getRenderType() == RENDER_TYPE.RENDER_SOLID){
 //                        System.out.println(o.name);
                         o.draw();
-                        DrawBoundingSphere(o);
+                        //DrawBoundingSphere(o);
 //                    }
                 }
                 
@@ -145,5 +159,9 @@ public class GameRenderer {
         ShaderHandler.generalShader.LoadModelMatrix(w.getMatrix());
         sp.draw();
         sp.dispose();
+    }
+    public static void setSkyDome(SkyDome dome)
+    {
+        skyDome = dome;
     }
 }
