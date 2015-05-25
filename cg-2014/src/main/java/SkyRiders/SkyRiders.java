@@ -12,7 +12,6 @@ import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import com.jogamp.opengl.util.AnimatorBase;
 import com.jogamp.opengl.util.FPSAnimator;
 import java.awt.Frame;
-import java.awt.KeyboardFocusManager;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.logging.Level;
