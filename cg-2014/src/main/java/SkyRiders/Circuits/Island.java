@@ -2,25 +2,18 @@
 package SkyRiders.Circuits;
 
 import SkyRiders.core.Map;
-import SkyRiders.core.ShaderHandler;
+import Handlers.ShaderHandler;
 import br.usp.icmc.vicg.gl.core.Light;
-import br.usp.icmc.vicg.gl.util.Shader;
 import javax.media.opengl.GL3;
 
 public class Island extends Map{
     
-    private final GL3 gl;
-    private final Shader shader;
-    
     Light light;
     float x, y;
         
-    public Island(GL3 gl, Shader shader)
+    public Island(GL3 gl)
     {
         super();
-        
-        this.gl = gl;
-        this.shader = shader;
         
         x = 0;
         y = 0;
@@ -34,12 +27,9 @@ public class Island extends Map{
      
         //init the light
         light.setPosition(new float[]{0, 90, 0, 1.0f});
-        light.setAmbientColor(new float[]{0.6f, 0.6f, 0.6f, 1.0f});
+        light.setAmbientColor(new float[]{0.8f, 0.8f, 0.8f, 1.0f});
         light.setDiffuseColor(new float[]{0.75f, 0.75f, 0.75f, 1.0f});
         light.setSpecularColor(new float[]{0.7f, 0.7f, 0.7f, 1.0f});
-//        light.init(gl, shader);
-//        
-//        light.bind();
     }
     
     @Override
@@ -52,7 +42,6 @@ public class Island extends Map{
         
         light.setPosition(new float[]{0.0f, 90, y, 0.0f});
         ShaderHandler.generalShader.LoadSunLight(light);
-//        light.bind();
         
         super.update();
     }

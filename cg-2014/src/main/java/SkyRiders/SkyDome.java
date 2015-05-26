@@ -1,20 +1,16 @@
 
 package SkyRiders;
 
-import MathClasses.Transform;
 import SkyRiders.core.Camera;
 import SkyRiders.core.GameObject;
-import SkyRiders.core.LODMesh;
-import SkyRiders.core.MeshHandler;
-import SkyRiders.core.MeshRenderer;
-import SkyRiders.core.ObjMesh;
-import SkyRiders.core.ShaderHandler;
+import SkyRiders.core.SkydomeMesh;
+import Handlers.ShaderHandler;
 
 public class SkyDome extends GameObject{
 
     Camera cam;
     
-    public SkyDome(Camera _cam, ObjMesh objM) {
+    public SkyDome(Camera _cam, SkydomeMesh objM) {
         super(_cam.GetPosition(), objM);
         this.cam = _cam;
         transform.scale.x = 100;
@@ -31,6 +27,7 @@ public class SkyDome extends GameObject{
     @Override
     public void draw()
     {
+        ShaderHandler.skyDomeShader.LoadSkyTexture(mesh.getActiveMesh().getTexture());
         ShaderHandler.skyDomeShader.LoadModelMatrix(transform.getMatrix());
         mesh.ActiveMeshDraw();
     }

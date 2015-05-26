@@ -3,9 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package SkyRiders.core;
+package Handlers;
 
+import Shaders.GeneralShader;
+import Shaders.SkyDomeShader;
 import SkyRiders.SkyRiders;
+import br.usp.icmc.vicg.gl.jwavefront.Group;
 import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
 import br.usp.icmc.vicg.gl.util.Shader;
 import java.io.File;
@@ -15,10 +18,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.opengl.GL3;
 
-/**
- *
- * @author Mateus
- */
 public class MeshHandler {
     
     private static MeshHandler instance = null;
@@ -30,7 +29,7 @@ public class MeshHandler {
         gl = _gl;
     }
     
-    public static JWavefrontObject LoadMesh(String name, Shader shader)
+    public static Group LoadMesh(String name, String modelName, Shader shader)
     {
         JWavefrontObject mesh = meshes.get(name);
         
@@ -41,14 +40,33 @@ public class MeshHandler {
             PrepareMesh(mesh, shader);
         }
         
-        return mesh;
+        if (mesh.getGroups().isEmpty())
+            return null;
+        
+        if (modelName == null){
+            return mesh.getGroups().get(0);
+        }
+        
+        return mesh.findGroup(modelName);
     }
     
     private static void PrepareMesh(JWavefrontObject mesh, Shader shader)
     {
         try {
             //init the model
-            mesh.init(gl, shader);
+            mesh.init(gl);
+            
+            if (shader instanceof GeneralShader)
+            {
+                for (Group g : mesh.getGroups()){
+                    ShaderHandler.CreateTexturedObject(g);
+                }
+            } else if (shader instanceof SkyDomeShader){
+                for (Group g : mesh.getGroups()){
+                    ShaderHandler.CreateSkyObject(g);
+                }
+            }
+            
 //             mesh.unitize();
 //            mesh.dump();
         } catch (IOException ex) {

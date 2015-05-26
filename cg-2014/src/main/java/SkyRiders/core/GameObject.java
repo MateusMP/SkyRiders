@@ -1,5 +1,6 @@
 package SkyRiders.core;
 
+import Handlers.ShaderHandler;
 import MathClasses.Transform;
 import MathClasses.Vector3;
 
@@ -56,7 +57,7 @@ public class GameObject {
     
     public void draw()
     {
-        ShaderHandler.generalShader.LoadModelMatrix(transform.getMatrix());
+        ShaderHandler.generalShader.BindObject(this);
         
         mesh.ActiveMeshDraw();
     }

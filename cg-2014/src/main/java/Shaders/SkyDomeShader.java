@@ -1,17 +1,14 @@
 package Shaders;
 
+import br.usp.icmc.vicg.gl.jwavefront.Texture;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import br.usp.icmc.vicg.gl.util.Shader;
 
 public class SkyDomeShader extends Shader{
 
-    private static final int DIFFUSE_ID = 0;
-    
     private int vertex_positions_handle;
-    private int vertex_normals_handle;
     private int vertex_textures_handle;
 
-    private int is_texture_handle;
     private int texture_handle;
    
     // Matrices
@@ -31,20 +28,20 @@ public class SkyDomeShader extends Shader{
     protected void RegisterAllUniformLocations() {
                 
         vertex_positions_handle = super.getAttribLocation("a_position");
-        vertex_normals_handle = super.getAttribLocation("a_normal");
         vertex_textures_handle = super.getAttribLocation("a_texcoord");
         
-        is_texture_handle = super.getUniformLocation("u_is_texture");
         texture_handle = super.getUniformLocation("u_texture");
         
         modelMatrix_hdl = super.getUniformLocation("u_modelMatrix");
         projMatrix_hdl = super.getUniformLocation("u_projectionMatrix");
         viewMatrix_hdl = super.getUniformLocation("u_viewMatrix");
-        
-        System.out.println("a_pos"+vertex_positions_handle);
-        System.out.println("a_norm"+vertex_normals_handle);
-        System.out.println("a_text"+vertex_textures_handle);
-        System.out.println("is_text"+is_texture_handle);
+    }
+    
+    public int getVertexPositionH(){
+        return vertex_positions_handle;
+    }
+    public int getVertexTexturesH(){
+        return vertex_textures_handle;
     }
 
     @Override
@@ -64,6 +61,10 @@ public class SkyDomeShader extends Shader{
     
     public void LoadModelMatrix(Matrix4 model){
         super.loadMatrix(modelMatrix_hdl, model);
+    }
+    
+    public void LoadSkyTexture(Texture texture){
+        super.loadTexture(texture_handle, 0, texture);
     }
     
 }

@@ -5,8 +5,6 @@
 package br.usp.icmc.vicg.gl.jwavefront;
 
 import MathClasses.BoundingBox;
-import br.usp.icmc.vicg.gl.util.Shader;
-import com.jogamp.common.nio.Buffers;
 import com.jogamp.opengl.util.awt.ImageUtil;
 import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
 import java.awt.image.BufferedImage;
@@ -30,14 +28,7 @@ import javax.media.opengl.GLProfile;
  */
 public class JWavefrontObject {
 
-  private int[] vao;
   private GL3 gl;
-  private br.usp.icmc.vicg.gl.core.Material material;
-  private int vertex_positions_handle;  // On Shader
-  private int vertex_normals_handle;    // On Shader
-  private int vertex_textures_handle;   // On Shader
-  private int is_texture_handle;        // On Shader
-  private int texture_handle;           // On Shader
   private ArrayList<Group> groups;
   private ArrayList<Vertex> vertices;
   private ArrayList<Normal> normals;
@@ -68,19 +59,8 @@ public class JWavefrontObject {
     pathname = file;
   }
 
-  public void init(GL3 gl, Shader shader) throws IOException {
+  public void init(GL3 gl) throws IOException {
     this.gl = gl;
-
-    this.material = new br.usp.icmc.vicg.gl.core.Material();
-    this.material.init(gl, shader);
-
-    this.vertex_positions_handle = shader.getAttribLocation("a_position");
-    this.vertex_normals_handle = shader.getAttribLocation("a_normal");
-    this.vertex_textures_handle = shader.getAttribLocation("a_texcoord");
-
-    //control if it is a texture or material
-    this.is_texture_handle = shader.getUniformLocation("u_is_texture");
-    this.texture_handle = shader.getUniformLocation("u_texture");
 
     parse(pathname);
   }
@@ -482,16 +462,18 @@ public class JWavefrontObject {
       }
     }
 
-    //calculate the face normals for the triangles of each group
-    for (int i = 0; i < groups.size(); i++) {
-      groups.get(i).calculate_face_normals();
-    }
+        //calculate the face normals for the triangles of each group
+        for (int i = 0; i < groups.size(); i++) {
+          groups.get(i).calculate_face_normals();
+        }
 
-    //if the vertex normals are not presented, calculate them
-    if (normals.isEmpty()) {
-      calculate_vertex_normals();
+        //if the vertex normals are not presented, calculate them
+        if (normals.isEmpty()) {
+          calculate_vertex_normals();
+        }
+    
+//        create_vao();
     }
-  }
 
   /**
    * Find a group in the model.
@@ -709,34 +691,8 @@ public class JWavefrontObject {
   }
 
     public void drawGroup(Group group)
-    {
-        if (vao == null) {
-            create_vao();
-          }
+    {        
         
-        if (group.triangles.isEmpty()) {
-            return;
-        }
-
-        if (group.material.texture != null) {
-            gl.glUniform1i(is_texture_handle, 1);
-            gl.glUniform1i(texture_handle, 0);
-            gl.glActiveTexture(GL3.GL_TEXTURE0);
-            group.material.texture.texturedata.bind(gl);
-        } else {
-            gl.glUniform1i(is_texture_handle, 0);
-        }
-
-        if (group.material != null) {
-            material.setAmbientColor(group.material.ambient);
-            material.setDiffuseColor(group.material.diffuse);
-            material.setSpecularColor(group.material.specular);
-            material.setSpecularExponent(group.material.shininess);
-            material.bind();
-        }
-
-        gl.glBindVertexArray(group.vao);
-        gl.glDrawArrays(GL.GL_TRIANGLES, 0, 3 * group.triangles.size());
     }
   
     /**
@@ -748,11 +704,8 @@ public class JWavefrontObject {
    * write vertex normals WF_TEXTURE - write texture coords WF_FLAT and
    * WF_SMOOTH should not both be specified.
    */
-  public void draw() {
-    if (vao == null) {
-      create_vao();
-    }
-    
+  public void draw()
+  {
     for (int i = 0; i < groups.size(); i++) {
         Group group = groups.get(i);
         drawGroup(group);
@@ -769,86 +722,12 @@ public class JWavefrontObject {
             gl.glDeleteBuffers(2, g.vbo, 0);
          else
             gl.glDeleteBuffers(3, g.vbo, 0);
+        
+         int vao[] = {g.vao};
+         gl.glDeleteVertexArrays(1, vao, 0);
      }
       
-    gl.glDeleteVertexArrays(vao.length, vao, 0);
     gl.glBindVertexArray(0);
-  }
-
-  private void create_vao() {
-    /* create one vao per group of vertex */
-    vao = new int[groups.size()];
-
-    gl.glGenVertexArrays(vao.length, vao, 0);
-
-    //if the normals are not given per vertex, calculate it
-    if (normals.isEmpty()) {
-      calculate_vertex_normals();
-    }
-
-    for (int i = 0; i < groups.size(); i++) {
-      Group group = groups.get(i);
-      group.vao = vao[i];
-      if (group.triangles.isEmpty()) {
-        continue;
-      }
-
-      gl.glBindVertexArray(vao[i]); // Bind our Vertex Array Object so we can use it            
-
-      float[] vertex_buffer = new float[9 * group.triangles.size()];
-      float[] normal_buffer = new float[9 * group.triangles.size()];
-      float[] texture_buffer = new float[6 * group.triangles.size()];
-
-      for (int j = 0; j < group.triangles.size(); j++) {
-        Triangle triangle = group.triangles.get(j);
-
-        for (int k = 0; k < 3; k++) {
-          vertex_buffer[(9 * j) + (3 * k)] = triangle.vertices[k].x;
-          vertex_buffer[(9 * j) + (3 * k) + 1] = triangle.vertices[k].y;
-          vertex_buffer[(9 * j) + (3 * k) + 2] = triangle.vertices[k].z;
-
-          normal_buffer[(9 * j) + (3 * k)] = triangle.vertex_normals[k].x;
-          normal_buffer[(9 * j) + (3 * k) + 1] = triangle.vertex_normals[k].y;
-          normal_buffer[(9 * j) + (3 * k) + 2] = triangle.vertex_normals[k].z;
-
-          if (triangle.vertex_tex_coords[k] != null) {
-            texture_buffer[(6 * j) + (2 * k)] = triangle.vertex_tex_coords[k].u;
-            texture_buffer[(6 * j) + (2 * k) + 1] = triangle.vertex_tex_coords[k].v;
-          }
-        }
-      }
-
-      group.vbo = new int[3];
-      gl.glGenBuffers(3, group.vbo, 0); // Generate 3 Vertex Buffer Object
-
-      //the positions buffer
-      gl.glBindBuffer(GL.GL_ARRAY_BUFFER, group.vbo[0]); // Bind vertex buffer 
-      gl.glBufferData(GL3.GL_ARRAY_BUFFER, vertex_buffer.length * Buffers.SIZEOF_FLOAT,
-              Buffers.newDirectFloatBuffer(vertex_buffer), GL3.GL_STATIC_DRAW);
-      gl.glEnableVertexAttribArray(vertex_positions_handle);
-      gl.glVertexAttribPointer(vertex_positions_handle, 3, GL3.GL_FLOAT, false, 0, 0);
-      gl.glBindBuffer(GL3.GL_ARRAY_BUFFER, 0);
-
-      //the normals buffer
-      gl.glBindBuffer(GL.GL_ARRAY_BUFFER, group.vbo[1]); // Bind normals buffer
-      gl.glBufferData(GL3.GL_ARRAY_BUFFER, normal_buffer.length * Buffers.SIZEOF_FLOAT,
-              Buffers.newDirectFloatBuffer(normal_buffer), GL3.GL_STATIC_DRAW);
-      gl.glEnableVertexAttribArray(vertex_normals_handle);
-      gl.glVertexAttribPointer(vertex_normals_handle, 3, GL3.GL_FLOAT, false, 0, 0);
-      gl.glBindBuffer(GL3.GL_ARRAY_BUFFER, 0);
-
-      //the texture positions buffer
-      if (group.material.texture != null) {
-        gl.glBindBuffer(GL.GL_ARRAY_BUFFER, group.vbo[2]); // Bind normals buffer
-        gl.glBufferData(GL3.GL_ARRAY_BUFFER, texture_buffer.length * Buffers.SIZEOF_FLOAT,
-                Buffers.newDirectFloatBuffer(texture_buffer), GL3.GL_STATIC_DRAW);
-        gl.glEnableVertexAttribArray(vertex_textures_handle);
-        gl.glVertexAttribPointer(vertex_textures_handle, 2, GL3.GL_FLOAT, false, 0, 0);
-        gl.glBindBuffer(GL3.GL_ARRAY_BUFFER, 0);
-      }
-    }
-
-    gl.glBindVertexArray(0); // Disable our Vertex Buffer Object 
   }
 
   private void calculate_vertex_normals() {
@@ -953,15 +832,7 @@ public class JWavefrontObject {
         return min;
     }
 
-    public void SetShader(Shader shader) {
-        this.material.init(gl, shader);
-
-        this.vertex_positions_handle = shader.getAttribLocation("a_position");
-        this.vertex_normals_handle = shader.getAttribLocation("a_normal");
-        this.vertex_textures_handle = shader.getAttribLocation("a_texcoord");
-
-        //control if it is a texture or material
-        this.is_texture_handle = shader.getUniformLocation("u_is_texture");
-        this.texture_handle = shader.getUniformLocation("u_texture");
+    public ArrayList<Group> getGroups() {
+        return groups;
     }
 }

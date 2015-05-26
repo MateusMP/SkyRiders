@@ -2,12 +2,14 @@ package SkyRiders;
 
 import SkyRiders.core.Camera;
 import SkyRiders.core.GameRenderer;
-import SkyRiders.core.InputHandler;
+import Handlers.InputHandler;
 import SkyRiders.core.Map;
 import SkyRiders.core.MapLoader;
-import SkyRiders.core.MeshHandler;
-import SkyRiders.core.ObjMesh;
-import SkyRiders.core.ShaderHandler;
+import SkyRiders.core.SkydomeMesh;
+import Handlers.MeshHandler;
+import SkyRiders.core.SkydomeMesh;
+import Handlers.ShaderHandler;
+import SkyRiders.core.TexturedMesh;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import com.jogamp.opengl.util.AnimatorBase;
 import com.jogamp.opengl.util.FPSAnimator;
@@ -28,7 +30,7 @@ public class SkyRiders implements GLEventListener {
     
     private static SkyRiders skyracers;
 
-    public GL3 gl;
+    public static GL3 gl;
     
     private Map gameMap;
     private Camera currentCamera;
@@ -66,19 +68,16 @@ public class SkyRiders implements GLEventListener {
     public void init(GLAutoDrawable drawable)
     {
         // Get pipeline
-        this.gl = drawable.getGL().getGL3();
+        gl = drawable.getGL().getGL3();
 
         // Print OpenGL version
         System.out.println("OpenGL Version: " + this.gl.glGetString(GL.GL_VERSION) + "\n");
 
         //inicializa os shaders
-        ShaderHandler.Init(this.gl);
+        ShaderHandler.Init();
 
         //ativa os shaders
         ShaderHandler.generalShader.bind();
-        
-        System.out.println("SHADER view handle: " + ShaderHandler.generalShader.viewMatrix_hdl);
-        System.out.println("MATRIX view handle: " + viewMatrix.handle);
         
         try{
             MeshHandler mh = new MeshHandler(this.gl);
@@ -90,8 +89,7 @@ public class SkyRiders implements GLEventListener {
             gameMap = MapLoader.LoadMap("island.txt");
             
             // Create player airplane and define a controller for it
-            ObjMesh om = new ObjMesh(MeshHandler.LoadMesh("./Assets/graphics/cartoonAriplaneNoPropeller.obj", ShaderHandler.generalShader), "Airplane");
-            om.setShader(ShaderHandler.generalShader);
+            TexturedMesh om = new TexturedMesh(MeshHandler.LoadMesh("./Assets/graphics/cartoonAriplaneNoPropeller.obj", "Airplane", ShaderHandler.generalShader), ShaderHandler.generalShader);
             Airplane plane = new Airplane(gameMap.startpoint, om);
             gameMap.addObject(plane);
             AirplaneController controller = new AirplaneController(plane);
@@ -109,8 +107,7 @@ public class SkyRiders implements GLEventListener {
             setCurrentCamera(stdcam);*/
             
             // SKY DOME
-            ObjMesh objMesh = new ObjMesh(MeshHandler.LoadMesh("./Assets/graphics/skydome.obj", ShaderHandler.skyDomeShader), "");
-            objMesh.setShader(ShaderHandler.skyDomeShader);
+            SkydomeMesh objMesh = new SkydomeMesh(MeshHandler.LoadMesh("./Assets/graphics/skydome.obj", null, ShaderHandler.skyDomeShader));
             SkyDome skyDome = new SkyDome(cam, objMesh);
             GameRenderer.setSkyDome(skyDome);
             

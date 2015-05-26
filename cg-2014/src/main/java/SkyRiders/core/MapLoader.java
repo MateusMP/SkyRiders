@@ -1,8 +1,10 @@
 package SkyRiders.core;
 
+import Handlers.MeshHandler;
+import Handlers.ShaderHandler;
 import MathClasses.Transform;
 import SkyRiders.Circuits.Island;
-import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
+import br.usp.icmc.vicg.gl.jwavefront.Group;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -79,7 +81,7 @@ public class MapLoader
     private static Map ProcessObjects(ArrayList<VirtualObject> objects)
     {
         // Map m = new Map();
-        Map m = new Island(SkyRiders.SkyRiders.hdl().gl, ShaderHandler.generalShader);
+        Map m = new Island(SkyRiders.SkyRiders.hdl().gl);
         
         for (VirtualObject obj : objects)
         {
@@ -118,9 +120,8 @@ public class MapLoader
             String[] meshinfo = (String[]) obj.vdata.get(mesh_id).data;
             
             Transform transform = (Transform) obj.vdata.get(transform_id).data;
-            JWavefrontObject mesh = MeshHandler.LoadMesh(meshinfo[0], ShaderHandler.generalShader);
-            ObjMesh om = new ObjMesh(mesh, meshinfo[1]);
-            om.setShader( ShaderHandler.generalShader );
+            Group mesh = MeshHandler.LoadMesh(meshinfo[0], meshinfo[1], ShaderHandler.generalShader);
+            TexturedMesh om = new TexturedMesh(mesh, ShaderHandler.generalShader);
             
             GameObject gameobj = new GameObject(transform, om);
             

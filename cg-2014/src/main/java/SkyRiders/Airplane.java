@@ -11,10 +11,10 @@ import MathClasses.Vector3;
 import SkyRiders.core.GameRenderer.RENDER_TYPE;
 import SkyRiders.core.LODMesh;
 import SkyRiders.core.Line;
-import SkyRiders.core.MeshHandler;
+import Handlers.MeshHandler;
 import SkyRiders.core.MeshRenderer;
-import SkyRiders.core.ObjMesh;
-import SkyRiders.core.ShaderHandler;
+import Handlers.ShaderHandler;
+import SkyRiders.core.TexturedMesh;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 
 public class Airplane extends GameObject {
@@ -33,7 +33,7 @@ public class Airplane extends GameObject {
     private boolean cmd_brake;
     
     // Propeller
-    private ObjMesh om;
+    private TexturedMesh om;
     private LODMesh lm;
     private float rotationPropellerCurrent;
     
@@ -92,7 +92,7 @@ public class Airplane extends GameObject {
         
         initialRot = t.rotation.clone();
         
-        om = new ObjMesh(MeshHandler.LoadMesh("./Assets/graphics/cartoonAriplanePropeller.obj", ShaderHandler.generalShader), "Helice");
+        om = new TexturedMesh(MeshHandler.LoadMesh("./Assets/graphics/cartoonAriplanePropeller.obj", "Helice", ShaderHandler.generalShader), ShaderHandler.generalShader);
         lm = new LODMesh(om);
         rotationPropellerCurrent = 0;
                 
@@ -233,6 +233,7 @@ public class Airplane extends GameObject {
         
         // Move
         transform.position = transform.position.add(velocity.mul(h));
+        transform.Invalidate();
     }
     
     @Override
@@ -262,11 +263,13 @@ public class Airplane extends GameObject {
         modelMatrix.rotate(transform.rotation.z + rotationPropellerCurrent, 0, 0, 1.0f);
         modelMatrix.scale(transform.scale.x, transform.scale.y, transform.scale.z);
         ShaderHandler.generalShader.LoadModelMatrix(modelMatrix);
+        ShaderHandler.generalShader.LoadDiffuseTexture(null);
         lm.ActiveMeshDraw();
         
         matrixReloaded.rotate(transform.rotation.z, 0, 0, 1.0f);
         matrixReloaded.scale(transform.scale.x, transform.scale.y, transform.scale.z);
         
+        ShaderHandler.generalShader.LoadDiffuseTexture(mesh.getActiveMesh().getTexture());
         ShaderHandler.generalShader.LoadModelMatrix(matrixReloaded);
         mesh.ActiveMeshDraw();
     }

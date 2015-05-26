@@ -1,10 +1,12 @@
 package Shaders;
 
+import SkyRiders.core.GameObject;
 import br.usp.icmc.vicg.gl.core.Light;
 import br.usp.icmc.vicg.gl.jwavefront.Material;
 import br.usp.icmc.vicg.gl.jwavefront.Texture;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import br.usp.icmc.vicg.gl.util.Shader;
+import static javax.media.opengl.GLProfile.GL3;
 
 /**
  * Shader generico
@@ -69,6 +71,27 @@ public class GeneralShader extends Shader {
         matDiffuseColorHandle = super.getUniformLocation("u_material.diffuseColor");
         matSpecularColorHandle = super.getUniformLocation("u_material.specularColor");
         matSpecularExponentHandle = super.getUniformLocation("u_material.specularExponent");
+    }
+    
+    public int getVertexPositionH(){
+        return vertex_positions_handle;
+    }
+    public int getVertexNormalsH(){
+        return vertex_normals_handle;
+    }
+    public int getVertexTexturesH(){
+        return vertex_textures_handle;
+    }
+    
+    /**
+     * Optional direct bind
+     * @param obj 
+     */
+    public void BindObject(GameObject obj)
+    {
+        LoadDiffuseTexture(obj.getMesh().getTexture());
+        
+        LoadModelMatrix(obj.getTransform().getMatrix());
     }
     
     @Override

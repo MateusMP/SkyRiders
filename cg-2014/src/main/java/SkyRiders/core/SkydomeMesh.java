@@ -1,36 +1,36 @@
 package SkyRiders.core;
 
+import Handlers.ShaderHandler;
 import MathClasses.BoundingBox;
-import MathClasses.Vector3;
+import static SkyRiders.SkyRiders.gl;
 import br.usp.icmc.vicg.gl.jwavefront.Group;
-import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
+import br.usp.icmc.vicg.gl.jwavefront.Texture;
 import br.usp.icmc.vicg.gl.jwavefront.Triangle;
 import br.usp.icmc.vicg.gl.jwavefront.Vertex;
 import br.usp.icmc.vicg.gl.util.Shader;
 import java.util.ArrayList;
+import javax.media.opengl.GL3;
 
-public class ObjMesh implements MeshRenderer {
+public class SkydomeMesh implements MeshRenderer {
     
-    private Shader shader;
-    private JWavefrontObject fullmesh;
     private Group g;
+    private Texture texture;
     private ArrayList<Vertex> vertices;
     
-    public ObjMesh(JWavefrontObject obj, String group)
+    public SkydomeMesh(Group obj)
     {
-        fullmesh = obj;
-        g = obj.findGroup(group);
+        if (obj == null){
+            System.exit(-1);
+        }
+        g = obj;
+        
+        texture = obj.material.texture; // Define default texture
         
         copyVertices();
     }
     
     private void copyVertices()
     {
-        if (g == null){
-            vertices = fullmesh.getVertices();
-            return;
-        }
-        
         vertices = new ArrayList<Vertex>();
         for (Triangle t : g.triangles){
             vertices.add(t.vertices[0]);
@@ -40,13 +40,19 @@ public class ObjMesh implements MeshRenderer {
     }
     
     @Override
+    public Texture getTexture(){
+        return texture;
+    }
+    
+    @Override
     public void draw()
     {
-        if (g != null){
-            fullmesh.drawGroup(g);
-        } else {
-            fullmesh.draw();
+        if (g.triangles.isEmpty()) {
+            return;
         }
+
+        gl.glBindVertexArray(g.vao);
+        gl.glDrawArrays(GL3.GL_TRIANGLES, 0, 3 * g.triangles.size());
     }
 
     @Override
@@ -62,22 +68,17 @@ public class ObjMesh implements MeshRenderer {
 
     @Override
     public Shader getShader() {
-        return shader;
+        return ShaderHandler.skyDomeShader;
     }
     
     @Override
     public void setShader(Shader s){
-        shader = s;
-        fullmesh.SetShader(s);
+        return;
     }
 
     @Override
     public BoundingBox getBoundingBox() {
-        
-        if (g != null)
-            return g.getBoundingBox();
-
-        return fullmesh.getBoundingBox();
+        return g.getBoundingBox();
     }
     
 }

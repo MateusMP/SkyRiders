@@ -1,5 +1,6 @@
 package SkyRiders.core;
 
+import Handlers.ShaderHandler;
 import MathClasses.BoundingBox;
 import MathClasses.Transform;
 import MathClasses.Vector3;
@@ -36,8 +37,12 @@ public class GameRenderer {
     }
     
     private static void RenderSkyDome(){
+        if (skyDome == null)
+            return;
+        
         ShaderHandler.skyDomeShader.bind();
         ShaderHandler.skyDomeShader.LoadProjView(projection, view);
+        ShaderHandler.skyDomeShader.LoadSkyTexture(skyDome.getMesh().getTexture());
         skyDome.update();
         skyDome.draw();
         ShaderHandler.skyDomeShader.unbind();
@@ -122,7 +127,6 @@ public class GameRenderer {
                 s.fullBind();
                 
                 for ( GameObject o : ls_objs ){
-                    
 //                        System.out.println(o.name);
                         o.draw();
                         //DrawBoundingSphere(o);
@@ -167,6 +171,7 @@ public class GameRenderer {
         sp.draw();
         sp.dispose();
     }
+    
     public static void setSkyDome(SkyDome dome)
     {
         skyDome = dome;

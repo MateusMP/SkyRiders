@@ -41,7 +41,11 @@ public abstract class Shader {
         this.shaders_filenames[4] = tessEval;
     }
     
+    /**
+     * Should be used to catch all uniforms/attributes needed
+     */
     protected abstract void RegisterAllUniformLocations();
+    
     /**
      * Load all global shader information
      * Should load data in common used by all objects like ProjectionMatrix, or lights
