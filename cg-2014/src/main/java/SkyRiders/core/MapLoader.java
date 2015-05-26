@@ -103,15 +103,41 @@ public class MapLoader
             case "RaceStart":
                 m.startpoint = (Transform) obj.GetFirstOf(VirtualData.DATA_TYPE.TRANSFORM).data;
                 return true;
-        }    
+        }
+        
+        if (obj.name.toLowerCase().contains("leaf")){
+            LoadFoliage(m, obj);
+            return true;
+        }
+        
         
         System.out.print (" NOT FOUND -> ");
         return false;
     }
     
+    private static void LoadFoliage(Map m, VirtualObject obj){
+        int mesh_id = obj.HasType(VirtualData.DATA_TYPE.MESHFILE);
+        int transform_id = obj.HasType(VirtualData.DATA_TYPE.TRANSFORM);
+        
+        String[] meshinfo = (String[]) obj.vdata.get(mesh_id).data;
+            
+        Transform transform = (Transform) obj.vdata.get(transform_id).data;
+        Group mesh = MeshHandler.LoadMesh(meshinfo[0], meshinfo[1], ShaderHandler.foliageShader);
+        TexturedMesh om = new TexturedMesh(mesh, ShaderHandler.foliageShader);
+
+        FoliageObject gameobj = new FoliageObject(transform, om);
+
+        gameobj.name = "Generic_transparent"+m.objects.size();
+        gameobj.setRenderType(GameRenderer.RENDER_TYPE.RENDER_TRANSPARENT);
+
+        m.addObject(gameobj);
+        
+        System.out.println("New foliage loaded!");
+    }
+    
     private static void ProcessGeneric(Map m, VirtualObject obj)
     {
-        System.out.println("DOING GENERIC PROCESS.");
+//        System.out.println("DOING GENERIC PROCESS.");
         int mesh_id = obj.HasType(VirtualData.DATA_TYPE.MESHFILE);
         int transform_id = obj.HasType(VirtualData.DATA_TYPE.TRANSFORM);
         
@@ -125,14 +151,14 @@ public class MapLoader
             
             GameObject gameobj = new GameObject(transform, om);
             
-            if ( meshinfo[1].contains("leaf") )
-            {
-                gameobj.name = "Generic_transparent"+m.objects.size();
-                gameobj.setRenderType(GameRenderer.RENDER_TYPE.RENDER_TRANSPARENT);
-            } else {
+//            if ( meshinfo[1].contains("leaf") )
+//            {
+//                gameobj.name = "Generic_transparent"+m.objects.size();
+//                gameobj.setRenderType(GameRenderer.RENDER_TYPE.RENDER_TRANSPARENT);
+//            } else {
                 gameobj.name = "Generic_solid"+m.objects.size();
                 gameobj.setRenderType(GameRenderer.RENDER_TYPE.RENDER_SOLID);
-            }
+//            }
             
             m.addObject(gameobj);
         }

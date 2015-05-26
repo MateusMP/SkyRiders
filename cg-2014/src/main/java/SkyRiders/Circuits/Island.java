@@ -3,13 +3,16 @@ package SkyRiders.Circuits;
 
 import SkyRiders.core.Map;
 import Handlers.ShaderHandler;
+import MathClasses.Vector3;
 import br.usp.icmc.vicg.gl.core.Light;
 import javax.media.opengl.GL3;
 
 public class Island extends Map{
     
+    Vector3 wind;
     Light light;
     float x, y;
+    int timestamp;
         
     public Island(GL3 gl)
     {
@@ -17,6 +20,9 @@ public class Island extends Map{
         
         x = 0;
         y = 0;
+        
+        wind = new Vector3(1, 0, 0);
+        timestamp = 0;
         
         InitLights();
     }
@@ -35,6 +41,8 @@ public class Island extends Map{
     @Override
     public void update()
     {
+        timestamp += 1;
+        
         double rad = x * 3.14159 / 180.0;
         
         y = (float) (Math.sin( rad )*400);
@@ -42,6 +50,10 @@ public class Island extends Map{
         
         light.setPosition(new float[]{0.0f, 90, y, 0.0f});
         ShaderHandler.generalShader.LoadSunLight(light);
+        
+        ShaderHandler.foliageShader.LoadSunLight(light);
+        ShaderHandler.foliageShader.LoadWindDirection(wind);
+        ShaderHandler.foliageShader.LoadTimeStamp(timestamp );
         
         super.update();
     }

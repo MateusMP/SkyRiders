@@ -84,12 +84,13 @@ public class GameRenderer {
             AddObject(o);
         }
         
+        // --
+        gl.glEnable(GL2.GL_CULL_FACE);
+        gl.glCullFace(GL2.GL_BACK);
         RenderSkyDome();
         
         // --
         gl.glEnable(GL.GL_DEPTH_TEST);
-        gl.glEnable(GL2.GL_CULL_FACE);
-        gl.glCullFace(GL2.GL_BACK);
         RenderLayer(objects.get(RENDER_TYPE.RENDER_SOLID));
     
         // --

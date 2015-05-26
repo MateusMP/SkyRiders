@@ -113,6 +113,10 @@ public abstract class Shader {
         }
     }
     
+    protected void loadInt(int location, int value){
+        gl.glUniform1i(location, value);
+    }
+    
     protected void loadFloat(int location, float value){
         gl.glUniform1f(location, value);
     }

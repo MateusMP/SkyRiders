@@ -5,6 +5,7 @@
  */
 package Handlers;
 
+import Shaders.FoliageShader;
 import Shaders.GeneralShader;
 import Shaders.SkyDomeShader;
 import SkyRiders.SkyRiders;
@@ -56,7 +57,7 @@ public class MeshHandler {
             //init the model
             mesh.init(gl);
             
-            if (shader instanceof GeneralShader)
+            if (shader instanceof GeneralShader || shader instanceof FoliageShader)
             {
                 for (Group g : mesh.getGroups()){
                     ShaderHandler.CreateTexturedObject(g);

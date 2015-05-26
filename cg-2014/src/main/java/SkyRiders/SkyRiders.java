@@ -159,6 +159,8 @@ public class SkyRiders implements GLEventListener {
         currentCamera.DefineViewMatrix(viewMatrix);
 
         ShaderHandler.generalShader.LoadProjView(projectionMatrix, viewMatrix);
+        ShaderHandler.foliageShader.LoadProjView(projectionMatrix, viewMatrix);
+        
         GameRenderer.SetFrustum(projectionMatrix, viewMatrix);
         GameRenderer.Render(gameMap);
         
