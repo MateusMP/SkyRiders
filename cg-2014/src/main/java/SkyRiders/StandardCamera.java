@@ -41,7 +41,6 @@ public class StandardCamera extends KeyAdapter implements Camera {
                         lookat.x, lookat.y, lookat.z,
                         0,1,0);
                        //following.top.x/1.2f, following.top.y*1.6f, following.top.z/1.2f); 
-        viewMatrix.bind();
     }
     
     public void keyPressed(KeyEvent e)

@@ -7,13 +7,14 @@ import br.usp.icmc.vicg.gl.jwavefront.Material;
 import br.usp.icmc.vicg.gl.jwavefront.Texture;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import br.usp.icmc.vicg.gl.util.Shader;
+import javax.media.opengl.GL3;
 
 /**
  * Shader generico
  */
 public class FoliageShader extends Shader {
     
-    private static final int DIFFUSE_ID = 0;
+    private static final int TEXTURE_DIFFUSE = 0;
     
     private int vertex_positions_handle;
     private int vertex_normals_handle;
@@ -21,7 +22,7 @@ public class FoliageShader extends Shader {
 
     //control if it is a texture or material
     private int is_texture_handle;
-    private int texture_handle;
+    private int diffuseTexture_hdl;
    
     // Matrices
     private int modelMatrix_hdl;
@@ -63,7 +64,7 @@ public class FoliageShader extends Shader {
         vertex_textures_handle = super.getAttribLocation("a_texcoord");
         
         is_texture_handle = super.getUniformLocation("u_is_texture");
-        texture_handle = super.getUniformLocation("u_texture");
+        diffuseTexture_hdl = super.getUniformLocation("u_texture");
         
         modelMatrix_hdl = super.getUniformLocation("u_modelMatrix");
         projMatrix_hdl = super.getUniformLocation("u_projectionMatrix");
@@ -82,7 +83,6 @@ public class FoliageShader extends Shader {
         
         time_hdl = super.getUniformLocation("u_time");
         wind_hdl = super.getUniformLocation("u_wind");
-//        pivot_hdl = super.getUniformLocation("u_pivot");
     }
     
     public int getVertexPositionH(){
@@ -95,18 +95,6 @@ public class FoliageShader extends Shader {
         return vertex_textures_handle;
     }
     
-    /**
-     * Optional direct bind
-     * @param obj 
-     */
-    public void BindObject(GameObject obj)
-    {
-        LoadDiffuseTexture(obj.getMesh().getTexture());
-        
-        LoadModelMatrix(obj.getTransform().getMatrix());
-        super.loadInt(time_hdl, timestamp);
-    }
-    
     @Override
     public void fullBind(){
         super.bind();
@@ -116,6 +104,25 @@ public class FoliageShader extends Shader {
         
         super.loadVector(wind_hdl, wind);
         super.loadInt(time_hdl, timestamp);
+        
+        ConnectTexturesUnits();
+    }
+    
+    /**
+     * Define each texture handle to the correct texture unit.
+     */
+    protected void ConnectTexturesUnits(){
+        super.loadInt(diffuseTexture_hdl, TEXTURE_DIFFUSE);
+    }
+    
+    /**
+     * Optional direct object bind
+     * @param obj 
+     */
+    public void BindObject(GameObject obj)
+    {
+        LoadDiffuseTexture(obj.getMesh().getTexture());
+        LoadModelMatrix(obj.getTransform().getMatrix());
     }
     
     public void LoadProjView(Matrix4 proj, Matrix4 view){
@@ -141,7 +148,7 @@ public class FoliageShader extends Shader {
     public void LoadDiffuseTexture(Texture texture){
         if (texture != null){
             loadBoolean(is_texture_handle, true);
-            loadTexture(texture_handle, DIFFUSE_ID, texture);
+            loadTexture(GL3.GL_TEXTURE0+TEXTURE_DIFFUSE, texture);
         } else {
             loadBoolean(is_texture_handle, false);
         }

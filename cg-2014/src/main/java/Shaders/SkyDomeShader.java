@@ -3,8 +3,12 @@ package Shaders;
 import br.usp.icmc.vicg.gl.jwavefront.Texture;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import br.usp.icmc.vicg.gl.util.Shader;
+import javax.media.opengl.GL;
+import javax.media.opengl.GL3;
 
 public class SkyDomeShader extends Shader{
+    
+    private static final int SKYDOME_DIFFUSE = 0;
 
     private int vertex_positions_handle;
     private int vertex_textures_handle;
@@ -49,6 +53,19 @@ public class SkyDomeShader extends Shader{
         super.bind();
         super.loadMatrix(projMatrix_hdl, projection);
         super.loadMatrix(viewMatrix_hdl, view);
+        
+        ConnectTexturesUnits();
+    }
+    
+    /**
+     * Define each texture handle to the correct texture unit.
+     */
+    protected void ConnectTexturesUnits(){
+        super.loadInt(texture_handle, SKYDOME_DIFFUSE);
+    }
+    
+    public void LoadSkyTexture(Texture texture){
+        super.loadTexture(GL3.GL_TEXTURE0+SKYDOME_DIFFUSE, texture);
     }
     
     public void LoadProjView(Matrix4 proj, Matrix4 view){
@@ -63,8 +80,5 @@ public class SkyDomeShader extends Shader{
         super.loadMatrix(modelMatrix_hdl, model);
     }
     
-    public void LoadSkyTexture(Texture texture){
-        super.loadTexture(texture_handle, 0, texture);
-    }
     
 }

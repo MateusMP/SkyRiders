@@ -48,7 +48,8 @@ public abstract class Shader {
     
     /**
      * Load all global shader information
-     * Should load data in common used by all objects like ProjectionMatrix, or lights
+     * This will be called once PER layer, before processing the pack of game objects that use this shader.
+     * Should load data in common used by all objects like Projection/View Matrices, prepare texture handles
      */
     public abstract void fullBind();
     
@@ -140,9 +141,12 @@ public abstract class Shader {
         gl.glUniformMatrix4fv(location, 1, false, matrix.getMatrix(), 0);
     }
     
-    protected void loadTexture(int location, int textureID, Texture tex){
-        gl.glUniform1i(location, textureID);
-        gl.glActiveTexture(GL3.GL_TEXTURE0+textureID);
+    /**
+     * @param textureID Should be one of GL_TEXTURE0 ... GL_TEXTURE31
+     * @param tex Texture object to be bound on the specified unit
+     */
+    protected void loadTexture(int textureID, Texture tex){
+        gl.glActiveTexture(textureID);
         tex.texturedata.bind(gl);
     }
     

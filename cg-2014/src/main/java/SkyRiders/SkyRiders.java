@@ -134,7 +134,7 @@ public class SkyRiders implements GLEventListener {
         update();
         render(drawable);
         
-        this.frame.setTitle("Sky Racers "+animator.getLastFPS()+" - OBJS: "+Profiler.getRenderingObjects()+" - Vertices: "+Profiler.getRenderingVertex());
+        this.frame.setTitle("Sky Riders "+animator.getLastFPS()+" - OBJS: "+Profiler.getRenderingObjects()+" - Vertices: "+Profiler.getRenderingVertex());
     }
     
     private void update()

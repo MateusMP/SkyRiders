@@ -36,8 +36,8 @@ vec3 calculate_wind(vec3 pos){
     float sinTimeSec = sin(timeSec/30);
 
     vec3 u_pivot = vec3(0,0,0);
-    float factor = max(0.0, distance(u_pivot, pos)-14)*0.1;
-    float factorY = max(0.0, distance(u_pivot, pos)-20)*0.1;
+    float factor = max(0.0, distance(u_pivot, pos)-14)*0.05;
+    float factorY = max(0.0, distance(u_pivot, pos)-20)*0.05;
 
     vec3 wind = u_wind * sinTimeWind;
     vec3 windSplash = vec3(-sinTimeSec,sinTimeSec,sinTimeSec);
