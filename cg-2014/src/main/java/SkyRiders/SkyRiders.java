@@ -5,7 +5,6 @@ import SkyRiders.core.GameRenderer;
 import Handlers.InputHandler;
 import SkyRiders.core.Map;
 import SkyRiders.core.MapLoader;
-import SkyRiders.core.SkydomeMesh;
 import Handlers.MeshHandler;
 import SkyRiders.core.SkydomeMesh;
 import Handlers.ShaderHandler;
@@ -102,9 +101,9 @@ public class SkyRiders implements GLEventListener {
             // SkyRacers.inputHandler.RemoveHandler(controller);
             
             // STANDARD CAMERA            
-            /*StandardCamera stdcam = new StandardCamera(gameMap.startpoint.position);
+            StandardCamera stdcam = new StandardCamera(gameMap.startpoint.position);
             inputHandler.AddHandler(stdcam);
-            setCurrentCamera(stdcam);*/
+            setCurrentCamera(stdcam);
             
             // SKY DOME
             SkydomeMesh objMesh = new SkydomeMesh(MeshHandler.LoadMesh("./Assets/graphics/skydome.obj", null, ShaderHandler.skyDomeShader));
@@ -200,7 +199,7 @@ public class SkyRiders implements GLEventListener {
         glCanvas.addKeyListener(inputHandler);
 
         frame = new Frame("Sky Racers");
-        frame.setSize(800, 600);
+        frame.setSize(1024, 576);
         frame.add(glCanvas);
         frame.addKeyListener(inputHandler);
         frame.setFocusable(true);

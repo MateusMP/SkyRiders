@@ -43,6 +43,7 @@ public class StandardCamera extends KeyAdapter implements Camera {
                        //following.top.x/1.2f, following.top.y*1.6f, following.top.z/1.2f); 
     }
     
+    @Override
     public void keyPressed(KeyEvent e)
     {
         switch (e.getKeyCode())

@@ -14,7 +14,7 @@ import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
 import br.usp.icmc.vicg.gl.util.Shader;
 import java.io.File;
 import java.io.IOException;
-import java.util.Hashtable;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.media.opengl.GL3;
@@ -23,7 +23,7 @@ public class MeshHandler {
     
     private static MeshHandler instance = null;
     private static GL3 gl;
-    private static Hashtable<String, JWavefrontObject> meshes = new Hashtable<String, JWavefrontObject>();
+    private static final HashMap<String, JWavefrontObject> meshes = new HashMap<String, JWavefrontObject>();
     
     public MeshHandler(GL3 _gl) throws Exception
     {

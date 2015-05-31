@@ -4,10 +4,8 @@
  */
 package br.usp.icmc.vicg.gl.jwavefront;
 
+import Handlers.TextureHandler;
 import MathClasses.BoundingBox;
-import com.jogamp.opengl.util.awt.ImageUtil;
-import com.jogamp.opengl.util.texture.awt.AWTTextureIO;
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,10 +15,7 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
-import javax.media.opengl.GL;
 import javax.media.opengl.GL3;
-import javax.media.opengl.GLProfile;
 
 /**
  *
@@ -543,6 +538,7 @@ public class JWavefrontObject {
    */
   private void parse_mtl(String name) throws IOException {
     File file = new File(pathname.getParent() + "/" + name);
+    float alpha = 1.0f;
 
     if (file.exists()) {
       BufferedReader in = null;
@@ -640,18 +636,9 @@ public class JWavefrontObject {
                   //loading the texture data
                   Texture texture = findTexture(name);
                   if (texture == null) {
-                    file = new File(pathname.getParent() + "/" + name);
+                      texture = TextureHandler.LoadTexture(pathname.getParent() + "/" + name);
 
-                    if (file.exists()) {
-                      BufferedImage image = ImageIO.read(file);
-                      ImageUtil.flipImageVertically(image); //vertically flip the image
-
-                      texture = new Texture(name);
-                      texture.texturedata = AWTTextureIO.newTexture(GLProfile.get(GLProfile.GL3), image, true);
-                      texture.texturedata.setTexParameteri(gl, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
-                      texture.texturedata.setTexParameteri(gl, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
-                      texture.texturedata.setTexParameteri(gl, GL.GL_TEXTURE_WRAP_S, GL.GL_REPEAT);
-                      texture.texturedata.setTexParameteri(gl, GL.GL_TEXTURE_WRAP_T, GL.GL_REPEAT);
+                    if (texture != null) {
                       textures.add(texture);
                     } else {
                       Logger.getLogger(JWavefrontObject.class.getName()).log(Level.WARNING,
@@ -666,6 +653,12 @@ public class JWavefrontObject {
                 }
 
                 break;
+                  
+              case 'd':
+                  tok = new StringTokenizer(line, " ");
+                  tok.nextToken();
+                  alpha = Float.parseFloat(tok.nextToken());
+                break;  
               default:
                 Logger.getLogger(JWavefrontObject.class.getName()).log(Level.WARNING,
                         "parse_mtl() error: line not recognized >> " + line, file.getName());

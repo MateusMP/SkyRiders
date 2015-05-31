@@ -111,7 +111,7 @@ public class MapLoader
         }
         
         
-        System.out.print (" NOT FOUND -> ");
+        System.out.println(" TRYING GENERIC... ");
         return false;
     }
     
