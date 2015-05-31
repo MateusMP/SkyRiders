@@ -1,6 +1,11 @@
 package Shaders;
 
+import static Handlers.ShaderHandler.skyDomeShader;
+import static SkyRiders.SkyRiders.gl;
+import SkyRiders.core.ModelBuilder;
+import br.usp.icmc.vicg.gl.jwavefront.Group;
 import br.usp.icmc.vicg.gl.jwavefront.Texture;
+import br.usp.icmc.vicg.gl.jwavefront.Triangle;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import br.usp.icmc.vicg.gl.util.Shader;
 import javax.media.opengl.GL;
@@ -81,4 +86,36 @@ public class SkyDomeShader extends Shader{
     }
     
     
+    public int CreateSkyObject(Group group)
+    {
+        if (group.triangles.isEmpty()) {
+          return -1;
+        }
+
+        float[] vertex_buffer = new float[9 * group.triangles.size()];
+        float[] texture_buffer = new float[6 * group.triangles.size()];
+
+        for (int j = 0; j < group.triangles.size(); j++) {
+          Triangle triangle = group.triangles.get(j);
+
+          for (int k = 0; k < 3; k++) {
+            vertex_buffer[(9 * j) + (3 * k)] = triangle.vertices[k].x;
+            vertex_buffer[(9 * j) + (3 * k) + 1] = triangle.vertices[k].y;
+            vertex_buffer[(9 * j) + (3 * k) + 2] = triangle.vertices[k].z;
+
+            if (triangle.vertex_tex_coords[k] != null) {
+              texture_buffer[(6 * j) + (2 * k)] = triangle.vertex_tex_coords[k].u;
+              texture_buffer[(6 * j) + (2 * k) + 1] = triangle.vertex_tex_coords[k].v;
+            }
+          }
+        }
+
+        group.vao = ModelBuilder.CreateVAO();
+        group.vbo = new int[2];
+        group.vbo[0] = ModelBuilder.StoreDataInAttributeListfv(this.getVertexPositionH(), 3, vertex_buffer);
+        group.vbo[1] = ModelBuilder.StoreDataInAttributeListfv(this.getVertexTexturesH(), 2, texture_buffer);
+        gl.glBindVertexArray(0); // Disable our Vertex Buffer Object
+
+        return group.vao;
+    }
 }

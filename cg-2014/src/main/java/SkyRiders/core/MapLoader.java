@@ -219,7 +219,7 @@ public class MapLoader
         vd.type = VirtualData.DATA_TYPE.MESHFILE;
         vd.data = array;
         
-        System.out.println("MESH: "+array[0]+" GROUP: '"+array[1]+"'");
+//        System.out.println("MESH: "+array[0]+" GROUP: '"+array[1]+"'");
         
         return vd;
     }
@@ -241,7 +241,7 @@ public class MapLoader
         t.scale.y = s.nextFloat();
         t.scale.z = s.nextFloat();
         
-        System.out.println("TRANSFORM: "+t.position + " "+t.rotation+" "+t.scale);
+//        System.out.println("TRANSFORM: "+t.position + " "+t.rotation+" "+t.scale);
         
         vd.type = VirtualData.DATA_TYPE.TRANSFORM;
         vd.data = t;

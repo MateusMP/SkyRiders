@@ -1,4 +1,4 @@
-#version 130
+#version 150
 
 struct LightProperties
 {
@@ -15,10 +15,12 @@ uniform mat4 u_viewMatrix;
 
 in vec3 a_position;
 in vec3 a_normal;
+in vec3 a_tangent;
 in vec2 a_texcoord;
 
 out vec2 v_texcoord;
 out vec3 v_normal;
+out vec3 v_tangent;
 out vec3 toLightVector;
 out vec3 toCameraVector;
 
@@ -30,7 +32,10 @@ void main(void)
 	v_texcoord = a_texcoord;
 
 	// Surface normal
-	v_normal = (u_modelMatrix * vec4(a_normal, 0.0)).xyz;
+	v_normal = (transpose(inverse(u_modelMatrix)) * vec4(a_normal, 0.0)).xyz;
+
+        // Tangent from normal map
+	v_tangent = (u_modelMatrix * vec4(a_tangent, 0.0)).xyz;
 	
 	// To light vector
 	toLightVector = (u_light.position - worldPosition).xyz;

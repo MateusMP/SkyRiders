@@ -16,17 +16,18 @@ uniform mat4 u_viewMatrix;
 //
 
 // WIND
-//uniform vec3 u_pivot; // Object pivot position. Nearest position means less wind influence.
 uniform vec3 u_wind; // Wind direction
 uniform int u_time;
 //
 
 in vec3 a_position;
 in vec3 a_normal;
+in vec3 a_tangent;
 in vec2 a_texcoord;
 
 out vec2 v_texcoord;
 out vec3 v_normal;
+out vec3 v_tangent;
 out vec3 toLightVector;
 out vec3 toCameraVector;
 
@@ -57,6 +58,9 @@ void main(void)
 
     // Surface normal
     v_normal = (u_modelMatrix * vec4(a_normal, 0.0)).xyz;
+
+    // Normal map tangents
+    v_tangent = (u_modelMatrix * vec4(a_tangent, 0.0)).xyz;
 
     // To light vector
     toLightVector = (u_light.position - worldPosition).xyz;

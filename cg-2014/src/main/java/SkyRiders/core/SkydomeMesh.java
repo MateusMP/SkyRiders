@@ -4,6 +4,7 @@ import Handlers.ShaderHandler;
 import MathClasses.BoundingBox;
 import static SkyRiders.SkyRiders.gl;
 import br.usp.icmc.vicg.gl.jwavefront.Group;
+import br.usp.icmc.vicg.gl.jwavefront.Material;
 import br.usp.icmc.vicg.gl.jwavefront.Texture;
 import br.usp.icmc.vicg.gl.jwavefront.Triangle;
 import br.usp.icmc.vicg.gl.jwavefront.Vertex;
@@ -79,6 +80,11 @@ public class SkydomeMesh implements MeshRenderer {
     @Override
     public BoundingBox getBoundingBox() {
         return g.getBoundingBox();
+    }
+
+    @Override
+    public Material getMaterial() {
+        return g.material;
     }
     
 }

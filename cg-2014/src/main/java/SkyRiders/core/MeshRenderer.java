@@ -1,6 +1,7 @@
 package SkyRiders.core;
 
 import MathClasses.BoundingBox;
+import br.usp.icmc.vicg.gl.jwavefront.Material;
 import br.usp.icmc.vicg.gl.jwavefront.Texture;
 import br.usp.icmc.vicg.gl.jwavefront.Vertex;
 import br.usp.icmc.vicg.gl.util.Shader;
@@ -19,6 +20,8 @@ public interface MeshRenderer {
     public ArrayList<Vertex> getVertices();
     
     public Texture getTexture();
+    
+    public Material getMaterial();
     
     /**
      * @return Return meshes VAO id

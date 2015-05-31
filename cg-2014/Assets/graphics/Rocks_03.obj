@@ -1,7 +1,7 @@
 # Blender v2.73 (sub 0) OBJ File: 'Rocks_03.blend'
 # www.blender.org
 mtllib Rocks_03.mtl
-o Rocks_03
+g Rocks_03
 v -40.124901 24.784407 -36.251095
 v -33.834099 29.360607 -47.031097
 v -38.702702 9.221606 -42.576500

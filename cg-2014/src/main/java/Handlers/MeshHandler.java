@@ -57,14 +57,19 @@ public class MeshHandler {
             //init the model
             mesh.init(gl);
             
-            if (shader instanceof GeneralShader || shader instanceof FoliageShader)
+            if (shader instanceof GeneralShader)
             {
                 for (Group g : mesh.getGroups()){
-                    ShaderHandler.CreateTexturedObject(g);
+                    ShaderHandler.generalShader.CreateTexturedObject(g);
                 }
-            } else if (shader instanceof SkyDomeShader){
+            } else if ( shader instanceof FoliageShader ) {
                 for (Group g : mesh.getGroups()){
-                    ShaderHandler.CreateSkyObject(g);
+                    ShaderHandler.foliageShader.CreateTexturedObject(g);
+                }
+            }
+            else if (shader instanceof SkyDomeShader){
+                for (Group g : mesh.getGroups()){
+                    ShaderHandler.skyDomeShader.CreateSkyObject(g);
                 }
             }
             

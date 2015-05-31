@@ -6,6 +6,7 @@ package br.usp.icmc.vicg.gl.jwavefront;
 
 import Handlers.TextureHandler;
 import MathClasses.BoundingBox;
+import MathClasses.Vector3;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -466,8 +467,8 @@ public class JWavefrontObject {
         if (normals.isEmpty()) {
           calculate_vertex_normals();
         }
-    
-//        create_vao();
+        
+        calculate_vertex_tangents();
     }
 
   /**
@@ -647,6 +648,23 @@ public class JWavefrontObject {
                   }
 
                   material.texture = texture;
+                } else if (token.equals("map_Bump")) {
+                  name = tok.nextToken();
+
+                  //loading the texture data
+                  Texture texture = findTexture(name);
+                  if (texture == null) {
+                      texture = TextureHandler.LoadTexture(pathname.getParent() + "/" + name);
+
+                    if (texture != null) {
+                      textures.add(texture);
+                    } else {
+                      Logger.getLogger(JWavefrontObject.class.getName()).log(Level.WARNING,
+                              "parse_mtl() error: texture file not found " + name, file.getName());
+                    }
+                  }
+
+                  material.texture_normal = texture;
                 } else {
                   Logger.getLogger(JWavefrontObject.class.getName()).log(Level.WARNING,
                           "parse_mtl() error: line not recognized >> " + line, file.getName());
@@ -731,49 +749,49 @@ public class JWavefrontObject {
       Group group = groups.get(i);
 
       for (int j = 0; j < group.triangles.size(); j++) {
-        Triangle triangle = group.triangles.get(j);
+            Triangle triangle = group.triangles.get(j);
 
-        int vertex_index_0 = triangle.vertices[0].id;
-        if (vertex_normals[vertex_index_0] == null) {
-          vertex_normals[vertex_index_0] = new Normal(triangle.face_normal.x,
-                  triangle.face_normal.y, triangle.face_normal.z);
-        } else {
-          if (should_update_normal(vertex_normals[vertex_index_0],
-                  triangle.face_normal, angle)) {
-            vertex_normals[vertex_index_0].x += triangle.face_normal.x;
-            vertex_normals[vertex_index_0].y += triangle.face_normal.y;
-            vertex_normals[vertex_index_0].z += triangle.face_normal.z;
-          }
-        }
+            int vertex_index_0 = triangle.vertices[0].id;
+            if (vertex_normals[vertex_index_0] == null) {
+              vertex_normals[vertex_index_0] = new Normal(triangle.face_normal.x,
+                      triangle.face_normal.y, triangle.face_normal.z);
+            } else {
+              if (should_update_normal(vertex_normals[vertex_index_0],
+                      triangle.face_normal, angle)) {
+                vertex_normals[vertex_index_0].x += triangle.face_normal.x;
+                vertex_normals[vertex_index_0].y += triangle.face_normal.y;
+                vertex_normals[vertex_index_0].z += triangle.face_normal.z;
+              }
+            }
 
-        int vertex_index_1 = triangle.vertices[1].id;
-        if (vertex_normals[vertex_index_1] == null) {
-          vertex_normals[vertex_index_1] = new Normal(triangle.face_normal.x,
-                  triangle.face_normal.y, triangle.face_normal.z);
-        } else {
-          if (should_update_normal(vertex_normals[vertex_index_1],
-                  triangle.face_normal, angle)) {
-            vertex_normals[vertex_index_1].x += triangle.face_normal.x;
-            vertex_normals[vertex_index_1].y += triangle.face_normal.y;
-            vertex_normals[vertex_index_1].z += triangle.face_normal.z;
-          }
-        }
+            int vertex_index_1 = triangle.vertices[1].id;
+            if (vertex_normals[vertex_index_1] == null) {
+              vertex_normals[vertex_index_1] = new Normal(triangle.face_normal.x,
+                      triangle.face_normal.y, triangle.face_normal.z);
+            } else {
+              if (should_update_normal(vertex_normals[vertex_index_1],
+                      triangle.face_normal, angle)) {
+                vertex_normals[vertex_index_1].x += triangle.face_normal.x;
+                vertex_normals[vertex_index_1].y += triangle.face_normal.y;
+                vertex_normals[vertex_index_1].z += triangle.face_normal.z;
+              }
+            }
 
-        int vertex_index_2 = triangle.vertices[2].id;
-        if (vertex_normals[vertex_index_2] == null) {
-          vertex_normals[vertex_index_2] = new Normal(triangle.face_normal.x,
-                  triangle.face_normal.y, triangle.face_normal.z);
-        } else {
-          if (should_update_normal(vertex_normals[vertex_index_2],
-                  triangle.face_normal, angle)) {
-            vertex_normals[vertex_index_2].x += triangle.face_normal.x;
-            vertex_normals[vertex_index_2].y += triangle.face_normal.y;
-            vertex_normals[vertex_index_2].z += triangle.face_normal.z;
-          }
-        }
+            int vertex_index_2 = triangle.vertices[2].id;
+            if (vertex_normals[vertex_index_2] == null) {
+              vertex_normals[vertex_index_2] = new Normal(triangle.face_normal.x,
+                      triangle.face_normal.y, triangle.face_normal.z);
+            } else {
+              if (should_update_normal(vertex_normals[vertex_index_2],
+                      triangle.face_normal, angle)) {
+                vertex_normals[vertex_index_2].x += triangle.face_normal.x;
+                vertex_normals[vertex_index_2].y += triangle.face_normal.y;
+                vertex_normals[vertex_index_2].z += triangle.face_normal.z;
+              }
+            }
       }
     }
-
+    
     // Normalize normals
     for (int i = 0; i < vertex_normals.length; i++) {
         float norm = (float) Math.sqrt(vertex_normals[i].x * vertex_normals[i].x
@@ -801,6 +819,90 @@ public class JWavefrontObject {
         }
     }
   }
+  
+  
+  private void calculate_vertex_tangents() {
+        float angle = 90;
+        Vector3[] vertex_tangents = new Vector3[vertices.size()];
+
+        for (int i = 0; i < groups.size(); i++) {
+          Group group = groups.get(i);
+
+            for (Triangle t : group.triangles) {
+                int v0 = t.vertices[0].id;
+                int v1 = t.vertices[1].id;
+                int v2 = t.vertices[2].id;
+                
+                if (vertex_tangents[v0] == null)
+                    vertex_tangents[v0] = new Vector3();
+                if (vertex_tangents[v1] == null)
+                    vertex_tangents[v1] = new Vector3();
+                if (vertex_tangents[v2] == null)
+                    vertex_tangents[v2] = new Vector3();
+                
+                TextureCoord v0_uv = t.vertex_tex_coords[0];
+                TextureCoord v1_uv = t.vertex_tex_coords[1];
+                TextureCoord v2_uv = t.vertex_tex_coords[2];
+
+                Vector3 v0_pos = new Vector3(t.vertices[0].x, t.vertices[0].y, t.vertices[0].z);
+                Vector3 v1_pos = new Vector3(t.vertices[1].x, t.vertices[1].y, t.vertices[1].z);
+                Vector3 v2_pos = new Vector3(t.vertices[2].x, t.vertices[2].y, t.vertices[2].z);
+
+                Vector3 Edge1 = v1_pos.sub(v0_pos);
+                Vector3 Edge2 = v2_pos.sub(v0_pos);
+
+                float DeltaU1 = 0;
+                float DeltaV1 = 0;
+                float DeltaU2 = 0;
+                float DeltaV2 = 0;
+                if (v1_uv != null && v0_uv != null){
+                    DeltaU1 = v1_uv.u - v0_uv.u;
+                    DeltaV1 = v1_uv.v - v0_uv.v;
+                }
+                if (v2_uv != null && v0_uv != null){
+                    DeltaU2 = v2_uv.u - v0_uv.u;
+                    DeltaV2 = v2_uv.v - v0_uv.v;
+                }
+
+                float f = 1.0f / (DeltaU1 * DeltaV2 - DeltaU2 * DeltaV1);
+
+                Vector3 Tangent = new Vector3();
+
+                Tangent.x = f * (DeltaV2 * Edge1.x - DeltaV1 * Edge2.x);
+                Tangent.y = f * (DeltaV2 * Edge1.y - DeltaV1 * Edge2.y);
+                Tangent.z = f * (DeltaV2 * Edge1.z - DeltaV1 * Edge2.z);
+
+                vertex_tangents[v0] = vertex_tangents[v0].add(Tangent);
+                vertex_tangents[v1] = vertex_tangents[v1].add(Tangent);
+                vertex_tangents[v2] = vertex_tangents[v2].add(Tangent);
+            }
+        }
+    
+        // Normalize tangents
+        for (int i = 0; i < vertex_tangents.length; i++) {
+            float norm = (float) Math.sqrt(vertex_tangents[i].x * vertex_tangents[i].x
+                    + vertex_tangents[i].y * vertex_tangents[i].y
+                    + vertex_tangents[i].z * vertex_tangents[i].z);
+
+            if (norm > 0) {
+                vertex_tangents[i].x /= norm;
+                vertex_tangents[i].y /= norm;
+                vertex_tangents[i].z /= norm;
+            }
+        }
+
+        for (int i = 0; i < groups.size(); i++) {
+            Group group = groups.get(i);
+
+            for (int j = 0; j < group.triangles.size(); j++) {
+                Triangle triangle = group.triangles.get(j);
+
+                triangle.tangents[0] = vertex_tangents[triangle.vertices[0].id];
+                triangle.tangents[1] = vertex_tangents[triangle.vertices[1].id];
+                triangle.tangents[2] = vertex_tangents[triangle.vertices[2].id];
+            }
+        }
+    }
 
   private boolean should_update_normal(Normal a, Normal b, float angle) {
     float cos_angle = (float) Math.cos(Math.toRadians(angle));

@@ -17,7 +17,7 @@ import com.jogamp.common.nio.Buffers;
 public abstract class Shader {
     
     private String[] shaders_filenames = new String[5];
-    private GL3 gl = null;
+    protected GL3 gl = null;
     private int programHandle = -1;
     
     public static final int[] TYPES = new int[]{

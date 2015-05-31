@@ -2,8 +2,8 @@ package SkyRiders.core;
 
 import MathClasses.BoundingBox;
 import static SkyRiders.SkyRiders.gl;
-import br.usp.icmc.vicg.gl.core.Material;
 import br.usp.icmc.vicg.gl.jwavefront.Group;
+import br.usp.icmc.vicg.gl.jwavefront.Material;
 import br.usp.icmc.vicg.gl.jwavefront.Texture;
 import br.usp.icmc.vicg.gl.jwavefront.Triangle;
 import br.usp.icmc.vicg.gl.jwavefront.Vertex;
@@ -25,9 +25,7 @@ public class TexturedMesh implements MeshRenderer {
         shader = s;
         
         texture = obj.material.texture; // Define default texture
-        
-        material = new Material();
-        material.init(gl, shader);
+        material = obj.material;
         
         copyVertices();
     }
@@ -48,19 +46,24 @@ public class TexturedMesh implements MeshRenderer {
     }
     
     @Override
+    public Material getMaterial(){
+        return material;
+    }
+    
+    @Override
     public void draw()
     {
         if (g.triangles.isEmpty()) {
             return;
         }
 
-        if (g.material != null) {
-            material.setAmbientColor(g.material.ambient);
-            material.setDiffuseColor(g.material.diffuse);
-            material.setSpecularColor(g.material.specular);
-            material.setSpecularExponent(g.material.shininess);
-            material.bind();
-        }
+//        if (g.material != null) {
+//            material.setAmbientColor(g.material.ambient);
+//            material.setDiffuseColor(g.material.diffuse);
+//            material.setSpecularColor(g.material.specular);
+//            material.setSpecularExponent(g.material.shininess);
+//            material.bind();
+//        }
 
         gl.glBindVertexArray(g.vao);
         gl.glDrawArrays(GL3.GL_TRIANGLES, 0, 3 * g.triangles.size());
@@ -85,7 +88,7 @@ public class TexturedMesh implements MeshRenderer {
     @Override
     public void setShader(Shader s){
         shader = s;
-        material.init(gl, shader);
+//        material.init(gl, shader);
     }
 
     @Override

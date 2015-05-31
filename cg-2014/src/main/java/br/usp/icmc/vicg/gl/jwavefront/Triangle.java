@@ -5,6 +5,8 @@
 
 package br.usp.icmc.vicg.gl.jwavefront;
 
+import MathClasses.Vector3;
+
 /**
  *
  * @author PC
@@ -15,4 +17,5 @@ public class Triangle {
     public Normal vertex_normals[] = new Normal[3]; // array of triangle normal indices
     public TextureCoord vertex_tex_coords[] = new TextureCoord[3]; // array of triangle texcoord indices
     public Normal face_normal = null;
+    public Vector3 tangents[] = new Vector3[3];
 }

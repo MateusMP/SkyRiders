@@ -38,5 +38,7 @@ public class Material {
     public float ambient[]; // ambient component
     public float specular[]; // specular component
     public float shininess; // specular exponent
+    
     public Texture texture; //texture
+    public Texture texture_normal; //normal map
 }
