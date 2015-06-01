@@ -30,7 +30,7 @@ public class Island extends Map{
         //init the light
         light.setPosition(new float[]{0, 900, 0, 1.0f});
         light.setAmbientColor(new float[]{0.4f, 0.4f, 0.4f, 1.0f});
-        light.setDiffuseColor(new float[]{0.75f, 0.75f, 0.75f, 1.0f});
+        light.setDiffuseColor(new float[]{0.9f, 0.9f, 0.9f, 1.0f});
         light.setSpecularColor(new float[]{0.7f, 0.7f, 0.7f, 1.0f});
     }
     
