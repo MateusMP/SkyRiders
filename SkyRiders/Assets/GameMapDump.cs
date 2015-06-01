@@ -85,7 +85,7 @@ public static class GameMapDump
 		
         writer.WriteLine("{0} {1} {2} {3} {4} {5} {6} {7} {8} {9}", indent,
                          -position.x, position.y, position.z,
-                         rotation.eulerAngles.x, -rotation.eulerAngles.y, rotation.eulerAngles.z,
+                         rotation.eulerAngles.x, -rotation.eulerAngles.y, -rotation.eulerAngles.z,
                          t.lossyScale.x, t.lossyScale.y, t.lossyScale.z);
     }
 }
