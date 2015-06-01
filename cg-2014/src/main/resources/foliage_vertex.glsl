@@ -35,7 +35,7 @@ vec3 calculate_wind(vec3 pos){
     vec3 u_pivot = vec3(0,0,0);
     float timeSec = u_time;
     float distance = distance(u_pivot, pos);
-    float sinTimeWind = -clamp(pow(sin(cos(timeSec/120)*4),4),0,1)+0.8;//clamp(pow(sin(timeSec /500),64), -0.1, 2.0)+0.2;
+    float sinTimeWind = clamp(pow(sin(cos(timeSec/120)*2),8),0,1);//clamp(pow(sin(timeSec /500),64), -0.1, 2.0)+0.2;
     float sinTimeSec = sinTimeWind*(cos(timeSec/2.5)/5+1); //sin(timeSec * distance/520);
 
     float factor = max(0.0, distance-14)*0.3;
@@ -49,7 +49,8 @@ vec3 calculate_wind(vec3 pos){
 
 void main(void)
 {
-    mat4 rot = u_modelMatrix;
+	mat4 modelTI = transpose(inverse(u_modelMatrix));
+    mat4 rot = modelTI;
     rot[3][0] = 0;
     rot[3][1] = 0;
     rot[3][2] = 0;
@@ -64,7 +65,7 @@ void main(void)
     v_texcoord = a_texcoord;
 
     // Surface normal
-    v_normal = (u_modelMatrix * vec4(a_normal, 0.0)).xyz;
+    v_normal = (modelTI * vec4(a_normal, 0.0)).xyz;
 
     // Normal map tangents
     v_tangent = (u_modelMatrix * vec4(a_tangent, 0.0)).xyz;

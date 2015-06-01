@@ -8,11 +8,11 @@ public static class GameMapDump
     [MenuItem("Debug/Dump Scene")]
     public static void DumpScene()
     {
-        if ((Selection.gameObjects == null) || (Selection.gameObjects.Length == 0))
-        {
-            Debug.LogError("Please select the object(s) you wish to dump.");
-            return;
-        }
+//        if ((Selection.gameObjects == null) || (Selection.gameObjects.Length == 0))
+//        {
+//            Debug.LogError("Please select the object(s) you wish to dump.");
+//            return;
+//        }
 
         var path = EditorUtility.SaveFilePanel("Save selected Objects", "", "island" + ".txt", "txt");
 
@@ -23,7 +23,8 @@ public static class GameMapDump
             Debug.Log("Dumping scene to " + path + " ...");
             using (StreamWriter writer = new StreamWriter(path, false))
             {
-                foreach (GameObject gameObject in Selection.gameObjects)
+				GameObject[] allObjects = UnityEngine.Object.FindObjectsOfType<GameObject>();
+                foreach (GameObject gameObject in allObjects)
                 {
                     DumpGameObject(gameObject, writer, "");
                 }
@@ -58,10 +59,10 @@ public static class GameMapDump
         DumpMesh(writer, indent + "  ", mf);
         DumpTransform(writer, indent + "  ", t);
 
-        foreach (Transform child in gameObject.transform)
-        {
-            DumpGameObject(child.gameObject, writer, indent + "  ");
-        }
+//        foreach (Transform child in gameObject.transform)
+//        {
+//            DumpGameObject(child.gameObject, writer, indent + "  ");
+//        }
     }
 
     private static void DumpMesh(StreamWriter writer, string indent, MeshFilter f)
