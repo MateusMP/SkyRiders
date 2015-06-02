@@ -248,7 +248,7 @@ public class Airplane extends GameObject {
         Vector3 b = transform.position;
         Vector3 e = transform.position.add(forward.normalize().mul(15.0f) );
         Line l = new Line( b, e);
-        l.init(SkyRiders.hdl().gl, ShaderHandler.generalShader);
+        l.init(SkyRiders.gl, ShaderHandler.generalShader);
         l.bind();
         l.draw();
         
@@ -264,6 +264,7 @@ public class Airplane extends GameObject {
         modelMatrix.scale(transform.scale.x, transform.scale.y, transform.scale.z);
         ShaderHandler.generalShader.LoadModelMatrix(modelMatrix);
         ShaderHandler.generalShader.LoadDiffuseTexture(null);
+        ShaderHandler.generalShader.LoadNormalTexture(null);
         lm.ActiveMeshDraw();
         
         matrixReloaded.rotate(transform.rotation.z, 0, 0, 1.0f);

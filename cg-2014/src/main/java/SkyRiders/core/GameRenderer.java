@@ -78,7 +78,7 @@ public class GameRenderer {
     }
   
     public static void Render(Map map){
-        GL3 gl = SkyRiders.hdl().gl;
+        GL3 gl = SkyRiders.gl;
         
         for (GameObject o : map.objects){
             AddObject(o);
@@ -166,7 +166,7 @@ public class GameRenderer {
         w.scale = w.scale.scale(objtrans.scale);
                 
         Sphere sp = new Sphere(radius);
-        sp.init(SkyRiders.hdl().gl, ShaderHandler.generalShader);
+        sp.init(SkyRiders.gl, ShaderHandler.generalShader);
         sp.bind();
         ShaderHandler.generalShader.LoadModelMatrix(w.getMatrix());
         sp.draw();

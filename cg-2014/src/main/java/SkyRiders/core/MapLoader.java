@@ -81,7 +81,7 @@ public class MapLoader
     private static Map ProcessObjects(ArrayList<VirtualObject> objects)
     {
         // Map m = new Map();
-        Map m = new Island(SkyRiders.SkyRiders.hdl().gl);
+        Map m = new Island(SkyRiders.SkyRiders.gl);
         
         for (VirtualObject obj : objects)
         {

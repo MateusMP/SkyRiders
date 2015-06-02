@@ -27,8 +27,6 @@ import javax.media.opengl.awt.GLCanvas;
 
 public class SkyRiders implements GLEventListener {
     
-    private static SkyRiders skyracers;
-
     public static GL3 gl;
     
     private Map gameMap;
@@ -39,8 +37,8 @@ public class SkyRiders implements GLEventListener {
     private final Matrix4 viewMatrix;
     private final float angle = 60;
     private float aspect;
-    private final float nearDistance = 0.1f;
-    private final float farDistance = 10000;
+    private static final float nearDistance = 0.1f;
+    private static final float farDistance = 10000;
 
     private static AnimatorBase animator;
     private static Frame frame;
@@ -49,20 +47,10 @@ public class SkyRiders implements GLEventListener {
     
 
     public SkyRiders() {
-        
-        skyracers = this;
-        
-        // modelMatrix = new Matrix4();
         this.projectionMatrix = new Matrix4();
         this.viewMatrix = new Matrix4();
-
     }
     
-    public static SkyRiders hdl()
-    {
-        return skyracers;
-    }
-
     @Override
     public void init(GLAutoDrawable drawable)
     {
@@ -133,7 +121,9 @@ public class SkyRiders implements GLEventListener {
         update();
         render(drawable);
         
-        this.frame.setTitle("Sky Riders "+animator.getLastFPS()+" - OBJS: "+Profiler.getRenderingObjects()+" - Vertices: "+Profiler.getRenderingVertex());
+        String str = String.format("Sky Riders %06.2f - OBJs: %03d - Vertices %,07d",
+                animator.getLastFPS(), Profiler.getRenderingObjects(), Profiler.getRenderingVertex());
+        SkyRiders.frame.setTitle(str);
     }
     
     private void update()

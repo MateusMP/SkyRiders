@@ -35,14 +35,15 @@ vec3 calculate_wind(vec3 pos){
     vec3 u_pivot = vec3(0,0,0);
     float timeSec = u_time;
     float distance = distance(u_pivot, pos);
-    float sinTimeWind = clamp(pow(sin(cos(timeSec/120)*2),8),0,1);//clamp(pow(sin(timeSec /500),64), -0.1, 2.0)+0.2;
-    float sinTimeSec = sinTimeWind*(cos(timeSec/2.5)/5+1); //sin(timeSec * distance/520);
+	float cos_time = cos(timeSec/2.5);
+    float sinTimeWind = clamp(pow(sin(cos(timeSec/120)*2),8),0,1.5)+0.1;
+    float sinTimeSec = sinTimeWind*(cos_time/5+1);
 
-    float factor = max(0.0, distance-14)*0.3;
-    float factorY = max(0.0, distance-20)*0.05;
+    float factor = max(0.0, distance-14)*0.1;
+    float factorY = max(0.0, distance-20)*0.02;
 
     vec3 wind = u_wind * sinTimeWind;
-    vec3 windSplash = (vec3(-sinTimeSec,sinTimeSec,sinTimeSec)+wind)*sinTimeSec;
+    vec3 windSplash = ((vec3(-cos_time,cos_time,cos_time)+wind)*sinTimeSec)/2;
 
     return wind*factor + windSplash*factorY;
 }
