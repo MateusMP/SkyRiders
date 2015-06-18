@@ -6,6 +6,7 @@ import MathClasses.Transform;
 import MathClasses.Vector3;
 import SkyRiders.SkyDome;
 import SkyRiders.SkyRiders;
+import static SkyRiders.SkyRiders.gl;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import br.usp.icmc.vicg.gl.model.Cube;
 import br.usp.icmc.vicg.gl.model.Sphere;
@@ -78,13 +79,23 @@ public class GameRenderer {
     }
   
     public static void Render(Map map){
-        GL3 gl = SkyRiders.gl;
         
         for (GameObject o : map.objects){
             AddObject(o);
         }
         
+        RenderScene();
+        
         // --
+        gl.glEnable(GL2.GL_CULL_FACE);
+        gl.glCullFace(GL2.GL_BACK);
+        RenderLayer(objects.get(RENDER_TYPE.RENDER_WATER));
+        
+        objects.clear();
+    }
+    
+    public static void RenderScene(){
+                // --
         gl.glEnable(GL2.GL_CULL_FACE);
         gl.glCullFace(GL2.GL_BACK);
         RenderSkyDome();
@@ -101,10 +112,6 @@ public class GameRenderer {
         RenderLayer(objects.get(RENDER_TYPE.RENDER_TRANSPARENT));
 //        gl.glDepthMask(true); 
         
-        // --
-        RenderLayer(objects.get(RENDER_TYPE.RENDER_WATER));
-        
-        objects.clear();
     }
     
     private static void RenderLayer( HashMap<Shader, ArrayList<GameObject>> layer )

@@ -8,6 +8,7 @@ package Handlers;
 import Shaders.FoliageShader;
 import Shaders.GeneralShader;
 import Shaders.SkyDomeShader;
+import Shaders.WaterShader;
 import SkyRiders.SkyRiders;
 import br.usp.icmc.vicg.gl.jwavefront.Group;
 import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
@@ -70,6 +71,11 @@ public class MeshHandler {
             else if (shader instanceof SkyDomeShader){
                 for (Group g : mesh.getGroups()){
                     ShaderHandler.skyDomeShader.CreateSkyObject(g);
+                }
+            }
+            else if (shader instanceof WaterShader){
+                for (Group g : mesh.getGroups()){
+                    ShaderHandler.waterShader.CreateTexturedObject(g);
                 }
             }
             
