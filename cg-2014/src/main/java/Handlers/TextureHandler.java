@@ -29,8 +29,10 @@ public class TextureHandler {
             return tex;
         
         File file = new File(path);
-        if (!file.exists())
+        if (!file.exists()){
+            System.out.println("ERROR: TextureHandler: File not found: "+path);
             return null;
+        }
         
         if (tex == null)
         {

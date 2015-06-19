@@ -39,22 +39,27 @@ void main(void)
 {
 	vec4 finalAmbientColor = u_light.ambientColor * u_material.ambientColor;
 
-	vec3 unitNormal = normalize(v_normal);
 	vec3 unitLightVector = normalize(toLightVector);
 	vec3 unitToCamera = normalize(toCameraVector);
 	vec3 lightDirection = -unitLightVector;
 
         vec2 distortion1 = (texture(u_dudv, v_texcoord+move_factor).rg * 2.0 -1.0)*waveStrength;
+        vec2 distortion2 = (texture(u_dudv, v_texcoord+move_factor/2).rg * 2.0 -1.0)*(waveStrength/2);
 	
         vec2 result_coord = v_texcoord + distortion1;
-
         result_coord = clamp(result_coord, 0.001, 0.999);
+        
+        vec2 result_coord2 = v_texcoord + distortion2;
+        result_coord2 = clamp(result_coord, 0.001, 0.999);
+        
 
 	vec4 texColor = vec4(1.0, 1.0, 1.0, 1.0);
 	if (u_is_texture) {
             texColor = texture(u_texture, result_coord);
 	}
 	texColor.a = 1.0;
+        
+        vec3 unitNormal = normalize( texture(u_dudv, result_coord2).rgb );
 
 	float nDotl = dot(unitNormal, unitLightVector);
 	float brightness = max(nDotl, 0.0);
