@@ -2,10 +2,10 @@
 
 struct LightProperties
 {
-	vec4 position;
-	vec4 ambientColor;
-	vec4 diffuseColor;
-	vec4 specularColor;
+    vec4 position;
+    vec4 ambientColor;
+    vec4 diffuseColor;
+    vec4 specularColor;
 };
 uniform	LightProperties u_light;
 
@@ -35,12 +35,12 @@ vec3 calculate_wind(vec3 pos){
     vec3 u_pivot = vec3(0,0,0);
     float timeSec = u_time;
     float distance = distance(u_pivot, pos);
-	float cos_time = cos(timeSec/2.5);
-    float sinTimeWind = clamp(pow(sin(cos(timeSec/120)*2),8),0,1.5)+0.1;
+	float cos_time = cos(timeSec/3);
+    float sinTimeWind = clamp(pow(sin(cos(timeSec/120)*2),8),0,1)+0.1;
     float sinTimeSec = sinTimeWind*(cos_time/5+1);
 
     float factor = max(0.0, distance-14)*0.1;
-    float factorY = max(0.0, distance-20)*0.02;
+    float factorY = max(0.0, distance-20)*0.01;
 
     vec3 wind = u_wind * sinTimeWind;
     vec3 windSplash = ((vec3(-cos_time,cos_time,cos_time)+wind)*sinTimeSec)/2;
@@ -50,7 +50,7 @@ vec3 calculate_wind(vec3 pos){
 
 void main(void)
 {
-	mat4 modelTI = transpose(inverse(u_modelMatrix));
+    mat4 modelTI = transpose(inverse(u_modelMatrix));
     mat4 rot = modelTI;
     rot[3][0] = 0;
     rot[3][1] = 0;
