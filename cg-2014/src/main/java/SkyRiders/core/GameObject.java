@@ -64,8 +64,7 @@ public class GameObject {
     
     private void calculateObjectRadius() 
     {        
-        objectRadius = mesh.getActiveMesh().getBoundingBox().getMaximumSphereRadius();
-        
+        objectRadius = mesh.getActiveMesh().getBoundingBox().getMaximumSphereRadius()*transform.scale.norm();        
 //        System.out.println("RADIUS: "+objectRadius);
     }
 

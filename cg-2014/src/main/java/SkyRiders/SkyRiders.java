@@ -13,7 +13,6 @@ import SkyRiders.core.GameObject;
 import SkyRiders.core.GameRenderer.RENDER_TYPE;
 import SkyRiders.core.TexturedMesh;
 import SkyRiders.core.WaterObject;
-import br.usp.icmc.vicg.gl.jwavefront.Group;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import com.jogamp.opengl.util.AnimatorBase;
 import com.jogamp.opengl.util.FPSAnimator;
@@ -98,7 +97,7 @@ public class SkyRiders implements GLEventListener {
             // STANDARD CAMERA            
             StandardCamera stdcam = new StandardCamera(gameMap.startpoint.position);
             inputHandler.AddHandler(stdcam);
-            setCurrentCamera(stdcam);
+            //setCurrentCamera(stdcam);
             
             // SKY DOME
             SkydomeMesh objMesh = new SkydomeMesh(MeshHandler.LoadMesh("./Assets/graphics/skydome.obj", null, ShaderHandler.skyDomeShader));

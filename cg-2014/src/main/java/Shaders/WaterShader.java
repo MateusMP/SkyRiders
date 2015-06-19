@@ -1,7 +1,7 @@
 package Shaders;
 
-import static Handlers.ShaderHandler.generalShader;
-import static SkyRiders.SkyRiders.gl;
+import Handlers.ShaderHandler;
+import static Handlers.ShaderHandler.waterShader;
 import SkyRiders.core.GameObject;
 import SkyRiders.core.ModelBuilder;
 import br.usp.icmc.vicg.gl.core.Light;
@@ -11,15 +11,15 @@ import br.usp.icmc.vicg.gl.jwavefront.Texture;
 import br.usp.icmc.vicg.gl.jwavefront.Triangle;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import br.usp.icmc.vicg.gl.util.Shader;
-import javax.media.opengl.GL;
 import javax.media.opengl.GL3;
 
 /**
- * Shader generico
+ * Shader de agua
  */
 public class WaterShader extends Shader {
     
     private static final int TEXTURE_DIFFUSE = 0;
+    private static final int TEXTURE_DUDV = 1;
     
     private int vertex_positions_handle;
     private int vertex_normals_handle;
@@ -28,6 +28,7 @@ public class WaterShader extends Shader {
     //control if it is a texture or material
     private int is_texture_handle;
     private int diffuseTexture_hdl;
+    private int dudvTexture_hdl;
     
     // Matrices
     private int modelMatrix_hdl;
@@ -44,11 +45,12 @@ public class WaterShader extends Shader {
     private int matDiffuseColorHandle;
     private int matSpecularColorHandle;
     private int matSpecularExponentHandle;
-    
+    private int moveFactorHandle;
     //
     private Matrix4 projection;
     private Matrix4 view;
     private Light sun;
+    private float moveFactor;
     
     public WaterShader() {
         super("water_vertex.glsl", "water_fragment.glsl");
@@ -63,6 +65,7 @@ public class WaterShader extends Shader {
         
         is_texture_handle = super.getUniformLocation("u_is_texture");
         diffuseTexture_hdl = super.getUniformLocation("u_texture");
+        dudvTexture_hdl = super.getUniformLocation("u_dudv");
         
         modelMatrix_hdl = super.getUniformLocation("u_modelMatrix");
         projMatrix_hdl = super.getUniformLocation("u_projectionMatrix");
@@ -77,6 +80,8 @@ public class WaterShader extends Shader {
         matDiffuseColorHandle = super.getUniformLocation("u_material.diffuseColor");
         matSpecularColorHandle = super.getUniformLocation("u_material.specularColor");
         matSpecularExponentHandle = super.getUniformLocation("u_material.specularExponent");
+        moveFactorHandle = super.getUniformLocation("move_factor");
+        
     }
     
     public int getVertexPositionH(){
@@ -105,9 +110,12 @@ public class WaterShader extends Shader {
         super.bind();
         super.loadMatrix(projMatrix_hdl, projection);
         super.loadMatrix(viewMatrix_hdl, view);
+        LoadMoveFactor(this.moveFactor);
         LoadSunLight(sun);
         
         ConnectTexturesUnits();
+        
+        LoadDudvTexture(ShaderHandler.dudv_texture);
     }
     
     /**
@@ -115,6 +123,7 @@ public class WaterShader extends Shader {
      */
     protected void ConnectTexturesUnits(){
         super.loadInt(diffuseTexture_hdl, TEXTURE_DIFFUSE);
+        super.loadInt(dudvTexture_hdl, TEXTURE_DUDV);
     }
     
     public void LoadProjView(Matrix4 proj, Matrix4 view){
@@ -149,6 +158,12 @@ public class WaterShader extends Shader {
         }
     }
     
+    public void LoadDudvTexture(Texture texture){
+        if (texture != null){
+            loadTexture(GL3.GL_TEXTURE0+TEXTURE_DUDV, texture);
+        }
+    }
+    
     public void LoadMaterial(Material material){
         super.loadVector4f(matAmbientColorHandle, material.ambient);
         super.loadVector4f(matDiffuseColorHandle, material.diffuse);
@@ -158,6 +173,11 @@ public class WaterShader extends Shader {
         LoadDiffuseTexture(material.texture);
     }
     
+    public void LoadMoveFactor(float factor)
+    {
+        super.loadFloat(this.moveFactorHandle, factor);
+        this.moveFactor = factor;
+    }
     
     /**
      * 

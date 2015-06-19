@@ -22,7 +22,10 @@ uniform mat4 u_viewMatrix;
 uniform mat4 u_modelMatrix;
 
 uniform sampler2D u_texture;
+uniform sampler2D u_dudv;
 uniform bool u_is_texture;
+
+uniform float move_factor;
 
 in vec2 v_texcoord;
 in vec3 v_normal;		// Surface normal
@@ -31,6 +34,7 @@ in vec3 toCameraVector;
 
 out vec4 fragColor;
 
+const float waveStrength = 0.06;
 void main(void)
 {
 	vec4 finalAmbientColor = u_light.ambientColor * u_material.ambientColor;
@@ -39,12 +43,16 @@ void main(void)
 	vec3 unitLightVector = normalize(toLightVector);
 	vec3 unitToCamera = normalize(toCameraVector);
 	vec3 lightDirection = -unitLightVector;
+
+        vec2 distortion1 = (texture(u_dudv, v_texcoord+move_factor).rg * 2.0 -1.0)*waveStrength;
 	
+        vec2 result_coord = v_texcoord + distortion1;
+
+        result_coord = clamp(result_coord, 0.001, 0.999);
+
 	vec4 texColor = vec4(1.0, 1.0, 1.0, 1.0);
 	if (u_is_texture) {
-            texColor = texture(u_texture, v_texcoord);
-            if (texColor.a < 0.2)
-                discard;
+            texColor = texture(u_texture, result_coord);
 	}
 	texColor.a = 1.0;
 

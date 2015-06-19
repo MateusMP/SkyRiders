@@ -22,34 +22,4 @@ public class WaterObject extends GameObject {
         
         mesh.ActiveMeshDraw();
     }
-    
-    private void calculateObjectRadius() 
-    {        
-        objectRadius = mesh.getActiveMesh().getBoundingBox().getMaximumSphereRadius();
-        
-//        System.out.println("RADIUS: "+objectRadius);
-    }
-
-    
-    public Transform getTransform() {
-        return transform;
-    }
-    
-    public float getObjectRadius() {
-        calculateObjectRadius();
-        return objectRadius;
-    }
-    
-    public GameRenderer.RENDER_TYPE getRenderType(){
-        return rendermode;
-    }
-    
-    public void setRenderType(GameRenderer.RENDER_TYPE t){
-        rendermode = t;
-    }
-    
-    public MeshRenderer getMesh(){
-        return mesh.getActiveMesh();
-    }
-    
 }
