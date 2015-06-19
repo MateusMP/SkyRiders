@@ -8,7 +8,12 @@ import SkyRiders.core.MapLoader;
 import Handlers.MeshHandler;
 import SkyRiders.core.SkydomeMesh;
 import Handlers.ShaderHandler;
+import MathClasses.Vector3;
+import SkyRiders.core.GameObject;
+import SkyRiders.core.GameRenderer.RENDER_TYPE;
 import SkyRiders.core.TexturedMesh;
+import SkyRiders.core.WaterObject;
+import br.usp.icmc.vicg.gl.jwavefront.Group;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import com.jogamp.opengl.util.AnimatorBase;
 import com.jogamp.opengl.util.FPSAnimator;
@@ -45,7 +50,9 @@ public class SkyRiders implements GLEventListener {
     private static GLCanvas glCanvas;
     public static InputHandler inputHandler;
     
-
+    TexturedMesh waterPlane; 
+    GameObject waterObj;
+    
     public SkyRiders() {
         this.projectionMatrix = new Matrix4();
         this.viewMatrix = new Matrix4();
@@ -98,6 +105,18 @@ public class SkyRiders implements GLEventListener {
             SkyDome skyDome = new SkyDome(cam, objMesh);
             GameRenderer.setSkyDome(skyDome);
             
+            //Water Plane
+            waterPlane = new TexturedMesh(MeshHandler.LoadMesh("./Assets/graphics/water_plane.obj", null , ShaderHandler.waterShader), ShaderHandler.waterShader);
+            for (int i = 0; i < 10; i++){
+                for (int j = 0; j < 10; j++){
+                    waterObj = new WaterObject(new Vector3(-1000+i*400f, -30f, -1000+j*400f), waterPlane);
+
+                    waterObj.setRenderType(RENDER_TYPE.RENDER_WATER);
+                    waterObj.getTransform().scale = waterObj.getTransform().scale.mul(200);
+                    gameMap.addObject(waterObj);
+                }
+            }
+            
         } catch (Exception ex) {
             Logger.getLogger(SkyRiders.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -149,6 +168,7 @@ public class SkyRiders implements GLEventListener {
 
         ShaderHandler.generalShader.LoadProjView(projectionMatrix, viewMatrix);
         ShaderHandler.foliageShader.LoadProjView(projectionMatrix, viewMatrix);
+        ShaderHandler.waterShader.LoadProjView(projectionMatrix, viewMatrix);
         
         GameRenderer.SetFrustum(projectionMatrix, viewMatrix);
         GameRenderer.Render(gameMap);

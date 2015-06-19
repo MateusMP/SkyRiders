@@ -40,6 +40,7 @@ public class Island extends Map{
         timestamp += 1;
         
         ShaderHandler.generalShader.LoadSunLight(light);
+        ShaderHandler.waterShader.LoadSunLight(light);
         
         ShaderHandler.foliageShader.LoadSunLight(light);
         ShaderHandler.foliageShader.LoadWindDirection(wind);
