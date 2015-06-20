@@ -1,4 +1,5 @@
 #version 130
+#extension GL_ARB_gpu_shader5 : enable
 
 struct LightProperties
 {
@@ -34,7 +35,7 @@ in vec3 toCameraVector;
 
 out vec4 fragColor;
 
-const float waveStrength = 0.06;
+const float waveStrength = 0.05;
 void main(void)
 {
 	vec4 finalAmbientColor = u_light.ambientColor * u_material.ambientColor;
@@ -47,11 +48,7 @@ void main(void)
         vec2 distortion2 = (texture(u_dudv, v_texcoord+move_factor/2).rg * 2.0 -1.0)*(waveStrength/2);
 	
         vec2 result_coord = v_texcoord + distortion1;
-        result_coord = clamp(result_coord, 0.001, 0.999);
-        
         vec2 result_coord2 = v_texcoord + distortion2;
-        result_coord2 = clamp(result_coord, 0.001, 0.999);
-        
 
 	vec4 texColor = vec4(1.0, 1.0, 1.0, 1.0);
 	if (u_is_texture) {
