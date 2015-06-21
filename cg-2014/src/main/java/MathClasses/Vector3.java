@@ -36,7 +36,7 @@ public class Vector3
         this.y = array[1];
         this.z = array[2];
     }
-    
+
     public Vector3 clone()
     {
         return new Vector3(x, y, z);
@@ -119,6 +119,11 @@ public class Vector3
     {
         return (float) Math.sqrt(this.dot(this));	
     }
+    
+    public float norm2()
+    {
+        return this.dot(this);	
+    }
 
     public Vector3 normalize()
     {
@@ -134,4 +139,24 @@ public class Vector3
     {
         return (float)Math.sqrt(Math.pow((this.x - point.x),2) + Math.pow((this.y - point.y),2) + Math.pow((this.z - point.z),2));
     }
+    
+    
+    public Vector3 orthogonal() {
+
+        double threshold = 0.6 * norm();
+        if (threshold == 0) {
+            return null;
+        }
+
+        if (Math.abs(x) <= threshold) {
+            double inverse  = 1 / Math.sqrt(y * y + z * z);
+            return new Vector3(0, (float)inverse * z, (float)-inverse * y);
+        } else if (Math.abs(y) <= threshold) {
+            double inverse  = 1 / Math.sqrt(x * x + z * z);
+            return new Vector3((float)-inverse * z, 0, (float)inverse * x);
+        }
+        double inverse  = 1 / Math.sqrt(x * x + y * y);
+        return new Vector3((float)inverse * y, (float)-inverse * x, 0);
+    }
+
 }

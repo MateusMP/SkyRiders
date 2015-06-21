@@ -1,4 +1,5 @@
 #version 130
+#extension GL_ARB_gpu_shader5 : enable
 
 struct LightProperties
 {

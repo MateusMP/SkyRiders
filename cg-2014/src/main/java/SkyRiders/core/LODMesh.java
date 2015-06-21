@@ -1,6 +1,5 @@
 package SkyRiders.core;
 
-import MathClasses.Vector3;
 import SkyRiders.Profiler;
 import java.util.ArrayList;
 
@@ -11,7 +10,7 @@ public class LODMesh {
     private int activeModel;
     
     private static final int LOD_LEVEL_DIST = 1000;    // Every X units, decrease 1 level of detail
-    private static final int MAX_RENDER_DIST = 10000;
+    private static final int MAX_RENDER_DIST = 6000;
     
     /**
      * @param lods Modelos de diferentes resolucoes. 0 = melhor.
@@ -34,18 +33,18 @@ public class LODMesh {
         activeModel = 0;
     }
     
-    public void CalculateLOD(Camera cam)
+    public void CalculateLOD(float dist)
     {
-        Vector3 myworldpos = null;
-        float dist = cam.GetPosition().dot( myworldpos );
-        
         if (dist >= MAX_RENDER_DIST){
             activeModel = -1;
         } else {
             activeModel = (int) dist/LOD_LEVEL_DIST;
-            if (activeModel > meshes.size())
+            if (activeModel >= meshes.size())
                 activeModel = meshes.size()-1;
         }
+        
+//        if (activeModel > 0)
+//        System.out.println("LOD LVL: "+activeModel+ " - "+dist);
     }
     
     public void ActiveMeshDraw(){
@@ -58,6 +57,9 @@ public class LODMesh {
     }
    
     public MeshRenderer getActiveMesh(){
+        if (activeModel == -1)
+            return null;
+        
         return meshes.get(activeModel);
     }
 }

@@ -5,8 +5,8 @@ import MathClasses.BoundingBox;
 import MathClasses.Transform;
 import MathClasses.Vector3;
 import SkyRiders.SkyDome;
-import SkyRiders.SkyRiders;
 import static SkyRiders.SkyRiders.gl;
+import br.usp.icmc.vicg.gl.jwavefront.Texture;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import br.usp.icmc.vicg.gl.model.Cube;
 import br.usp.icmc.vicg.gl.model.Sphere;
@@ -29,9 +29,12 @@ public class GameRenderer {
     private static SkyDome skyDome;
     private static final Frustum frustum = new Frustum();
     private static final HashMap<RENDER_TYPE, HashMap<Shader, ArrayList<GameObject>> > objects = new HashMap<>();
+    private static final HashMap<Texture, ArrayList<Particle> > particles = new HashMap<>();
     private static Matrix4 projection, view;
+    private static Camera camera;
     
-    public static void SetFrustum(Matrix4 _projection, Matrix4 _view){
+    public static void SetFrustum(Camera cam, Matrix4 _projection, Matrix4 _view){
+        camera = cam;
         frustum.extractFromOGL(_projection, _view);
         projection = _projection;
         view = _view;
@@ -51,6 +54,11 @@ public class GameRenderer {
     
     public static void AddObject(GameObject obj)
     {
+        obj.CalculateLOD(camera);
+        
+        if (obj.getMesh() == null)
+            return;
+        
         BoundingBox meshbox = obj.getMesh().getBoundingBox();
         
         Transform t = obj.getTransform();

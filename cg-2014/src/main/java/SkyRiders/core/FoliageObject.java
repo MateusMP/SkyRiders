@@ -5,7 +5,7 @@ import MathClasses.Transform;
 
 public class FoliageObject extends GameObject{
     
-    public FoliageObject(Transform t, MeshRenderer model3D)
+    public FoliageObject(Transform t, MeshRenderer model3D[])
     {
         super(t, model3D);
     }

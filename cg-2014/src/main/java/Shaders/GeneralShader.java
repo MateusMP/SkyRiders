@@ -1,7 +1,5 @@
 package Shaders;
 
-import static Handlers.ShaderHandler.generalShader;
-import static SkyRiders.SkyRiders.gl;
 import SkyRiders.core.GameObject;
 import SkyRiders.core.ModelBuilder;
 import br.usp.icmc.vicg.gl.core.Light;
@@ -11,7 +9,6 @@ import br.usp.icmc.vicg.gl.jwavefront.Texture;
 import br.usp.icmc.vicg.gl.jwavefront.Triangle;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import br.usp.icmc.vicg.gl.util.Shader;
-import javax.media.opengl.GL;
 import javax.media.opengl.GL3;
 
 /**

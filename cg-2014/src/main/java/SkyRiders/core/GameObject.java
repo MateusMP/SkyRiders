@@ -13,6 +13,17 @@ public class GameObject {
     
     public String name;
 
+    public GameObject(Transform t, MeshRenderer model3D[])
+    {
+        name = "_unnamed_";
+        
+        mesh = new LODMesh(model3D);
+        transform = t;
+        transform.Invalidate();
+        
+        calculateObjectRadius();
+    }
+    
     public GameObject(Transform t, MeshRenderer model3D)
     {
         name = "_unnamed_";
@@ -68,6 +79,11 @@ public class GameObject {
 //        System.out.println("RADIUS: "+objectRadius);
     }
 
+    public void CalculateLOD(Camera cam){
+        Vector3 pos = cam.GetPosition().sub(transform.position);
+        
+        mesh.CalculateLOD( pos.norm() );
+    }
     
     public Transform getTransform() {
         return transform;

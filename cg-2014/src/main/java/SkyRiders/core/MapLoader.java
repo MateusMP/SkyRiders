@@ -1,5 +1,7 @@
 package SkyRiders.core;
 
+import Handlers.LODHandler;
+import Renderers.TexturedMesh;
 import Handlers.MeshHandler;
 import Handlers.ShaderHandler;
 import MathClasses.Transform;
@@ -119,16 +121,22 @@ public class MapLoader
         int mesh_id = obj.HasType(VirtualData.DATA_TYPE.MESHFILE);
         int transform_id = obj.HasType(VirtualData.DATA_TYPE.TRANSFORM);
         
-        String[] meshinfo = (String[]) obj.vdata.get(mesh_id).data;
-            
         Transform transform = (Transform) obj.vdata.get(transform_id).data;
-        Group mesh = MeshHandler.LoadMesh(meshinfo[0], meshinfo[1], ShaderHandler.foliageShader);
-        TexturedMesh om = new TexturedMesh(mesh, ShaderHandler.foliageShader);
+        
+        String[] meshinfo = (String[]) obj.vdata.get(mesh_id).data;
+        String files[] = LODHandler.GetLODFiles(meshinfo[0]);
+        
+        MeshRenderer[] renderers = new MeshRenderer[files.length];
+        for (int i = 0; i < files.length; ++i){
+        
+            Group mesh = MeshHandler.LoadMesh(files[i], meshinfo[1], ShaderHandler.foliageShader);
+            TexturedMesh om = new TexturedMesh(mesh, ShaderHandler.foliageShader);
+            renderers[i] = om;
+        }
 
-        FoliageObject gameobj = new FoliageObject(transform, om);
-
-        gameobj.name = "Generic_transparent"+m.objects.size();
-        gameobj.setRenderType(GameRenderer.RENDER_TYPE.RENDER_TRANSPARENT);
+        FoliageObject gameobj = new FoliageObject(transform, renderers);
+        gameobj.name = "Foliage_object"+m.objects.size();
+        gameobj.setRenderType(GameRenderer.RENDER_TYPE.RENDER_SOLID);
 
         m.addObject(gameobj);
         
@@ -143,22 +151,22 @@ public class MapLoader
         
         if (mesh_id != -1 && transform_id != -1)
         {
-            String[] meshinfo = (String[]) obj.vdata.get(mesh_id).data;
-            
             Transform transform = (Transform) obj.vdata.get(transform_id).data;
-            Group mesh = MeshHandler.LoadMesh(meshinfo[0], meshinfo[1], ShaderHandler.generalShader);
-            TexturedMesh om = new TexturedMesh(mesh, ShaderHandler.generalShader);
             
-            GameObject gameobj = new GameObject(transform, om);
+            String[] meshinfo = (String[]) obj.vdata.get(mesh_id).data;
+            String files[] = LODHandler.GetLODFiles(meshinfo[0]);
+        
+            MeshRenderer[] renderers = new MeshRenderer[files.length];
+            for (int i = 0; i < files.length; ++i){
+
+                Group mesh = MeshHandler.LoadMesh(files[i], meshinfo[1], ShaderHandler.generalShader);
+                TexturedMesh om = new TexturedMesh(mesh, ShaderHandler.generalShader);
+                renderers[i] = om;
+            }
+            GameObject gameobj = new GameObject(transform, renderers);
             
-//            if ( meshinfo[1].contains("leaf") )
-//            {
-//                gameobj.name = "Generic_transparent"+m.objects.size();
-//                gameobj.setRenderType(GameRenderer.RENDER_TYPE.RENDER_TRANSPARENT);
-//            } else {
-                gameobj.name = "Generic_solid"+m.objects.size();
-                gameobj.setRenderType(GameRenderer.RENDER_TYPE.RENDER_SOLID);
-//            }
+            gameobj.name = "Generic_solid"+m.objects.size();
+            gameobj.setRenderType(GameRenderer.RENDER_TYPE.RENDER_SOLID);
             
             m.addObject(gameobj);
         }
@@ -185,7 +193,7 @@ public class MapLoader
             
             String objName = s.next();
             obj.name = objName;
-            System.out.println("NAME: "+objName);
+//            System.out.println("NAME: "+objName);
                         
             ArrayList<String> types = ReadTypes(s);
             for ( String t : types )
