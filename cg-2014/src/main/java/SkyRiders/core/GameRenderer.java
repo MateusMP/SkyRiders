@@ -86,6 +86,17 @@ public class GameRenderer {
         lista.add(obj);
     }
   
+    public static void AddParticle(Particle particle)
+    {
+        ArrayList<Particle> ps = particles.get(particle.getTexture());
+        if ( ps == null ){
+            ps = new ArrayList<>();
+            particles.put(particle.getTexture(), ps);
+        }
+        
+        ps.add(particle);
+    }
+    
     public static void Render(Map map){
         
         for (GameObject o : map.objects){
@@ -94,16 +105,13 @@ public class GameRenderer {
         
         RenderScene();
         
-        // --
-        gl.glEnable(GL2.GL_CULL_FACE);
-        gl.glCullFace(GL2.GL_BACK);
-        RenderLayer(objects.get(RENDER_TYPE.RENDER_WATER));
+        RenderParticles();
         
         objects.clear();
     }
     
     public static void RenderScene(){
-                // --
+        // --
         gl.glEnable(GL2.GL_CULL_FACE);
         gl.glCullFace(GL2.GL_BACK);
         RenderSkyDome();
@@ -113,13 +121,65 @@ public class GameRenderer {
         RenderLayer(objects.get(RENDER_TYPE.RENDER_SOLID));
     
         // --
-        gl.glEnable(GL2.GL_BLEND);
-        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
         gl.glDisable(GL2.GL_CULL_FACE);
+        gl.glEnable(GL2.GL_BLEND);
+//        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_COLOR);
+        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE);
+//        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 //        gl.glDepthMask(false);  // disable write to depth buffer
         RenderLayer(objects.get(RENDER_TYPE.RENDER_TRANSPARENT));
 //        gl.glDepthMask(true); 
+        gl.glDisable(GL2.GL_BLEND);
         
+        
+        // --
+        gl.glEnable(GL.GL_DEPTH_TEST);
+        gl.glEnable(GL2.GL_CULL_FACE);
+        gl.glCullFace(GL2.GL_BACK);
+        RenderLayer(objects.get(RENDER_TYPE.RENDER_WATER));
+        
+    }
+    
+    public static void RenderParticles()
+    {
+        gl.glEnable(GL2.GL_BLEND);
+//        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_COLOR);
+        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE);
+//        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+
+        
+        
+        ShaderHandler.particleShader.bind();
+        
+        Matrix4 identity = new Matrix4();
+        identity.loadIdentity();
+        ShaderHandler.particleShader.LoadProjView(projection, view);
+        
+        for (Texture t : particles.keySet())
+        {
+            ShaderHandler.particleShader.LoadDiffuseTexture(t);
+            
+            for ( Particle p : particles.get(t) )
+            {
+                p.update();
+                
+//                Camera cam = SkyRiders.SkyRiders.skyriders.getCurrentCamera();
+//                Vector3 pos = p.getTransform().position;
+//                Vector3 lookAt = cam.GetPosition();
+//                Matrix4 m = new Matrix4();
+//                m.lookAt(pos.x, pos.y, pos.z, lookAt.x, lookAt.y, lookAt.z, 0, 1, 0);
+                
+                ShaderHandler.particleShader.LoadModelMatrix(p.getTransform().getMatrix());
+                ShaderHandler.particleShader.LoadMaterial(p.getMaterial());
+                
+                gl.glBindVertexArray(p.getVAO());
+                gl.glDrawArrays(GL3.GL_TRIANGLES, 0, 3 * 2);
+            }
+        }
+        
+        ShaderHandler.particleShader.unbind();
+        
+        gl.glDisable(GL2.GL_BLEND);
     }
     
     private static void RenderLayer( HashMap<Shader, ArrayList<GameObject>> layer )
@@ -144,48 +204,98 @@ public class GameRenderer {
                 
                 for ( GameObject o : ls_objs ){
 //                        System.out.println(o.name);
-                        o.draw();
-                        //DrawBoundingSphere(o);
+                    o.draw();
                 }
                 
                 s.unbind();
+                
+//                ShaderHandler.generalShader.bind();
+//                ShaderHandler.generalShader.LoadProjView(projection, view);
+//                ShaderHandler.generalShader.LoadNormalTexture(null);
+//                ShaderHandler.generalShader.LoadDiffuseTexture(null);
+//                for ( GameObject o : ls_objs ){
+//                        System.out.println(o.name);
+//                    if (o.getRenderType() == RENDER_TYPE.RENDER_TRANSPARENT)
+//                        DrawBoundingSphere(o);
+//                }
+//                ShaderHandler.generalShader.unbind();
             }
         }
     }
     
     private static void DrawBoundingSphere(GameObject o)
     {
-        BoundingBox meshbox = o.getMesh().getBoundingBox();
         float radius = o.getObjectRadius();
+        System.out.println(radius);
+        BoundingBox meshbox = o.getMesh().getBoundingBox();
+//        System.out.println("RADIUS: "+o.getMesh().getBoundingBox().getMaximumSphereRadius());
+//        System.out.println("SCALE: "+radius);
 //        Vector3 offset = meshbox.getOffset();
         Transform objtrans = o.getTransform();
         
 //        System.out.println(radius + " " + meshbox.getDimension() + "center" + meshbox.getCenter() + " off "+offset);
         
-        /*Transform w = new Transform();
-        w.position = objtrans.position.add( meshbox.getCenter().add(meshbox.getOffset()).scale(objtrans.scale) );
-        w.scale.x = meshbox.getDimension().x;
-        w.scale.y = meshbox.getDimension().y;
-        w.scale.z = meshbox.getDimension().z;
-        w.scale = w.scale.scale(objtrans.scale);
-        
-        Cube c = new Cube();
-        c.init(SkyRiders.hdl().gl, ShaderHandler.generalShader);
-        c.bind();
-        ShaderHandler.generalShader.LoadModelMatrix(w.getMatrix());
-        c.draw();
-        c.dispose();*/
-        
         Transform w = new Transform();
-        w.position = objtrans.position.add( meshbox.getCenter().scale(objtrans.scale) );
-        w.scale = w.scale.scale(objtrans.scale);
-                
+        w.position = objtrans.position;//.add( meshbox.getOffset().scale(objtrans.scale) );
+        
+//        w.scale.x = meshbox.getDimension().x;
+//        w.scale.y = meshbox.getDimension().y;
+//        w.scale.z = meshbox.getDimension().z;
+//        w.scale = w.scale.scale(objtrans.scale);
+//        
+//        Cube c = new Cube();
+//        c.init(gl, ShaderHandler.generalShader);
+//        c.bind();
+//        ShaderHandler.generalShader.LoadModelMatrix(w.getMatrix());
+//        c.draw();
+//        c.dispose();
+//        
+//        w.position = objtrans.position; //.add( o.getMesh().getBoundingBox().getCenter().scale(objtrans.scale) );
+//        w.scale = new Vector3(1,1,1);
+//        w.Invalidate();
+        
         Sphere sp = new Sphere(radius);
-        sp.init(SkyRiders.gl, ShaderHandler.generalShader);
+        sp.init(gl, ShaderHandler.generalShader);
         sp.bind();
         ShaderHandler.generalShader.LoadModelMatrix(w.getMatrix());
         sp.draw();
         sp.dispose();
+        
+        Line ln = new Line(new Vector3(), new Vector3(1,0,0).mul(radius));
+        ln.init(gl, ShaderHandler.generalShader);
+        ln.bind();
+        ln.draw();
+        ln.dispose();
+        
+        ln = new Line(new Vector3(), new Vector3(-1,0,0).mul(radius));
+        ln.init(gl, ShaderHandler.generalShader);
+        ln.bind();
+        ln.draw();
+        ln.dispose();
+        
+        ln = new Line(new Vector3(), new Vector3(0,1,0).mul(radius));
+        ln.init(gl, ShaderHandler.generalShader);
+        ln.bind();
+        ln.draw();
+        ln.dispose();
+        
+        ln = new Line(new Vector3(), new Vector3(0,-1,0).mul(radius));
+        ln.init(gl, ShaderHandler.generalShader);
+        ln.bind();
+        ln.draw();
+        ln.dispose();
+        
+        ln = new Line(new Vector3(), new Vector3(0,0,-1).mul(radius));
+        ln.init(gl, ShaderHandler.generalShader);
+        ln.bind();
+        ln.draw();
+        ln.dispose();
+        
+        ln = new Line(new Vector3(), new Vector3(0,0,1).mul(radius));
+        ln.init(gl, ShaderHandler.generalShader);
+        ln.bind();
+        ln.draw();
+        ln.dispose();
     }
     
     public static void setSkyDome(SkyDome dome)

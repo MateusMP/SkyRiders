@@ -10,7 +10,7 @@ public class LODMesh {
     private int activeModel;
     
     private static final int LOD_LEVEL_DIST = 1000;    // Every X units, decrease 1 level of detail
-    private static final int MAX_RENDER_DIST = 6000;
+    private static final int MAX_RENDER_DIST = 7000;
     
     /**
      * @param lods Modelos de diferentes resolucoes. 0 = melhor.

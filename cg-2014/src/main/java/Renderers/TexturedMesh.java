@@ -1,6 +1,7 @@
-package SkyRiders.core;
+package Renderers;
 
 import MathClasses.BoundingBox;
+import SkyRiders.core.MeshRenderer;
 import static SkyRiders.SkyRiders.gl;
 import br.usp.icmc.vicg.gl.jwavefront.Group;
 import br.usp.icmc.vicg.gl.jwavefront.Material;

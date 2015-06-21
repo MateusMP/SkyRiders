@@ -7,6 +7,7 @@ package Handlers;
 
 import Shaders.FoliageShader;
 import Shaders.GeneralShader;
+import Shaders.ParticleShader;
 import Shaders.SkyDomeShader;
 import Shaders.WaterShader;
 import SkyRiders.SkyRiders;
@@ -22,7 +23,6 @@ import javax.media.opengl.GL3;
 
 public class MeshHandler {
     
-    private static MeshHandler instance = null;
     private static GL3 gl;
     private static final HashMap<String, JWavefrontObject> meshes = new HashMap<String, JWavefrontObject>();
     
@@ -76,6 +76,11 @@ public class MeshHandler {
             else if (shader instanceof WaterShader){
                 for (Group g : mesh.getGroups()){
                     ShaderHandler.waterShader.CreateTexturedObject(g);
+                }
+            }
+            else if (shader instanceof ParticleShader){
+                for (Group g : mesh.getGroups()){
+                    ShaderHandler.particleShader.CreateTexturedParticle(g);
                 }
             }
             

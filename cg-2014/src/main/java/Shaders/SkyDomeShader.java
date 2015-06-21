@@ -1,7 +1,5 @@
 package Shaders;
 
-import static Handlers.ShaderHandler.skyDomeShader;
-import static SkyRiders.SkyRiders.gl;
 import SkyRiders.core.ModelBuilder;
 import br.usp.icmc.vicg.gl.jwavefront.Group;
 import br.usp.icmc.vicg.gl.jwavefront.Texture;

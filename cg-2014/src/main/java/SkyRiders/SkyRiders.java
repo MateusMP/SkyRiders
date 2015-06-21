@@ -11,7 +11,7 @@ import Handlers.ShaderHandler;
 import MathClasses.Vector3;
 import SkyRiders.core.GameObject;
 import SkyRiders.core.GameRenderer.RENDER_TYPE;
-import SkyRiders.core.TexturedMesh;
+import Renderers.TexturedMesh;
 import SkyRiders.core.WaterObject;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import com.jogamp.opengl.util.AnimatorBase;
@@ -30,6 +30,8 @@ import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 
 public class SkyRiders implements GLEventListener {
+    
+    public static SkyRiders skyriders;
     
     public static GL3 gl;
     
@@ -169,7 +171,7 @@ public class SkyRiders implements GLEventListener {
         ShaderHandler.foliageShader.LoadProjView(projectionMatrix, viewMatrix);
         ShaderHandler.waterShader.LoadProjView(projectionMatrix, viewMatrix);
         
-        GameRenderer.SetFrustum(projectionMatrix, viewMatrix);
+        GameRenderer.SetFrustum(getCurrentCamera(), projectionMatrix, viewMatrix);
         GameRenderer.Render(gameMap);
         
         // Execute
@@ -204,6 +206,7 @@ public class SkyRiders implements GLEventListener {
 
         // Add listener to panel
         SkyRiders listener = new SkyRiders();
+        skyriders = listener;
         glCanvas.addGLEventListener(listener);
         glCanvas.addKeyListener(inputHandler);
 

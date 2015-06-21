@@ -1,10 +1,21 @@
 
 package SkyRiders.Circuits;
 
+import Handlers.MeshHandler;
 import SkyRiders.core.Map;
 import Handlers.ShaderHandler;
+import MathClasses.Transform;
 import MathClasses.Vector3;
+import Renderers.TexturedMesh;
+import SkyRiders.SmokeParticle;
+import SkyRiders.core.GameObject;
+import SkyRiders.core.GameRenderer;
+import SkyRiders.core.ParticleObject;
+import SkyRiders.SunParticle;
+import SkyRiders.core.Camera;
+import SkyRiders.core.Quaternion;
 import br.usp.icmc.vicg.gl.core.Light;
+import java.util.ArrayList;
 import javax.media.opengl.GL3;
 
 public class Island extends Map{
@@ -14,7 +25,9 @@ public class Island extends Map{
     int timestamp;
     float moveFactor;
     final float moveFactorIncrement = 0.0005f;
-        
+    
+    SunParticle sunParticle;
+    
     public Island(GL3 gl)
     {
         super();
@@ -23,6 +36,34 @@ public class Island extends Map{
         timestamp = 0;
         
         InitLights();
+        
+        Transform t = new Transform();
+        t.position.x = -38*100;
+        t.position.y = 13.5f*10;
+        t.position.z = 26*100;
+        t.scale = t.scale.mul(5000);
+        t.Invalidate();
+        
+        
+//        sunObj = new SunParticle( t );
+
+        sunParticle = new SunParticle(t);
+        GameRenderer.AddParticle(sunParticle);
+        
+        ArrayList<SmokeParticle> particles = new ArrayList<SmokeParticle>();
+        for (int i = 0; i < 10; ++i){
+            for (int j = 0; j < 10; ++j){
+                Transform transform = new Transform();
+                transform.scale = new Vector3(30, 30, 30);
+                transform.position = new Vector3( 5 + 50*i , 30, 10 + 50*j);
+                SmokeParticle p = SmokeParticle.CreateSmokeParticle( transform );
+                particles.add(p);
+                
+                GameRenderer.AddParticle(p);
+            }
+        }
+        
+        
     }
    
     private void InitLights()
@@ -39,6 +80,10 @@ public class Island extends Map{
     @Override
     public void update()
     {
+//        sunobj.getTransform().rotation.y += 0.2f;
+//        sunobj.getTransform().rotation.x -= 0.1f;
+//        sunobj.getTransform().Invalidate();
+        
         timestamp += 1;
         
         ShaderHandler.generalShader.LoadSunLight(light);
@@ -48,7 +93,7 @@ public class Island extends Map{
         ShaderHandler.foliageShader.LoadWindDirection(wind);
         ShaderHandler.foliageShader.LoadTimeStamp(timestamp);
         
-        this.moveFactor+=this.moveFactorIncrement;
+        this.moveFactor += this.moveFactorIncrement;
         if(this.moveFactor > 1)
         {
             this.moveFactor-=1;
