@@ -136,7 +136,7 @@ public class MapLoader
 
         FoliageObject gameobj = new FoliageObject(transform, renderers);
         gameobj.name = "Foliage_object"+m.objects.size();
-        gameobj.setRenderType(GameRenderer.RENDER_TYPE.RENDER_SOLID);
+        gameobj.setRenderType(GameRenderer.RENDER_TYPE.RENDER_SOLID2FACES);
 
         m.addObject(gameobj);
         

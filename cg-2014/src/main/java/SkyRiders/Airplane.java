@@ -14,8 +14,12 @@ import SkyRiders.core.Line;
 import Handlers.MeshHandler;
 import SkyRiders.core.MeshRenderer;
 import Handlers.ShaderHandler;
-import SkyRiders.core.TexturedMesh;
+import Renderers.TexturedMesh;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
+import java.io.File;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
 
 public class Airplane extends GameObject {
     
@@ -65,9 +69,30 @@ public class Airplane extends GameObject {
     final float MAX_LR = 70; // Direcao horizontal
     final float MAX_SPEED = 6;
     
+    Clip propellerSound;
+    
+    public static Clip CreateSound(String filename)
+    {
+        try
+        {
+            Clip clip = AudioSystem.getClip();
+            clip.open(AudioSystem.getAudioInputStream(new File(filename)));
+            
+            return clip;
+        }
+        catch (Exception exc)
+        {
+            exc.printStackTrace(System.out);
+        }
+        
+        return null;
+    }
+    
     public Airplane(Transform t, MeshRenderer mesh)
     {
         super(t, mesh);
+        propellerSound = CreateSound("Assets/propeller.wav");
+        propellerSound.setLoopPoints(0, -1);
         
         name = "Airplane";
         
@@ -181,8 +206,18 @@ public class Airplane extends GameObject {
             current_accel /= 1.1;
         }
                
-        if ( current_accel < 0.01f )
+        if (propellerSound.isRunning()){
+            FloatControl gainControl = (FloatControl) propellerSound.getControl(FloatControl.Type.MASTER_GAIN);
+            gainControl.setValue( Math.max(Math.min(gainControl.getMaximum(), current_accel/30), 1) );
+        }
+        
+        if ( current_accel < 0.01f ){
             current_accel = 0.0f;
+            propellerSound.stop();
+        } else {
+            if (!propellerSound.isRunning())
+            propellerSound.loop(Clip.LOOP_CONTINUOUSLY);
+        }
 
         friction = velocity.mul(velocity.norm() * air_friction);
         acceleration = acceleration.add(forward.mul(current_accel));

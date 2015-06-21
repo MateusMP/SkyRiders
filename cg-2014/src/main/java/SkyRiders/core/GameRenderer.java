@@ -22,6 +22,7 @@ public class GameRenderer {
 
     public static enum RENDER_TYPE{
         RENDER_SOLID,
+        RENDER_SOLID2FACES,
         RENDER_WATER,
         RENDER_TRANSPARENT,
     }
@@ -119,6 +120,9 @@ public class GameRenderer {
         // --
         gl.glEnable(GL.GL_DEPTH_TEST);
         RenderLayer(objects.get(RENDER_TYPE.RENDER_SOLID));
+        
+        gl.glDisable(GL2.GL_CULL_FACE);
+        RenderLayer(objects.get(RENDER_TYPE.RENDER_SOLID2FACES));
     
         // --
         gl.glDisable(GL2.GL_CULL_FACE);
