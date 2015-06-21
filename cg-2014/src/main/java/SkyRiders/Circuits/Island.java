@@ -1,19 +1,13 @@
 
 package SkyRiders.Circuits;
 
-import Handlers.MeshHandler;
 import SkyRiders.core.Map;
 import Handlers.ShaderHandler;
 import MathClasses.Transform;
 import MathClasses.Vector3;
-import Renderers.TexturedMesh;
 import SkyRiders.SmokeParticle;
-import SkyRiders.core.GameObject;
 import SkyRiders.core.GameRenderer;
-import SkyRiders.core.ParticleObject;
 import SkyRiders.SunParticle;
-import SkyRiders.core.Camera;
-import SkyRiders.core.Quaternion;
 import br.usp.icmc.vicg.gl.core.Light;
 import java.util.ArrayList;
 import javax.media.opengl.GL3;

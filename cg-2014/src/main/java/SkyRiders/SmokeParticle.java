@@ -3,12 +3,9 @@ package SkyRiders;
 import Handlers.ShaderHandler;
 import Handlers.TextureHandler;
 import MathClasses.Transform;
-import MathClasses.Vector3;
 import static SkyRiders.SkyRiders.gl;
-import SkyRiders.core.Camera;
 import SkyRiders.core.GameRenderer;
 import SkyRiders.core.Particle;
-import SkyRiders.core.Quaternion;
 import br.usp.icmc.vicg.gl.jwavefront.Group;
 import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
 import br.usp.icmc.vicg.gl.jwavefront.Material;
@@ -62,21 +59,12 @@ public class SmokeParticle extends Particle {
         return vao;
     }
     
-    
-    float x = 0;
     @Override
     public void update() {
         
-        x += 0.1f;
         
         material.diffuse[3] = 0.5f;
         
-        Camera cam = SkyRiders.skyriders.getCurrentCamera();
-        Vector3 p = transform.position.sub(cam.GetPosition());
-        
-        Quaternion qt = new Quaternion();
-        qt.fromAxis(x, p);
-        transform.rotation = qt.eulerAngles();
 
         transform.Invalidate();
         
