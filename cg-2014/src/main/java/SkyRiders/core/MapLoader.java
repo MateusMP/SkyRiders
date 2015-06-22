@@ -5,7 +5,9 @@ import Renderers.TexturedMesh;
 import Handlers.MeshHandler;
 import Handlers.ShaderHandler;
 import MathClasses.Transform;
+import MathClasses.Vector3;
 import SkyRiders.Circuits.Island;
+import SkyRiders.core.GameRenderer.RENDER_TYPE;
 import br.usp.icmc.vicg.gl.jwavefront.Group;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -16,6 +18,9 @@ import java.util.Scanner;
 
 public class MapLoader
 {
+    static TexturedMesh waterPlane;
+    static TexturedMesh lavaPlane;
+    
     protected static class VirtualData
     {
         public static enum DATA_TYPE{ 
@@ -109,6 +114,28 @@ public class MapLoader
         
         if (obj.name.toLowerCase().contains("leaf")){
             LoadFoliage(m, obj);
+            return true;
+        }
+        else if (obj.name.startsWith("waterPlane"))
+        {
+            if (waterPlane == null)
+                waterPlane = new TexturedMesh(MeshHandler.LoadMesh("./Assets/graphics/water_plane.obj", null , ShaderHandler.waterShader), ShaderHandler.waterShader);
+            
+            Transform trans = (Transform) obj.GetFirstOf(VirtualData.DATA_TYPE.TRANSFORM).data;
+            WaterObject waterObj = new WaterObject(trans, waterPlane);
+            waterObj.setRenderType(RENDER_TYPE.RENDER_WATER);
+            m.addObject(waterObj);
+            return true;
+        }
+        else if (obj.name.startsWith("lavaPlane"))
+        {
+            if (lavaPlane == null)
+                lavaPlane = new TexturedMesh(MeshHandler.LoadMesh("./Assets/graphics/lava_plane.obj", null , ShaderHandler.waterShader), ShaderHandler.waterShader);
+            
+            Transform trans = (Transform) obj.GetFirstOf(VirtualData.DATA_TYPE.TRANSFORM).data;
+            WaterObject waterObj = new WaterObject(trans, lavaPlane);
+            waterObj.setRenderType(RENDER_TYPE.RENDER_WATER);
+            m.addObject(waterObj);
             return true;
         }
         

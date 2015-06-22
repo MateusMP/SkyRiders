@@ -17,12 +17,18 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.media.opengl.GL;
+import javax.media.opengl.GL3;
 import javax.media.opengl.GLProfile;
 
 public class TextureHandler {
     private static final HashMap<String, Texture> textures = new HashMap<String, Texture>();
     
     public static Texture LoadTexture(String path)
+    {
+        return LoadTexture(path, -1.0f);
+    }
+    
+    public static Texture LoadTexture(String path, float MipMapBias)
     {
         Texture tex = textures.get(path);
         if (tex != null)
@@ -38,16 +44,24 @@ public class TextureHandler {
         {
             BufferedImage image;
             try {
-                System.out.println("Loading Texture: "+file);
+                System.out.println("Loading Texture[mm: "+MipMapBias+"]: "+file);
                 image = ImageIO.read(file);
                 ImageUtil.flipImageVertically(image); //vertically flip the image
 
                 tex = new Texture(path);
-                tex.texturedata = AWTTextureIO.newTexture(GLProfile.get(GLProfile.GL3), image, true);
-                tex.texturedata.setTexParameteri(gl, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
-                tex.texturedata.setTexParameteri(gl, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
-                tex.texturedata.setTexParameteri(gl, GL.GL_TEXTURE_WRAP_S, GL.GL_REPEAT);
-                tex.texturedata.setTexParameteri(gl, GL.GL_TEXTURE_WRAP_T, GL.GL_REPEAT);
+                tex.texturedata = AWTTextureIO.newTexture(GLProfile.get(GLProfile.GL3), image, false);
+//                tex.texturedata.setTexParameteri(gl, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+//                tex.texturedata.setTexParameteri(gl, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+//                tex.texturedata.setTexParameteri(gl, GL.GL_TEXTURE_WRAP_S, GL.GL_REPEAT);
+//                tex.texturedata.setTexParameteri(gl, GL.GL_TEXTURE_WRAP_T, GL.GL_REPEAT);
+                
+                tex.texturedata.bind(gl);
+                gl.glGenerateMipmap(GL3.GL_TEXTURE_2D);
+                gl.glTexParameteri(GL3.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_REPEAT);
+                gl.glTexParameteri(GL3.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_REPEAT);
+                gl.glTexParameteri(GL3.GL_TEXTURE_2D, GL3.GL_TEXTURE_MIN_FILTER, GL3.GL_LINEAR_MIPMAP_LINEAR);
+                gl.glTexParameterf(GL3.GL_TEXTURE_2D, GL3.GL_TEXTURE_LOD_BIAS, MipMapBias);
+                
                 textures.put(path, tex);
             } catch (IOException ex) {
                 Logger.getLogger(TextureHandler.class.getName()).log(Level.SEVERE, null, ex);

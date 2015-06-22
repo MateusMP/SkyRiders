@@ -16,8 +16,6 @@ public class ShaderHandler {
     static public WaterShader waterShader;
     static public ParticleShader particleShader;
     
-    static public Texture dudv_texture;
-    
     static public void Init(){
         skyDomeShader = new SkyDomeShader();
         skyDomeShader.init(gl);
@@ -30,8 +28,6 @@ public class ShaderHandler {
         
         waterShader = new WaterShader();
         waterShader.init(gl);
-        
-        dudv_texture = TextureHandler.LoadTexture("./Assets/graphics/water_dudv.png");
         
         particleShader = new ParticleShader();
         particleShader.init(gl);

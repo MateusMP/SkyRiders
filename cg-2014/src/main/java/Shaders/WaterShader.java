@@ -101,6 +101,8 @@ public class WaterShader extends Shader {
         LoadMaterial(obj.getMesh().getMaterial());
         
         LoadModelMatrix(obj.getTransform().getMatrix());
+        
+        LoadDudvTexture(obj.getMesh().getMaterial().texture_normal);
     }
     
     @Override
@@ -112,8 +114,6 @@ public class WaterShader extends Shader {
         LoadSunLight(sun);
         
         ConnectTexturesUnits();
-        
-        LoadDudvTexture(ShaderHandler.dudv_texture);
     }
     
     /**
