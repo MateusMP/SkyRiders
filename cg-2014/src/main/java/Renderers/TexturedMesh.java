@@ -8,7 +8,7 @@ import br.usp.icmc.vicg.gl.jwavefront.Material;
 import br.usp.icmc.vicg.gl.jwavefront.Texture;
 import br.usp.icmc.vicg.gl.jwavefront.Triangle;
 import br.usp.icmc.vicg.gl.jwavefront.Vertex;
-import br.usp.icmc.vicg.gl.util.Shader;
+import Shaders.Shader;
 import java.util.ArrayList;
 import javax.media.opengl.GL3;
 

@@ -25,19 +25,24 @@ out vec3 v_normal;
 out vec3 toLightVector;
 out vec3 toCameraVector;
 
+out vec4 vEyeSpacePos;
 
 void main(void)
 { 
 	vec4 worldPosition = u_modelMatrix*vec4(a_position, 1.0);
-        worldPosition.y += sin(worldPosition.x/20+move_factor*10)*10;
-        gl_Position = u_projectionMatrix * u_viewMatrix * worldPosition;
+        vec4 modelView = u_viewMatrix * worldPosition;
+
+        worldPosition.y += sin(worldPosition.x/10+move_factor*10)*10;
+        gl_Position = u_projectionMatrix * modelView;
 	v_texcoord = a_texcoord;
 
 	// Surface normal
-	v_normal = (transpose(inverse(u_modelMatrix)) * vec4(a_normal, 0.0)).xyz;
+	v_normal = (u_modelMatrix * vec4(a_normal, 0.0)).xyz;
 
 	// To light vector
 	toLightVector = (u_light.position - worldPosition).xyz;
 	
 	toCameraVector = (inverse(u_viewMatrix)*vec4(0.0, 0.0, 0.0, 1.0)).xyz - worldPosition.xyz;
+
+        vEyeSpacePos = modelView;
 }

@@ -13,7 +13,7 @@ import Shaders.WaterShader;
 import SkyRiders.SkyRiders;
 import br.usp.icmc.vicg.gl.jwavefront.Group;
 import br.usp.icmc.vicg.gl.jwavefront.JWavefrontObject;
-import br.usp.icmc.vicg.gl.util.Shader;
+import Shaders.Shader;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;

@@ -48,8 +48,8 @@ public class Island extends Map{
         for (int i = 0; i < 10; ++i){
             for (int j = 0; j < 10; ++j){
                 Transform transform = new Transform();
-                transform.scale = new Vector3(30, 30, 30);
-                transform.position = new Vector3( 5 + 50*i , 30, 10 + 50*j);
+                transform.scale = new Vector3(2, 2, 2);
+                transform.position = new Vector3( 5 + 50*i , 20, 10 + 50*j);
                 SmokeParticle p = SmokeParticle.CreateSmokeParticle( transform );
                 particles.add(p);
                 
@@ -88,10 +88,7 @@ public class Island extends Map{
         ShaderHandler.foliageShader.LoadTimeStamp(timestamp);
         
         this.moveFactor += this.moveFactorIncrement;
-        if(this.moveFactor > 1)
-        {
-            this.moveFactor-=1;
-        }
+        this.moveFactor %= Math.PI;
         ShaderHandler.waterShader.LoadMoveFactor(this.moveFactor);
         
         super.update();

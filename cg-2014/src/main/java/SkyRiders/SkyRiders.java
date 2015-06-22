@@ -158,7 +158,7 @@ public class SkyRiders implements GLEventListener {
         
         // Limpa o frame buffer com a cor definida
         gl.glClear(GL3.GL_COLOR_BUFFER_BIT | GL3.GL_DEPTH_BUFFER_BIT);
-        gl.glClearColor(0.9f, 0.9f, 1, 1);
+        gl.glClearColor(0.49f,0.78f, 0.96f, 1);
         
         // Projection Matrix
         projectionMatrix.loadIdentity();

@@ -1,4 +1,4 @@
-package br.usp.icmc.vicg.gl.util;
+package Shaders;
 
 import MathClasses.Vector3;
 import br.usp.icmc.vicg.gl.jwavefront.Texture;

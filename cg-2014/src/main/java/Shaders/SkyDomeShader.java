@@ -5,7 +5,6 @@ import br.usp.icmc.vicg.gl.jwavefront.Group;
 import br.usp.icmc.vicg.gl.jwavefront.Texture;
 import br.usp.icmc.vicg.gl.jwavefront.Triangle;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
-import br.usp.icmc.vicg.gl.util.Shader;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL3;
 

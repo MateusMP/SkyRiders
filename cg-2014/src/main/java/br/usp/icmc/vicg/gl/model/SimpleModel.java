@@ -5,7 +5,7 @@
  */
 package br.usp.icmc.vicg.gl.model;
 
-import br.usp.icmc.vicg.gl.util.Shader;
+import Shaders.Shader;
 import com.jogamp.common.nio.Buffers;
 import javax.media.opengl.GL3;
 

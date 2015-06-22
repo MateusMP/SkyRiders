@@ -33,7 +33,31 @@ in vec3 v_normal;		// Surface normal
 in vec3 toLightVector;
 in vec3 toCameraVector;
 
+in vec4 vEyeSpacePos;
+
 out vec4 fragColor;
+
+
+
+vec4 vFogColor = vec4(0.49,0.78, 0.96, 1.0); // Fog color
+float fDensity = 0.0004; // For exp and exp2 equation
+#define FOG 2
+
+float getFogFactor(float fFogCoord)
+{
+    float fResult = 0.0;
+    #if (FOG == 1)
+        fResult = exp(-fDensity*fFogCoord);
+    #endif
+    #if (FOG == 2)
+        fResult = exp(-pow(fDensity*fFogCoord, 2.0));
+    #endif
+      
+   fResult = 1.0-clamp(fResult, 0.0, 1.0);
+   
+   return fResult;
+}
+
 
 const float waveStrength = 0.05;
 void main(void)
@@ -71,4 +95,8 @@ void main(void)
 	vec4 finalSpecular = u_material.specularColor * u_light.specularColor * specularIntensity;
 	
 	fragColor = (diffuse+finalAmbientColor)*texColor + finalSpecular;
+
+        // FOG
+        float fFogCoord = abs(vEyeSpacePos.z/vEyeSpacePos.w);
+        fragColor = mix(fragColor, vFogColor, getFogFactor(fFogCoord)); 
 }

@@ -10,8 +10,11 @@ import br.usp.icmc.vicg.gl.jwavefront.Texture;
 import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import br.usp.icmc.vicg.gl.model.Cube;
 import br.usp.icmc.vicg.gl.model.Sphere;
-import br.usp.icmc.vicg.gl.util.Shader;
+import Shaders.Shader;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Set;
 import javax.media.opengl.GL;
@@ -146,13 +149,14 @@ public class GameRenderer {
     
     public static void RenderParticles()
     {
+        gl.glDisable(GL2.GL_CULL_FACE);
+//        gl.glEnable(GL2.GL_CULL_FACE);
+//        gl.glCullFace(GL2.GL_FRONT);
         gl.glEnable(GL2.GL_BLEND);
 //        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_COLOR);
         gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE);
 //        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
-        
-        
         ShaderHandler.particleShader.bind();
         
         Matrix4 identity = new Matrix4();
@@ -162,6 +166,14 @@ public class GameRenderer {
         for (Texture t : particles.keySet())
         {
             ShaderHandler.particleShader.LoadDiffuseTexture(t);
+            
+            Collections.sort(particles.get(t), new Comparator<Particle>() {
+
+                @Override
+                public int compare(Particle o1, Particle o2) {
+                    return (int) (o2.getTransform().position.sub(camera.GetPosition()).norm2() - o1.getTransform().position.sub(camera.GetPosition()).norm2());
+                }
+            });
             
             for ( Particle p : particles.get(t) )
             {
