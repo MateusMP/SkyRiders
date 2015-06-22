@@ -30,9 +30,9 @@ out vec4 vEyeSpacePos;
 void main(void)
 { 
 	vec4 worldPosition = u_modelMatrix*vec4(a_position, 1.0);
+        worldPosition.y += sin(worldPosition.x*4+move_factor*32)*12;
         vec4 modelView = u_viewMatrix * worldPosition;
 
-        worldPosition.y += sin(worldPosition.x/10+move_factor*10)*10;
         gl_Position = u_projectionMatrix * modelView;
 	v_texcoord = a_texcoord;
 

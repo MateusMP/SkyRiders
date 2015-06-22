@@ -40,7 +40,7 @@ out vec4 fragColor;
 
 
 vec4 vFogColor = vec4(0.49,0.78, 0.96, 1.0); // Fog color
-float fDensity = 0.0004; // For exp and exp2 equation
+float fDensity = 0.00045;
 #define FOG 2
 
 float getFogFactor(float fFogCoord)
