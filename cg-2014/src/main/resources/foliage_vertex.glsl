@@ -32,12 +32,12 @@ out vec3 v_tangent;
 out vec3 toLightVector;
 out vec3 toCameraVector;
 
-vec3 calculate_wind(vec3 pos){
+vec3 calculate_wind(vec3 pos, float eA, float eB){
     vec3 u_pivot = vec3(0,0,0);
-    float timeSec = u_time;
+    float timeSec = u_time + eA/8;
     float distance = distance(u_pivot, pos);
-	float cos_time = cos(timeSec/3);
-    float sinTimeWind = clamp(pow(sin(cos(timeSec/120)*2),8),0,1)+0.1;
+	float cos_time = cos(timeSec/3 + eB);
+    float sinTimeWind = clamp(pow(sin(cos(timeSec/120)*2),8),0,1)+0.15;
     float sinTimeSec = sinTimeWind*(cos_time/5+1);
 
     float factor = max(0.0, distance-14)*0.1;
@@ -52,17 +52,13 @@ vec3 calculate_wind(vec3 pos){
 void main(void)
 {
     mat4 modelTI = transpose(inverse(u_modelMatrix));
-    mat4 rot = modelTI;
-    rot[3][0] = 0;
-    rot[3][1] = 0;
-    rot[3][2] = 0;
-    rot[3][3] = 1;
+ 
+    vec4 worldPosition = u_modelMatrix * vec4(a_position, 1.0);
 
     // Apply wind
-    vec3 wind = calculate_wind(a_position);
-    vec3 vpos = a_position + (rot*vec4(wind,0)).xyz;
-    
-    vec4 worldPosition = u_modelMatrix * vec4(vpos, 1.0);
+    vec3 wind = calculate_wind(a_position, worldPosition.x, worldPosition.z);
+    worldPosition = worldPosition + vec4(wind,0);
+
     gl_Position = u_projectionMatrix * u_viewMatrix * worldPosition;
     v_texcoord = a_texcoord;
 
