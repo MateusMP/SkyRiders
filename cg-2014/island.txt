@@ -101,21 +101,21 @@
 + Tree8 t !
    -965.3 39.90002 -1435.6 0 0 0 0.5 0.5 0.5
 + Tree7 t !
-   -895.9 37.20001 -1435.6 0 0 0 0.5 0.5 0.5
+   -895.9 60.90002 -1435.6 0 0 0 0.5 0.5 0.5
 + TreeLeaf1 m t !
    Assets/graphics/PalmTreeLeaf.obj PalmTree_single_leafs_1sided
-   -895.66 125.115 -1436.295 0 0 0 0.5 0.5 0.5
+   -895.66 148.815 -1436.295 0 0 0 0.5 0.5 0.5
 + TreeTrunk1 m t !
    Assets/graphics/PalmTreesTrunk.obj PalmTree_single_trunk
-   -895.9 37.20001 -1435.6 0 0 0 0.5 0.5 0.5
+   -895.9 60.90002 -1435.6 0 0 0 0.5 0.5 0.5
 + TreeTrunk1 m t !
    Assets/graphics/PalmTreesTrunk.obj PalmTree_single_trunk
-   -865.7 37.90002 -1395 0 0 0 0.5 0.5 0.5
+   -865.7 59 -1395 0 0 0 0.5 0.5 0.5
 + TreeLeaf1 m t !
    Assets/graphics/PalmTreeLeaf.obj PalmTree_single_leafs_1sided
-   -865.46 125.815 -1395.695 0 0 0 0.5 0.5 0.5
+   -865.46 146.915 -1395.695 0 0 0 0.5 0.5 0.5
 + Tree6 t !
-   -865.7 37.90002 -1395 0 0 0 0.5 0.5 0.5
+   -865.7 59 -1395 0 0 0 0.5 0.5 0.5
 + Tree3 t !
    -935.1 40.59998 -1395 0 0 0 0.5 0.5 0.5
 + TreeLeaf1 m t !
@@ -1836,15 +1836,15 @@
    181.3 48.19995 -967 0 0 0 0.5 0.5 0.5
 + TreeLeaf2 m t !
    Assets/graphics/PalmTreeLeaf.obj PalmTree_single_leafs_1sided
-   -879.8082 75.77069 -1154.41 6.312392 -90.00002 -1.288472E-06 0.5000001 0.5 0.5000001
+   -879.8082 97.87073 -1154.41 6.312392 -90.00002 -1.288472E-06 0.5000001 0.5 0.5000001
 + TreeTrunk1 m t !
    Assets/graphics/PalmTreesTrunk.obj PalmTree_dual_trunk
-   -896.5 28.59998 -1149.6 0 0 0 0.5 0.5 0.5
+   -896.5 50.70001 -1149.6 0 0 0 0.5 0.5 0.5
 + TreeLeaf1 m t !
    Assets/graphics/PalmTreeLeaf.obj PalmTree_single_leafs_1sided
-   -897.9842 117.6599 -1142.36 0 0 -9.334659 0.5 0.5 0.5
+   -897.9842 139.7599 -1142.36 0 0 -9.334659 0.5 0.5 0.5
 + Tree1 t !
-   -896.5 28.59998 -1149.6 0 0 0 0.5 0.5 0.5
+   -896.5 50.70001 -1149.6 0 0 0 0.5 0.5 0.5
 + waterPlane_07 m t !
    Assets/graphics/water_plane.obj Plane
    2243 -8.610596 291 0 0 0 200 1 200
@@ -2000,15 +2000,15 @@
    1043 -8.610596 -109 0 0 0 200 1 200
 + TreeLeaf2 m t !
    Assets/graphics/PalmTreeLeaf.obj PalmTree_single_leafs_1sided
-   -999.6398 96.70306 -1295.155 -4.07111E-13 -180 -23.13346 0.5000001 0.5 0.5000001
+   -999.6398 113.903 -1295.155 -4.07111E-13 -180 -23.13346 0.5000001 0.5 0.5000001
 + TreeTrunk1 m t !
    Assets/graphics/PalmTreesTrunk.obj PalmTree_dual_bended_trunk
-   -931.9 47.90002 -1303.6 0 -180 0 0.5 0.5 0.5
+   -931.9 65.09998 -1303.6 0 -180 0 0.5 0.5 0.5
 + TreeLeaf1 m t !
    Assets/graphics/PalmTreeLeaf.obj PalmTree_single_leafs_1sided
-   -950.65 109.05 -1263.6 356.8423 -180 6.531495E-07 0.5 0.5 0.5000001
+   -950.65 126.25 -1263.6 356.8423 -180 6.531495E-07 0.5 0.5 0.5000001
 + Tree5 t !
-   -931.9 47.90002 -1303.6 0 -180 0 0.5 0.5 0.5
+   -931.9 65.09998 -1303.6 0 -180 0 0.5 0.5 0.5
 + waterPlane_07 m t !
    Assets/graphics/water_plane.obj Plane
    1043 -8.610596 -1309 0 0 0 200 1 200
@@ -2234,15 +2234,15 @@
    643 -8.610596 -509 0 0 0 200 1 200
 + TreeLeaf2 m t !
    Assets/graphics/PalmTreeLeaf.obj PalmTree_single_leafs_1sided
-   -790.6602 97.70306 -1437.445 -4.825937E-13 -6.959664E-13 -23.13346 0.5 0.5 0.5
+   -790.6602 118.7031 -1437.445 -4.825937E-13 -6.959664E-13 -23.13346 0.5 0.5 0.5
 + TreeTrunk1 m t !
    Assets/graphics/PalmTreesTrunk.obj PalmTree_dual_bended_trunk
-   -858.4 48.90002 -1429 0 0 0 0.5 0.5 0.5
+   -858.4 69.90002 -1429 0 0 0 0.5 0.5 0.5
 + TreeLeaf1 m t !
    Assets/graphics/PalmTreeLeaf.obj PalmTree_single_leafs_1sided
-   -839.65 110.05 -1469 356.8423 -1.800164E-08 6.531495E-07 0.5 0.5 0.5
+   -839.65 131.05 -1469 356.8423 -1.800164E-08 6.531495E-07 0.5 0.5 0.5
 + Tree4 t !
-   -858.4 48.90002 -1429 0 0 0 0.5 0.5 0.5
+   -858.4 69.90002 -1429 0 0 0 0.5 0.5 0.5
 + waterPlane_05 m t !
    Assets/graphics/water_plane.obj Plane
    243 -8.610596 -2909 0 0 0 200 1 200

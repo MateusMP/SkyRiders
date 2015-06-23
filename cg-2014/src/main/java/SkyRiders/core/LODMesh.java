@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 public class LODMesh {
     
+    static public boolean USE_LOD = true;
+    
     private final ArrayList<MeshRenderer> meshes;
     private int activeModel;
     
@@ -35,12 +37,17 @@ public class LODMesh {
     
     public void CalculateLOD(float dist)
     {
-        if (dist >= MAX_RENDER_DIST){
-            activeModel = -1;
+        if (USE_LOD)
+        {
+            if (dist >= MAX_RENDER_DIST){
+                activeModel = -1;
+            } else {
+                activeModel = (int) dist/LOD_LEVEL_DIST;
+                if (activeModel >= meshes.size())
+                    activeModel = meshes.size()-1;
+            }
         } else {
-            activeModel = (int) dist/LOD_LEVEL_DIST;
-            if (activeModel >= meshes.size())
-                activeModel = meshes.size()-1;
+            activeModel = 0;
         }
         
 //        if (activeModel > 0)
@@ -48,15 +55,17 @@ public class LODMesh {
     }
     
     public void ActiveMeshDraw(){
+        
         if (activeModel < 0)
             return;
         
         MeshRenderer w = meshes.get(activeModel);
+        
         w.draw();
         Profiler.AddRenderingObject(w);
     }
    
-    public MeshRenderer getActiveMesh(){
+    public MeshRenderer getActiveMesh(){        
         if (activeModel == -1)
             return null;
         

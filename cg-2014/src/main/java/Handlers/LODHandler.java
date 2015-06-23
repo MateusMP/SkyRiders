@@ -27,6 +27,10 @@ public class LODHandler {
             case "Rocks_03":
                 out = new String[]{"", "_L1", "_L2", "_L3", "_L4"};
             break;
+                
+            case "Rocks_02":
+                out = new String[]{"", "_L1", "_L2", "_L3", "_L4"};
+            break;
             
         }
         

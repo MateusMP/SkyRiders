@@ -6,6 +6,7 @@
 package Handlers;
 
 import SkyRiders.SkyRiders;
+import SkyRiders.core.LODMesh;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -41,6 +42,10 @@ public class InputHandler extends KeyAdapter {
                 }
                 SkyRiders.skyriders.isPlaneCamera = !SkyRiders.skyriders.isPlaneCamera;
                 break;
+            
+            case KeyEvent.VK_V:
+                LODMesh.USE_LOD = !LODMesh.USE_LOD;
+            break;
         }
         
         for (KeyAdapter a : handlers)

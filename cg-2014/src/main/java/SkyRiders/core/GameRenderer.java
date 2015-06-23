@@ -140,7 +140,9 @@ public class GameRenderer {
         Vector3 toCamera = camera.GetPosition().sub(lightPos).normalize();
         //System.out.println("toCamera " + toCamera);
         //System.out.println("Lookat " +((AirplaneCamera) camera).getLookatNormalized());
-        float abertura = toCamera.dot(((AirplaneCamera) camera).getLookatNormalized());
+        float abertura = 0;
+        if ( camera instanceof AirplaneCamera )
+            abertura = toCamera.dot(((AirplaneCamera) camera).getLookatNormalized());
         //System.out.println("Abertura " + abertura);
         
         if(abertura > -0.7)
@@ -155,7 +157,7 @@ public class GameRenderer {
         dist.z = 0;
         
         dist = dist.normalize();
-        System.out.println("Dist " + dist);
+//        System.out.println("Dist " + dist);
         
         draw.x = dist.x * 0.4f;
         draw.y = dist.y * 0.4f;
@@ -295,16 +297,16 @@ public class GameRenderer {
                 
                 s.unbind();
                 
-                ShaderHandler.generalShader.bind();
-                ShaderHandler.generalShader.LoadProjView(projection, view);
-                ShaderHandler.generalShader.LoadNormalTexture(null);
-                ShaderHandler.generalShader.LoadDiffuseTexture(null);
-                for ( GameObject o : ls_objs ){
-                        //System.out.println(o.name);
-                    if (o.getRenderType() == RENDER_TYPE.RENDER_SOLID)
-                        DrawBoundingSphere(o);
-                }
-                ShaderHandler.generalShader.unbind();
+//                ShaderHandler.generalShader.bind();
+//                ShaderHandler.generalShader.LoadProjView(projection, view);
+//                ShaderHandler.generalShader.LoadNormalTexture(null);
+//                ShaderHandler.generalShader.LoadDiffuseTexture(null);
+//                for ( GameObject o : ls_objs ){
+//                        //System.out.println(o.name);
+//                    if (o.getRenderType() == RENDER_TYPE.RENDER_SOLID)
+//                        DrawBoundingSphere(o);
+//                }
+//                ShaderHandler.generalShader.unbind();
             }
         }
     }
