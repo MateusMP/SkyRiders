@@ -4,6 +4,8 @@ import MathClasses.Plane;
 import MathClasses.Vector3;
 import java.util.ArrayList;
 
+// CLASSE TESTE
+// Use a classe "Frustum"!!
 public class FrustumCulling {
     private static final int TOP = 0;
     private static final int BOT = 1;

@@ -49,16 +49,16 @@ public class StandardCamera extends KeyAdapter implements Camera {
         switch (e.getKeyCode())
         {
             case KeyEvent.VK_I:
-                speed.z = -3;
-                break;
-            case KeyEvent.VK_K:
                 speed.z = 3;
                 break;
+            case KeyEvent.VK_K:
+                speed.z = -3;
+                break;
             case KeyEvent.VK_J:
-                speed.x = -3;
+                speed.x = 3;
                 break;
             case KeyEvent.VK_L:
-                speed.x = 3;
+                speed.x = -3;
                 break;
             case KeyEvent.VK_U:
                 speed.y = 2;

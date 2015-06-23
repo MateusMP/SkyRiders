@@ -284,15 +284,15 @@ public class Airplane extends GameObject {
         Matrix4 modelMatrix = new Matrix4();
         Matrix4 matrixReloaded = new Matrix4();
         // DEBUG LINE
-        modelMatrix.loadIdentity();
-        ShaderHandler.generalShader.LoadModelMatrix(modelMatrix);
-//        modelMatrix.bind();
-        Vector3 b = transform.position;
-        Vector3 e = transform.position.add(forward.normalize().mul(15.0f) );
-        Line l = new Line( b, e);
-        l.init(SkyRiders.gl, ShaderHandler.generalShader);
-        l.bind();
-        l.draw();
+//        modelMatrix.loadIdentity();
+//        ShaderHandler.generalShader.LoadModelMatrix(modelMatrix);
+////        modelMatrix.bind();
+//        Vector3 b = transform.position;
+//        Vector3 e = transform.position.add(forward.normalize().mul(15.0f) );
+//        Line l = new Line( b, e);
+//        l.init(SkyRiders.gl, ShaderHandler.generalShader);
+//        l.bind();
+//        l.draw();
         
         // Transform Model Matrix
         modelMatrix.loadIdentity();
