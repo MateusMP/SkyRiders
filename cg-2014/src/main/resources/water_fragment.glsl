@@ -39,7 +39,7 @@ out vec4 fragColor;
 
 
 
-vec4 vFogColor = vec4(0.49,0.78, 0.96, 1.0); // Fog color
+vec4 vFogColor = u_material.ambientColor; // vec4(0.49,0.78, 0.96, 1.0); // Fog color
 float fDensity = 0.00045;
 #define FOG 2
 
@@ -62,17 +62,17 @@ float getFogFactor(float fFogCoord)
 const float waveStrength = 0.05;
 void main(void)
 {
-	vec4 finalAmbientColor = u_light.ambientColor * u_material.ambientColor;
+	vec4 finalAmbientColor = u_light.ambientColor;
 
 	vec3 unitLightVector = normalize(toLightVector);
 	vec3 unitToCamera = normalize(toCameraVector);
 	vec3 lightDirection = -unitLightVector;
 
-        vec2 distortion1 = (texture(u_dudv, v_texcoord+move_factor).rg * 2.0 -1.0)*waveStrength;
-        vec2 distortion2 = (texture(u_dudv, v_texcoord+move_factor/2).rg * 2.0 -1.0)*(waveStrength/2);
-	
-        vec2 result_coord = v_texcoord + distortion1;
-        vec2 result_coord2 = v_texcoord + distortion2;
+	vec2 distortion1 = (texture(u_dudv, v_texcoord+move_factor).rg * 2.0 -1.0)*waveStrength;
+	vec2 distortion2 = (texture(u_dudv, v_texcoord+move_factor/2).rg * 2.0 -1.0)*(waveStrength/2);
+
+	vec2 result_coord = v_texcoord + distortion1;
+	vec2 result_coord2 = v_texcoord + distortion2;
 
 	vec4 texColor = vec4(1.0, 1.0, 1.0, 1.0);
 	if (u_is_texture) {
@@ -80,10 +80,10 @@ void main(void)
 	}
 	texColor.a = 1.0;
         
-        vec3 unitNormal = normalize( texture(u_dudv, result_coord2).rgb );
+	vec3 unitNormal = normalize( texture(u_dudv, result_coord2).rgb );
 
 	float nDotl = dot(unitNormal, unitLightVector);
-	float brightness = max(nDotl, 0.0);
+	float brightness = max(nDotl, 0.15);
 	vec4 diffuse = brightness * u_light.diffuseColor * u_material.diffuseColor;
 	
 	
@@ -96,7 +96,7 @@ void main(void)
 	
 	fragColor = (diffuse+finalAmbientColor)*texColor + finalSpecular;
 
-        // FOG
-        float fFogCoord = abs(vEyeSpacePos.z/vEyeSpacePos.w);
-        fragColor = mix(fragColor, vFogColor, getFogFactor(fFogCoord)); 
+	// FOG
+	float fFogCoord = abs(vEyeSpacePos.z/vEyeSpacePos.w);
+	fragColor = mix(fragColor, vFogColor, getFogFactor(fFogCoord)); 
 }

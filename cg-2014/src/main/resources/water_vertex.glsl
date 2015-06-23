@@ -30,19 +30,19 @@ out vec4 vEyeSpacePos;
 void main(void)
 { 
 	vec4 worldPosition = u_modelMatrix*vec4(a_position, 1.0);
-        worldPosition.y += sin(worldPosition.x*4+move_factor*32)*12;
-        vec4 modelView = u_viewMatrix * worldPosition;
+	worldPosition.y += sin(worldPosition.x*4+move_factor*32)*12;
+	vec4 modelView = u_viewMatrix * worldPosition;
 
-        gl_Position = u_projectionMatrix * modelView;
+	gl_Position = u_projectionMatrix * modelView;
 	v_texcoord = a_texcoord;
 
 	// Surface normal
-	v_normal = (u_modelMatrix * vec4(a_normal, 0.0)).xyz;
+	v_normal = a_normal;
 
 	// To light vector
 	toLightVector = (u_light.position - worldPosition).xyz;
 	
 	toCameraVector = (inverse(u_viewMatrix)*vec4(0.0, 0.0, 0.0, 1.0)).xyz - worldPosition.xyz;
 
-        vEyeSpacePos = modelView;
+	vEyeSpacePos = modelView;
 }
