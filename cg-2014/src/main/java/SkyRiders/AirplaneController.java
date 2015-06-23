@@ -39,6 +39,9 @@ public class AirplaneController extends KeyAdapter {
             case KeyEvent.VK_Z://gira sobre o eixo-y
                 myplane.CommandBrake(true);
                 break;
+            case KeyEvent.VK_SPACE://Desativa gravidade
+                myplane.CommandGravity(true);
+                break;
         }
     }
 

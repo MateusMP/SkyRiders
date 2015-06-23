@@ -38,6 +38,8 @@ public class SkyRiders implements GLEventListener {
     private Map gameMap;
     private Camera currentCamera;
     
+    private boolean IsPlaneCamera = true;
+    
     // public static Matrix4 modelMatrix = new Matrix4();
     private final Matrix4 projectionMatrix;
     private final Matrix4 viewMatrix;
@@ -50,6 +52,12 @@ public class SkyRiders implements GLEventListener {
     private static Frame frame;
     private static GLCanvas glCanvas;
     public static InputHandler inputHandler;
+    
+    public Camera cam;
+    public StandardCamera stdcam;
+    public AirplaneController controller;
+    public Airplane plane;
+    public boolean isPlaneCamera;
     
     TexturedMesh waterPlane; 
     GameObject waterObj;
@@ -85,21 +93,19 @@ public class SkyRiders implements GLEventListener {
             
             // Create player airplane and define a controller for it
             TexturedMesh om = new TexturedMesh(MeshHandler.LoadMesh("./Assets/graphics/cartoonAriplaneNoPropeller.obj", "Airplane", ShaderHandler.generalShader), ShaderHandler.generalShader);
-            Airplane plane = new Airplane(gameMap.startpoint, om);
+            plane = new Airplane(gameMap.startpoint, om);
             gameMap.addObject(plane);
-            AirplaneController controller = new AirplaneController(plane);
+            controller = new AirplaneController(plane);
             inputHandler.AddHandler(controller);
 
             // Set camera fo the player airplane
-            Camera cam = new AirplaneCamera(plane);
-            setCurrentCamera(cam);
-        
-            // SkyRacers.inputHandler.RemoveHandler(controller);
-            
+            cam = new AirplaneCamera(plane);
+            isPlaneCamera = true;
             // STANDARD CAMERA            
-            StandardCamera stdcam = new StandardCamera(gameMap.startpoint.position);
+            stdcam = new StandardCamera(gameMap.startpoint.position);
             inputHandler.AddHandler(stdcam);
-            //setCurrentCamera(stdcam);
+
+            setCurrentCamera(cam);
             
             // SKY DOME
             SkydomeMesh objMesh = new SkydomeMesh(MeshHandler.LoadMesh("./Assets/graphics/skydome.obj", null, ShaderHandler.skyDomeShader));

@@ -9,6 +9,8 @@ public interface Camera {
     
     public Vector3 GetPosition();
     
+    public void SetPosition(Vector3 pos);
+    
     public Vector3 getLookat();
     
     public Vector3 getUp();
