@@ -31,13 +31,13 @@ public class InputHandler extends KeyAdapter {
                 {
                     SkyRiders.skyriders.stdcam.SetPosition(SkyRiders.skyriders.plane.getTransform().position);
                     SkyRiders.skyriders.setCurrentCamera(SkyRiders.skyriders.stdcam);
-                    SkyRiders.inputHandler.RemoveHandler(SkyRiders.skyriders.controller);
+                    //SkyRiders.inputHandler.RemoveHandler(SkyRiders.skyriders.controller);
                 }
                 else
                 {
                     SkyRiders.skyriders.cam.SetPosition(SkyRiders.skyriders.plane.getTransform().position);
                     SkyRiders.skyriders.setCurrentCamera(SkyRiders.skyriders.cam);
-                    SkyRiders.inputHandler.AddHandler(SkyRiders.skyriders.controller);
+                    //SkyRiders.inputHandler.AddHandler(SkyRiders.skyriders.controller);
                 }
                 SkyRiders.skyriders.isPlaneCamera = !SkyRiders.skyriders.isPlaneCamera;
                 break;
