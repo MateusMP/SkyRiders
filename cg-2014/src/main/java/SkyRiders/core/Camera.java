@@ -9,7 +9,11 @@ public interface Camera {
     
     public Vector3 GetPosition();
     
+    //Posicao no mundo
     public Vector3 getLookat();
+    
+    //Direcao Normalizada
+    public Vector3 getLookatNormalized();
     
     public Vector3 getUp();
 }

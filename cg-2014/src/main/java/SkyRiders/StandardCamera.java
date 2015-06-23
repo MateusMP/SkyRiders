@@ -110,5 +110,10 @@ public class StandardCamera extends KeyAdapter implements Camera {
     public Vector3 getUp() {
         return up;
     }
+
+    @Override
+    public Vector3 getLookatNormalized() {
+        return offset;
+    }
 }
 

@@ -182,6 +182,7 @@ public class SkyRiders implements GLEventListener {
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
         this.aspect = width / height;
         drawable.getGL().getGL3().glViewport(0, 0, width, height);
+        GameRenderer.setScreenSize(width, height);
     }
 
     @Override

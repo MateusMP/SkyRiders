@@ -11,6 +11,9 @@ import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import br.usp.icmc.vicg.gl.model.Cube;
 import br.usp.icmc.vicg.gl.model.Sphere;
 import Shaders.Shader;
+import SkyRiders.AirplaneCamera;
+import SkyRiders.LensFlareParticle;
+import SkyRiders.SmokeParticle;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -36,6 +39,10 @@ public class GameRenderer {
     private static final HashMap<Texture, ArrayList<Particle> > particles = new HashMap<>();
     private static Matrix4 projection, view;
     private static Camera camera;
+    private static float[] lightPosition;
+    private static boolean debug = true;
+    public static float width;
+    public static float height;
     
     public static void SetFrustum(Camera cam, Matrix4 _projection, Matrix4 _view){
         camera = cam;
@@ -102,6 +109,7 @@ public class GameRenderer {
     }
     
     public static void Render(Map map){
+        LensFlare();        
         
         for (GameObject o : map.objects){
             AddObject(o);
@@ -111,7 +119,66 @@ public class GameRenderer {
         
         RenderParticles();
         
+        //projection
+        //view
+        //point
+        
         objects.clear();
+    }
+    
+    private static void LensFlare(){
+        Vector3 dist = new Vector3();
+        Vector3 center = new Vector3();
+        Vector3 draw = new Vector3();
+        
+        Vector3 lightPos = new Vector3();
+        Matrix4 flare = new Matrix4();
+        
+        lightPos.set(lightPosition[0], lightPosition[1], lightPosition[2]);
+        
+        //Vector3 toCamera = lightPos.neg().normalize();//camera.GetPosition().sub(lightPos).normalize();
+        Vector3 toCamera = camera.GetPosition().sub(lightPos).normalize();
+        //System.out.println("toCamera " + toCamera);
+        //System.out.println("Lookat " +((AirplaneCamera) camera).getLookatNormalized());
+        float abertura = toCamera.dot(((AirplaneCamera) camera).getLookatNormalized());
+        //System.out.println("Abertura " + abertura);
+        
+        if(abertura > -0.7)
+            return;
+        
+        flare.copyFrom(projection);
+        flare.multiply(view.getMatrix());        
+        lightPos = flare.Mult(lightPos);
+        
+        dist.x = lightPos.x;
+        dist.y = lightPos.y;
+        dist.z = 0;
+        
+        dist = dist.normalize();
+        System.out.println("Dist " + dist);
+        
+        draw.x = dist.x * 0.4f;
+        draw.y = dist.y * 0.4f;
+        
+        Transform transform = new Transform();
+        transform.scale = new Vector3(0.5f,0.5f,0.5f);
+        transform.position = draw;
+        
+        LensFlareParticle p = LensFlareParticle.CreateLensFlareParticle(transform, 0);        
+        ShaderHandler.particleShader.LoadMaterial(p.getMaterial());
+        p.getMaterial().diffuse[3] = abertura;
+        GameRenderer.AddParticle(p);    
+        
+        draw.x = dist.x * 0.6f;
+        draw.y = dist.y * 0.6f;        
+        transform.scale = new Vector3(0.5f,0.5f,0.5f);
+        transform.position = draw;
+        
+        p = LensFlareParticle.CreateLensFlareParticle(transform, 1);
+        
+        ShaderHandler.particleShader.LoadMaterial(p.getMaterial());
+        p.getMaterial().diffuse[3] = abertura;
+        GameRenderer.AddParticle(p); 
     }
     
     public static void RenderScene(){
@@ -132,6 +199,7 @@ public class GameRenderer {
         gl.glEnable(GL2.GL_BLEND);
 //        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_COLOR);
         gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE);
+        
 //        gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 //        gl.glDepthMask(false);  // disable write to depth buffer
         RenderLayer(objects.get(RENDER_TYPE.RENDER_TRANSPARENT));
@@ -196,6 +264,8 @@ public class GameRenderer {
         ShaderHandler.particleShader.unbind();
         
         gl.glDisable(GL2.GL_BLEND);
+        
+        particles.clear();
     }
     
     private static void RenderLayer( HashMap<Shader, ArrayList<GameObject>> layer )
@@ -225,16 +295,16 @@ public class GameRenderer {
                 
                 s.unbind();
                 
-//                ShaderHandler.generalShader.bind();
-//                ShaderHandler.generalShader.LoadProjView(projection, view);
-//                ShaderHandler.generalShader.LoadNormalTexture(null);
-//                ShaderHandler.generalShader.LoadDiffuseTexture(null);
-//                for ( GameObject o : ls_objs ){
-//                        System.out.println(o.name);
-//                    if (o.getRenderType() == RENDER_TYPE.RENDER_TRANSPARENT)
-//                        DrawBoundingSphere(o);
-//                }
-//                ShaderHandler.generalShader.unbind();
+                ShaderHandler.generalShader.bind();
+                ShaderHandler.generalShader.LoadProjView(projection, view);
+                ShaderHandler.generalShader.LoadNormalTexture(null);
+                ShaderHandler.generalShader.LoadDiffuseTexture(null);
+                for ( GameObject o : ls_objs ){
+                        //System.out.println(o.name);
+                    if (o.getRenderType() == RENDER_TYPE.RENDER_SOLID)
+                        DrawBoundingSphere(o);
+                }
+                ShaderHandler.generalShader.unbind();
             }
         }
     }
@@ -242,7 +312,7 @@ public class GameRenderer {
     private static void DrawBoundingSphere(GameObject o)
     {
         float radius = o.getObjectRadius();
-        System.out.println(radius);
+        //System.out.println(radius);
         BoundingBox meshbox = o.getMesh().getBoundingBox();
 //        System.out.println("RADIUS: "+o.getMesh().getBoundingBox().getMaximumSphereRadius());
 //        System.out.println("SCALE: "+radius);
@@ -270,52 +340,62 @@ public class GameRenderer {
 //        w.scale = new Vector3(1,1,1);
 //        w.Invalidate();
         
-        Sphere sp = new Sphere(radius);
-        sp.init(gl, ShaderHandler.generalShader);
-        sp.bind();
-        ShaderHandler.generalShader.LoadModelMatrix(w.getMatrix());
-        sp.draw();
-        sp.dispose();
-        
-        Line ln = new Line(new Vector3(), new Vector3(1,0,0).mul(radius));
+//        Sphere sp = new Sphere(radius);
+//        sp.init(gl, ShaderHandler.generalShader);
+//        sp.bind();
+//        ShaderHandler.generalShader.LoadModelMatrix(w.getMatrix());
+//        sp.draw();
+//        sp.dispose();
+//        
+        Line ln = new Line(new Vector3(), new Vector3(lightPosition[0],lightPosition[1],lightPosition[2]));
         ln.init(gl, ShaderHandler.generalShader);
         ln.bind();
+        ShaderHandler.generalShader.LoadModelMatrix( new Matrix4() );
         ln.draw();
         ln.dispose();
-        
-        ln = new Line(new Vector3(), new Vector3(-1,0,0).mul(radius));
-        ln.init(gl, ShaderHandler.generalShader);
-        ln.bind();
-        ln.draw();
-        ln.dispose();
-        
-        ln = new Line(new Vector3(), new Vector3(0,1,0).mul(radius));
-        ln.init(gl, ShaderHandler.generalShader);
-        ln.bind();
-        ln.draw();
-        ln.dispose();
-        
-        ln = new Line(new Vector3(), new Vector3(0,-1,0).mul(radius));
-        ln.init(gl, ShaderHandler.generalShader);
-        ln.bind();
-        ln.draw();
-        ln.dispose();
-        
-        ln = new Line(new Vector3(), new Vector3(0,0,-1).mul(radius));
-        ln.init(gl, ShaderHandler.generalShader);
-        ln.bind();
-        ln.draw();
-        ln.dispose();
-        
-        ln = new Line(new Vector3(), new Vector3(0,0,1).mul(radius));
-        ln.init(gl, ShaderHandler.generalShader);
-        ln.bind();
-        ln.draw();
-        ln.dispose();
+//        
+//        ln = new Line(new Vector3(), new Vector3(-1,0,0).mul(radius));
+//        ln.init(gl, ShaderHandler.generalShader);
+//        ln.bind();
+//        ln.draw();
+//        ln.dispose();
+//        
+//        ln = new Line(new Vector3(), new Vector3(0,1,0).mul(radius));
+//        ln.init(gl, ShaderHandler.generalShader);
+//        ln.bind();
+//        ln.draw();
+//        ln.dispose();
+//        
+//        ln = new Line(new Vector3(), new Vector3(0,-1,0).mul(radius));
+//        ln.init(gl, ShaderHandler.generalShader);
+//        ln.bind();
+//        ln.draw();
+//        ln.dispose();
+//        
+//        ln = new Line(new Vector3(), new Vector3(0,0,-1).mul(radius));
+//        ln.init(gl, ShaderHandler.generalShader);
+//        ln.bind();
+//        ln.draw();
+//        ln.dispose();
+//        
+//        ln = new Line(new Vector3(), new Vector3(0,0,1).mul(radius));
+//        ln.init(gl, ShaderHandler.generalShader);
+//        ln.bind();
+//        ln.draw();
+//        ln.dispose();
     }
     
     public static void setSkyDome(SkyDome dome)
     {
         skyDome = dome;
+    }
+    
+    public static void setLightPos(float[] light){
+        lightPosition = light;
+    }
+    
+    public static void setScreenSize(float w, float h){
+        width = w;
+        height = h;
     }
 }

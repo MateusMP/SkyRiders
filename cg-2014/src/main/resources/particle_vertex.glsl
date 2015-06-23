@@ -16,7 +16,9 @@ void main(void)
 
     mat4 VP = u_projectionMatrix * u_viewMatrix;
 
-    vec3 pos = vec3(u_modelMatrix[3][0], u_modelMatrix[3][1], u_modelMatrix[3][2]);
+    //vec3 pos = vec3(u_modelMatrix[3][0], u_modelMatrix[3][1], u_modelMatrix[3][2]);
+    vec3 pos = vec3(0, 0, 0);
+
     vec3 vertexPosition_worldspace = pos;
 
     // Get the screen-space position of the particle's center
@@ -26,8 +28,13 @@ void main(void)
     gl_Position /= gl_Position.w;
 
     // Move the vertex in directly screen space. No need for CameraUp/Right_worlspace here.
-    gl_Position.xy += a_position.xy * vec2(0.1, 0.1);
+    vec2 position = vec2(u_modelMatrix[3][0], u_modelMatrix[3][1]);
+    gl_Position.xy += (position+a_position.xy) * vec2(0.1, 0.1);
 
+
+    gl_Position.xy = position.xy+a_position.xy;
+    gl_Position.w = 1;
+    gl_Position.z = -0.5;
 
 /*
         vec4 BillboardPos_worldspace = u_modelMatrix * vec4(a_position, 1); // (x,y,z, 1.0f);

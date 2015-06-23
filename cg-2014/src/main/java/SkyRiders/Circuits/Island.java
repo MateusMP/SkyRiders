@@ -19,6 +19,7 @@ public class Island extends Map{
     int timestamp;
     float moveFactor;
     final float moveFactorIncrement = 0.0005f;
+    static float[] lightPos;
     
     SunParticle sunParticle;
     
@@ -56,8 +57,6 @@ public class Island extends Map{
                 GameRenderer.AddParticle(p);
             }
         }
-        
-        
     }
    
     private void InitLights()
@@ -65,15 +64,19 @@ public class Island extends Map{
         light = new Light();
      
         //init the light
-        light.setPosition(new float[]{-38*100, 13.5f*100, -26*100, 1.0f});
+        light.setPosition(new float[]{-38*100, 13.5f*100, 26*100, 1.0f});
         light.setAmbientColor(new float[]{0.6f, 0.6f, 0.6f, 1.0f});
         light.setDiffuseColor(new float[]{0.9f, 0.9f, 0.9f, 1.0f});
         light.setSpecularColor(new float[]{0.7f, 0.7f, 0.7f, 1.0f});
+        
+        lightPos = light.getPosition();
+        GameRenderer.setLightPos(lightPos);
     }
     
     @Override
     public void update()
     {
+        SkyRiders.SkyRiders sky = SkyRiders.SkyRiders.skyriders;
 //        sunobj.getTransform().rotation.y += 0.2f;
 //        sunobj.getTransform().rotation.x -= 0.1f;
 //        sunobj.getTransform().Invalidate();
@@ -90,6 +93,8 @@ public class Island extends Map{
         this.moveFactor += this.moveFactorIncrement;
         this.moveFactor %= Math.PI;
         ShaderHandler.waterShader.LoadMoveFactor(this.moveFactor);
+        
+        sky.getCurrentCamera();
         
         super.update();
     }

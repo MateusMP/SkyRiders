@@ -7,8 +7,8 @@ import br.usp.icmc.vicg.gl.matrix.Matrix4;
 public class AirplaneCamera implements Camera {
     
     Vector3 position;
-    Vector3 lookat_dest;
     Vector3 lookat;
+    Vector3 lookatnormalized;
     Vector3 up;
     Airplane following;
     private Vector3 position_dest;
@@ -33,6 +33,8 @@ public class AirplaneCamera implements Camera {
         // Look at plane direction
         lookat = following.getTransform().position.add( following.forward.mul(20) );
         
+        lookatnormalized = following.forward.clone();
+        
         // Slowly move to final position
         Vector3 diff = position_dest.sub(position);
         position = position.add( diff.mul( 0.02f * diff.norm()/3.0f ) );
@@ -45,6 +47,10 @@ public class AirplaneCamera implements Camera {
         //viewMatrix.bind();
     }
     
+    @Override
+    public Vector3 getLookatNormalized() {
+        return lookatnormalized;
+    }
 
     @Override
     public Vector3 GetPosition() {
