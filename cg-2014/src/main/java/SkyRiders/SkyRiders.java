@@ -38,6 +38,8 @@ public class SkyRiders implements GLEventListener {
     private Map gameMap;
     private Camera currentCamera;
     
+    private boolean IsPlaneCamera = true;
+    
     // public static Matrix4 modelMatrix = new Matrix4();
     private final Matrix4 projectionMatrix;
     private final Matrix4 viewMatrix;
@@ -50,6 +52,12 @@ public class SkyRiders implements GLEventListener {
     private static Frame frame;
     private static GLCanvas glCanvas;
     public static InputHandler inputHandler;
+    
+    public Camera cam;
+    public StandardCamera stdcam;
+    public AirplaneController controller;
+    public Airplane plane;
+    public boolean isPlaneCamera;
     
     TexturedMesh waterPlane; 
     GameObject waterObj;
@@ -85,21 +93,19 @@ public class SkyRiders implements GLEventListener {
             
             // Create player airplane and define a controller for it
             TexturedMesh om = new TexturedMesh(MeshHandler.LoadMesh("./Assets/graphics/cartoonAriplaneNoPropeller.obj", "Airplane", ShaderHandler.generalShader), ShaderHandler.generalShader);
-            Airplane plane = new Airplane(gameMap.startpoint, om);
+            plane = new Airplane(gameMap.startpoint, om);
             gameMap.addObject(plane);
-            AirplaneController controller = new AirplaneController(plane);
+            controller = new AirplaneController(plane);
             inputHandler.AddHandler(controller);
 
             // Set camera fo the player airplane
-            Camera cam = new AirplaneCamera(plane);
-            setCurrentCamera(cam);
-        
-            // SkyRacers.inputHandler.RemoveHandler(controller);
-            
+            cam = new AirplaneCamera(plane);
+            isPlaneCamera = true;
             // STANDARD CAMERA            
-            StandardCamera stdcam = new StandardCamera(gameMap.startpoint.position);
+            stdcam = new StandardCamera(gameMap.startpoint.position);
             inputHandler.AddHandler(stdcam);
-            //setCurrentCamera(stdcam);
+
+            setCurrentCamera(cam);
             
             // SKY DOME
             SkydomeMesh objMesh = new SkydomeMesh(MeshHandler.LoadMesh("./Assets/graphics/skydome.obj", null, ShaderHandler.skyDomeShader));
@@ -107,16 +113,16 @@ public class SkyRiders implements GLEventListener {
             GameRenderer.setSkyDome(skyDome);
             
             //Water Plane
-            waterPlane = new TexturedMesh(MeshHandler.LoadMesh("./Assets/graphics/water_plane.obj", null , ShaderHandler.waterShader), ShaderHandler.waterShader);
-            for (int i = 0; i < 10; i++){
-                for (int j = 0; j < 10; j++){
-                    waterObj = new WaterObject(new Vector3(-1000+i*400f, -30f, -1000+j*400f), waterPlane);
-
-                    waterObj.setRenderType(RENDER_TYPE.RENDER_WATER);
-                    waterObj.getTransform().scale = waterObj.getTransform().scale.mul(200);
-                    gameMap.addObject(waterObj);
-                }
-            }
+//            waterPlane = new TexturedMesh(MeshHandler.LoadMesh("./Assets/graphics/water_plane.obj", null , ShaderHandler.waterShader), ShaderHandler.waterShader);
+//            for (int i = 0; i < 15; i++){
+//                for (int j = 0; j < 15; j++){
+//                    waterObj = new WaterObject(new Vector3(-5000+i*400f, -30f, -1000+j*400f), waterPlane);
+//
+//                    waterObj.setRenderType(RENDER_TYPE.RENDER_WATER);
+//                    waterObj.getTransform().scale = waterObj.getTransform().scale.mul(200);
+//                    gameMap.addObject(waterObj);
+//                }
+//            }
             
         } catch (Exception ex) {
             Logger.getLogger(SkyRiders.class.getName()).log(Level.SEVERE, null, ex);

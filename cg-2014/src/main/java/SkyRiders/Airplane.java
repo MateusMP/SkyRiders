@@ -35,6 +35,7 @@ public class Airplane extends GameObject {
     private boolean cmd_left;
     private boolean cmd_accel;
     private boolean cmd_brake;
+    private boolean hasGravity = true;
     
     // Propeller
     private TexturedMesh om;
@@ -91,8 +92,8 @@ public class Airplane extends GameObject {
     public Airplane(Transform t, MeshRenderer mesh)
     {
         super(t, mesh);
-        propellerSound = CreateSound("Assets/propeller.wav");
-        propellerSound.setLoopPoints(0, -1);
+        //propellerSound = CreateSound("Assets/propeller.wav");
+        //propellerSound.setLoopPoints(0, -1);
         
         name = "Airplane";
         
@@ -150,6 +151,10 @@ public class Airplane extends GameObject {
     public void CommandBrake(boolean pressed){
         cmd_brake = pressed;
     }
+    public void CommandGravity(boolean pressed){
+        hasGravity = !hasGravity;
+        velocity = new Vector3(0,0,0);
+    }
     
     private void handleRotation()
     {
@@ -206,18 +211,18 @@ public class Airplane extends GameObject {
             current_accel /= 1.1;
         }
                
-        if (propellerSound.isRunning()){
+        /*if (propellerSound.isRunning()){
             FloatControl gainControl = (FloatControl) propellerSound.getControl(FloatControl.Type.MASTER_GAIN);
             gainControl.setValue( Math.max(Math.min(gainControl.getMaximum(), current_accel/30), 1) );
-        }
+        }*/
         
         if ( current_accel < 0.01f ){
             current_accel = 0.0f;
-            propellerSound.stop();
-        } else {
-            if (!propellerSound.isRunning())
-            propellerSound.loop(Clip.LOOP_CONTINUOUSLY);
-        }
+            //propellerSound.stop();
+        } //else {
+            //if (!propellerSound.isRunning())
+            //propellerSound.loop(Clip.LOOP_CONTINUOUSLY);
+        //}
 
         friction = velocity.mul(velocity.norm() * air_friction);
         acceleration = acceleration.add(forward.mul(current_accel));
@@ -251,9 +256,11 @@ public class Airplane extends GameObject {
         forward = mx.Mult( FORWARD );
         up = mx.Mult( UP );
         
-        // Consider gravity
-        acceleration = acceleration.add( GRAVITY );
-        
+        if(hasGravity)
+        {
+            // Consider gravity
+            acceleration = acceleration.add( GRAVITY );
+        }
         // V = V + (A-F)*h
         velocity = velocity.add(acceleration.sub(friction).mul(h));
         

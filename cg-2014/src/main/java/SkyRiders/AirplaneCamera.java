@@ -57,6 +57,10 @@ public class AirplaneCamera implements Camera {
         return position;
     }
     @Override
+    public void SetPosition(Vector3 pos){
+        position = pos;
+    }
+    @Override
     public Vector3 getLookat() {
         return lookat;
     }

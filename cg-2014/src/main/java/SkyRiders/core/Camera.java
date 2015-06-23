@@ -8,8 +8,10 @@ public interface Camera {
     public void DefineViewMatrix(Matrix4 viewMatrix);
     
     public Vector3 GetPosition();
-    
+   
     //Posicao no mundo
+    public void SetPosition(Vector3 pos);
+    
     public Vector3 getLookat();
     
     //Direcao Normalizada
