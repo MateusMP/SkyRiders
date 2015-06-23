@@ -18,7 +18,7 @@ public class LODHandler {
         String name = file.substring(file.lastIndexOf("/")+1);
         name = name.substring(0, name.lastIndexOf("."));
         
-        System.out.println(file+" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> NAME: "+name);
+//        System.out.println(file+" >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> NAME: "+name);
         
         
         String[] out = new String[]{""};
@@ -36,7 +36,7 @@ public class LODHandler {
         
         for ( int i = 0; i < out.length; ++i ){
             out[i] = path+name+out[i]+".obj";
-            System.out.println(out[i]);
+//            System.out.println(out[i]);
         }
         
         return out;

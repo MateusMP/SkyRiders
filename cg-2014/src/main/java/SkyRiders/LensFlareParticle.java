@@ -24,11 +24,13 @@ public class LensFlareParticle  extends Particle{
     static int vao = 0;
     static int vbo[];
     
-    static Texture texture;
+    public Texture texture;
     
     public Material material;
     
     public static LensFlareParticle CreateLensFlareParticle(Transform t, int i){
+        
+        LensFlareParticle sp = new LensFlareParticle(t);
         
         if (vao == 0)
         {
@@ -41,18 +43,17 @@ public class LensFlareParticle  extends Particle{
             Group g = jw.getGroups().get(0);
 
             vao = ShaderHandler.particleShader.CreateTexturedParticle(g);
-
-            switch(i){
-                case 0:
-                    texture = TextureHandler.LoadTexture("./Assets/graphics/lensFlare1.png");
-                    break;
-                case 1:
-                    texture = TextureHandler.LoadTexture("./Assets.graphics/sun.png");
-                    break;
-            }
         }
         
-        LensFlareParticle sp = new LensFlareParticle(t);
+        switch(i){
+            case 0:
+                sp.texture = TextureHandler.LoadTexture("./Assets/graphics/lensFlare1.png");
+                break;
+            case 1:
+                sp.texture = TextureHandler.LoadTexture("./Assets/graphics/sun.png");
+                break;
+        }
+        
         return sp;
     }
 

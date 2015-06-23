@@ -119,17 +119,11 @@ public class GameRenderer {
         
         RenderParticles();
         
-        //projection
-        //view
-        //point
-        
         objects.clear();
     }
     
     private static void LensFlare(){
         Vector3 dist = new Vector3();
-        Vector3 center = new Vector3();
-        Vector3 draw = new Vector3();
         
         Vector3 lightPos = new Vector3();
         Matrix4 flare = new Matrix4();
@@ -148,6 +142,8 @@ public class GameRenderer {
         if(abertura > -0.7)
             return;
         
+        float alpha = (1-(-abertura))/0.3f;
+        
         flare.copyFrom(projection);
         flare.multiply(view.getMatrix());        
         lightPos = flare.Mult(lightPos);
@@ -158,29 +154,26 @@ public class GameRenderer {
         
         dist = dist.normalize();
 //        System.out.println("Dist " + dist);
-        
-        draw.x = dist.x * 0.4f;
-        draw.y = dist.y * 0.4f;
-        
+
         Transform transform = new Transform();
-        transform.scale = new Vector3(0.5f,0.5f,0.5f);
-        transform.position = draw;
+        LensFlareParticle p;
+        // 
         
-        LensFlareParticle p = LensFlareParticle.CreateLensFlareParticle(transform, 0);        
-        ShaderHandler.particleShader.LoadMaterial(p.getMaterial());
-        p.getMaterial().diffuse[3] = abertura;
+        transform = new Transform();
+        transform.scale = new Vector3(0.5f,0.5f,0.5f);
+        transform.position.set(dist.x * 0.7f, dist.y * 0.7f, 0);
+        p = LensFlareParticle.CreateLensFlareParticle(transform, 0);        
+        p.getMaterial().diffuse[3] = alpha;
         GameRenderer.AddParticle(p);    
         
-        draw.x = dist.x * 0.6f;
-        draw.y = dist.y * 0.6f;        
+        
+        transform = new Transform();
         transform.scale = new Vector3(0.5f,0.5f,0.5f);
-        transform.position = draw;
-        
+        transform.position.set(dist.x * 0.9f, dist.y * 0.9f, 2);
         p = LensFlareParticle.CreateLensFlareParticle(transform, 1);
-        
-        ShaderHandler.particleShader.LoadMaterial(p.getMaterial());
-        p.getMaterial().diffuse[3] = abertura;
+        p.getMaterial().diffuse[3] = alpha;
         GameRenderer.AddParticle(p); 
+        
     }
     
     public static void RenderScene(){
@@ -237,13 +230,13 @@ public class GameRenderer {
         {
             ShaderHandler.particleShader.LoadDiffuseTexture(t);
             
-            Collections.sort(particles.get(t), new Comparator<Particle>() {
-
-                @Override
-                public int compare(Particle o1, Particle o2) {
-                    return (int) (o2.getTransform().position.sub(camera.GetPosition()).norm2() - o1.getTransform().position.sub(camera.GetPosition()).norm2());
-                }
-            });
+//            Collections.sort(particles.get(t), new Comparator<Particle>() {
+//
+//                @Override
+//                public int compare(Particle o1, Particle o2) {
+//                    return (int) (o2.getTransform().position.sub(camera.GetPosition()).norm2() - o1.getTransform().position.sub(camera.GetPosition()).norm2());
+//                }
+//            });
             
             for ( Particle p : particles.get(t) )
             {
