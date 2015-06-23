@@ -107,16 +107,16 @@ public class SkyRiders implements GLEventListener {
             GameRenderer.setSkyDome(skyDome);
             
             //Water Plane
-            waterPlane = new TexturedMesh(MeshHandler.LoadMesh("./Assets/graphics/water_plane.obj", null , ShaderHandler.waterShader), ShaderHandler.waterShader);
-            for (int i = 0; i < 10; i++){
-                for (int j = 0; j < 10; j++){
-                    waterObj = new WaterObject(new Vector3(-1000+i*400f, -30f, -1000+j*400f), waterPlane);
-
-                    waterObj.setRenderType(RENDER_TYPE.RENDER_WATER);
-                    waterObj.getTransform().scale = waterObj.getTransform().scale.mul(200);
-                    gameMap.addObject(waterObj);
-                }
-            }
+//            waterPlane = new TexturedMesh(MeshHandler.LoadMesh("./Assets/graphics/water_plane.obj", null , ShaderHandler.waterShader), ShaderHandler.waterShader);
+//            for (int i = 0; i < 15; i++){
+//                for (int j = 0; j < 15; j++){
+//                    waterObj = new WaterObject(new Vector3(-5000+i*400f, -30f, -1000+j*400f), waterPlane);
+//
+//                    waterObj.setRenderType(RENDER_TYPE.RENDER_WATER);
+//                    waterObj.getTransform().scale = waterObj.getTransform().scale.mul(200);
+//                    gameMap.addObject(waterObj);
+//                }
+//            }
             
         } catch (Exception ex) {
             Logger.getLogger(SkyRiders.class.getName()).log(Level.SEVERE, null, ex);
