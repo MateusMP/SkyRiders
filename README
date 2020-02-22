@@ -1,28 +1,28 @@
-Nome do Jogo: Sky Riders
-Membros:	Leonardo Tórtoro Pereira	7573621
-			Mateus Malvessi Pereira		7987161
-	 		Matheus Henrique Soares		8066349
+Project: Sky Riders
+Members:	Leonardo TÃ³rtoro Pereira	7573621
+		Mateus Malvessi Pereira		7987161
+	 	Matheus Henrique Soares		8066349
 
-=== Funcionalidades ===
+=== Features ===
 Normal Map
-Água/Lava
-Vento
+Water / Lava
+Wind
 Skydome
 LOD
-FOG - No mar
-Iluminação
-Movimentação do Avião / Hélice
+FOG
+Light Shading
+Airplane Flight Simulation (controllable)
 Lens Flare
 Frustum Culling
 
-=== Observações ===
-A pasta cg-2014 possui o código principal do programa em um projeto do NetBeans.
+=== Note ===
+The folder cg-2014 has the main code and a NetBeans project file.
 
-A pasta SkyRiders possui um projeto Unity utilizado apenas para posicionar objetos no mundo.
-	O mapa criado no projeto Unity é exportado em um arquivo de texto que é lido pelo programa Java.
+The SkyRiders folder contains a Unity project used to position the objects and worked as a map editor.
+	The map built in unity is expored in a text file, read by the Java program.
 
 	
-=== Referencias ===
+=== References ===
 http://ogldev.atspace.co.uk/www/tutorial26/tutorial26.html
 https://www.youtube.com/watch?v=VS8wlS9hF8E&list=PLRIWtICgwaX0u7Rf9zkZhLoLuZVfUksDP
 http://www.racer.nl/reference/vfc_markmorley.htm
