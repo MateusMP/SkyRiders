@@ -27,16 +27,16 @@ public class AirplaneController extends KeyAdapter {
             case KeyEvent.VK_DOWN://gira sobre o eixo-x
                 myplane.CommandDOWN(true);
                 break;
-            case KeyEvent.VK_LEFT://gira sobre o eixo-y
+            case KeyEvent.VK_LEFT:
                 myplane.CommandLEFT(true);
                 break;
-            case KeyEvent.VK_RIGHT://gira sobre o eixo-y
+            case KeyEvent.VK_RIGHT:
                 myplane.CommandRIGHT(true);
                 break;
-            case KeyEvent.VK_A://gira sobre o eixo-y
+            case KeyEvent.VK_A:
                 myplane.CommandAccel(true);
                 break;
-            case KeyEvent.VK_Z://gira sobre o eixo-y
+            case KeyEvent.VK_Z:
                 myplane.CommandBrake(true);
                 break;
             case KeyEvent.VK_SPACE://Desativa gravidade
@@ -50,23 +50,26 @@ public class AirplaneController extends KeyAdapter {
         
         switch (e.getKeyCode())
         {
-            case KeyEvent.VK_UP://gira sobre o eixo-x
+            case KeyEvent.VK_UP:
                 myplane.CommandUP(false);
                 break;
-            case KeyEvent.VK_DOWN://gira sobre o eixo-x
+            case KeyEvent.VK_DOWN:
                 myplane.CommandDOWN(false);
                 break;
-            case KeyEvent.VK_LEFT://gira sobre o eixo-y
+            case KeyEvent.VK_LEFT:
                 myplane.CommandLEFT(false);
                 break;
-            case KeyEvent.VK_RIGHT://gira sobre o eixo-y
+            case KeyEvent.VK_RIGHT:
                 myplane.CommandRIGHT(false);
                 break;
-            case KeyEvent.VK_A://gira sobre o eixo-y
+            case KeyEvent.VK_A:
                 myplane.CommandAccel(false);
                 break;
-            case KeyEvent.VK_Z://gira sobre o eixo-y
+            case KeyEvent.VK_Z:
                 myplane.CommandBrake(false);
+                break;
+            case KeyEvent.VK_H:
+                myplane.hide = !myplane.hide;
                 break;
         }
         

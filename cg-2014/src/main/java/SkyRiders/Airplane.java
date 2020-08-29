@@ -34,6 +34,7 @@ public class Airplane extends GameObject {
     private boolean cmd_accel;
     private boolean cmd_brake;
     private boolean hasGravity = true;
+    public boolean hide = false;
     
     // Propeller
     private TexturedMesh om;
@@ -268,6 +269,9 @@ public class Airplane extends GameObject {
     @Override
     public void draw()
     {
+        if (hide) {
+            return;
+        }
         Matrix4 modelMatrix = new Matrix4();
         Matrix4 matrixReloaded = new Matrix4();
         // DEBUG LINE
