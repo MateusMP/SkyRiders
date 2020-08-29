@@ -5,15 +5,15 @@ ICMC - USP
 Project: Sky Riders
 Members:	
 - Leonardo Tórtoro Pereira	7573621
-- Mateus Malvessi Pereira		7987161
-- Matheus Henrique Soares		8066349
+- Mateus Malvessi Pereira	7987161
+- Matheus Henrique Soares	8066349
 
 # Features
 - Normal Map
 - Water / Lava
 - Wind
 - Skydome
-- LOD
+- Level of Detail (LOD)
 - FOG
 - Light Shading
 - Airplane Flight Simulation (controllable)
@@ -36,10 +36,12 @@ http://www.racer.nl/reference/vfc_markmorley.htm
 # Textures/Models
 
 Rocks
-https://www.sharecg.com/v/72778/related/5/3D-Model/Rocks-01
+https://www.deviantart.com/yughues/art/Rocks-03-410226851
+https://www.deviantart.com/yughues/art/Free-Rocks-324052644
 
 Lava Texture
 https://www.deviantart.com/wakaflockaflame1/art/SRE-Design-Texture-test-Lava-test-2-437361398
+https://opengameart.org/node/18855
 
 Water Texture
 https://seamless-pixels.blogspot.com/2012_10_01_archive.html

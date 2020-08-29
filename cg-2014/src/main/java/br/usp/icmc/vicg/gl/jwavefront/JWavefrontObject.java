@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
@@ -654,7 +655,7 @@ public class JWavefrontObject {
                   //loading the texture data
                   Texture texture = findTexture(name);
                   if (texture == null) {
-                      texture = TextureHandler.LoadTexture(pathname.getParent() + "/" + name);
+                      texture = TextureHandler.LoadTexture(Paths.get(pathname.getParent(), name).toString());
 
                     if (texture != null) {
                       textures.add(texture);

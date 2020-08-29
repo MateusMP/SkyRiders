@@ -24,8 +24,8 @@ public abstract class Shader {
         GL3.GL_VERTEX_SHADER,
         GL3.GL_FRAGMENT_SHADER,
         GL3.GL_GEOMETRY_SHADER,
-        GL3.GL_TESS_CONTROL_SHADER,
-        GL3.GL_TESS_EVALUATION_SHADER
+        // GL3.GL_TESS_CONTROL_SHADER,
+        // GL3.GL_TESS_EVALUATION_SHADER
     };
     
     public Shader(String vertex, String fragment) {

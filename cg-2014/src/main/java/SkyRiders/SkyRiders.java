@@ -218,7 +218,7 @@ public class SkyRiders implements GLEventListener {
         glCanvas.addKeyListener(inputHandler);
 
         frame = new Frame("Sky Racers");
-        frame.setSize(1024, 576);
+        frame.setSize(1280, 720);
         frame.add(glCanvas);
         frame.addKeyListener(inputHandler);
         frame.setFocusable(true);

@@ -1,4 +1,4 @@
-#version 130
+#version 150
 #extension GL_ARB_gpu_shader5 : enable
 
 struct MaterialProperties

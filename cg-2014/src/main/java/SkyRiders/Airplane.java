@@ -10,7 +10,6 @@ import SkyRiders.core.GameObject;
 import MathClasses.Vector3;
 import SkyRiders.core.GameRenderer.RENDER_TYPE;
 import SkyRiders.core.LODMesh;
-import SkyRiders.core.Line;
 import Handlers.MeshHandler;
 import SkyRiders.core.MeshRenderer;
 import Handlers.ShaderHandler;
@@ -19,7 +18,6 @@ import br.usp.icmc.vicg.gl.matrix.Matrix4;
 import java.io.File;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.FloatControl;
 
 public class Airplane extends GameObject {
     
@@ -68,7 +66,7 @@ public class Airplane extends GameObject {
     // Limits
     // final float MAX_UD = 70; // Direcao vertical
     final float MAX_LR = 70; // Direcao horizontal
-    final float MAX_SPEED = 6;
+    final float MAX_SPEED = 9;
     
     Clip propellerSound;
     
@@ -92,8 +90,6 @@ public class Airplane extends GameObject {
     public Airplane(Transform t, MeshRenderer mesh)
     {
         super(t, mesh);
-        //propellerSound = CreateSound("Assets/propeller.wav");
-        //propellerSound.setLoopPoints(0, -1);
         
         name = "Airplane";
         
@@ -110,7 +106,7 @@ public class Airplane extends GameObject {
         
         accelMax_normal = 100.0f;
         current_accel = 0;
-        air_friction = 0.03f;
+        air_friction = 0.009f;
         
         up = UP;
         forward = FORWARD;
@@ -126,7 +122,7 @@ public class Airplane extends GameObject {
         LRrotationCurrent = 0.0f;
         UDrotationCurrent = 0.0f;
         pitchSpeed = 0.7f;
-        rollSpeed = 1.1f;
+        rollSpeed = 1.0f;
         
         roationXZ = 0;
         
@@ -210,19 +206,10 @@ public class Airplane extends GameObject {
         } else {
             current_accel /= 1.1;
         }
-               
-        /*if (propellerSound.isRunning()){
-            FloatControl gainControl = (FloatControl) propellerSound.getControl(FloatControl.Type.MASTER_GAIN);
-            gainControl.setValue( Math.max(Math.min(gainControl.getMaximum(), current_accel/30), 1) );
-        }*/
         
         if ( current_accel < 0.01f ){
             current_accel = 0.0f;
-            //propellerSound.stop();
-        } //else {
-            //if (!propellerSound.isRunning())
-            //propellerSound.loop(Clip.LOOP_CONTINUOUSLY);
-        //}
+        }
 
         friction = velocity.mul(velocity.norm() * air_friction);
         acceleration = acceleration.add(forward.mul(current_accel));
